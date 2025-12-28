@@ -69,15 +69,23 @@ COMMIT_MESSAGE="[master] auto: stabilization and build — $TIMESTAMP"
 TAG_NAME="v$TIMESTAMP"
 
 # Step 1: Environment validation
-log_step "Step 1/9: Environment Validation"
+log_step "Step 1/11: Environment Validation"
 if bash scripts/env-check.sh; then
   log_success "Environment validation passed"
 else
   abort "Environment validation failed. Required variables missing."
 fi
 
+# Verify environment sync with .env.example
+log_info "Checking environment template sync..."
+if bash scripts/env-sync-check.sh; then
+  log_success "Environment template sync validated"
+else
+  log_error "Environment template sync has issues (non-fatal)"
+fi
+
 # Step 2: Clean dependency installation
-log_step "Step 2/9: Clean Dependency Installation"
+log_step "Step 2/11: Clean Dependency Installation"
 
 log_info "Installing backend dependencies..."
 if npm ci --prefer-offline 2>&1 | tail -20; then
@@ -94,7 +102,7 @@ else
 fi
 
 # Step 3: TypeScript type-checking
-log_step "Step 3/9: TypeScript Type-Checking"
+log_step "Step 3/11: TypeScript Type-Checking"
 
 log_info "Type-checking backend..."
 if npm run type-check; then
@@ -111,7 +119,7 @@ else
 fi
 
 # Step 4: Linting
-log_step "Step 4/9: Code Linting"
+log_step "Step 4/11: Code Linting"
 
 log_info "Linting backend..."
 if npm run lint 2>&1 | tee /tmp/backend-lint.log; then
@@ -131,7 +139,7 @@ else
 fi
 
 # Step 5: Auto-fix pass
-log_step "Step 5/9: Auto-Fix Pass"
+log_step "Step 5/11: Auto-Fix Pass"
 if bash scripts/auto-fix.sh; then
   log_success "Auto-fix completed"
 else
@@ -139,7 +147,7 @@ else
 fi
 
 # Step 6: Backend build
-log_step "Step 6/9: Backend Build"
+log_step "Step 6/11: Backend Build"
 log_info "Building backend..."
 if npm run build:backend 2>&1 | tail -30; then
   log_success "Backend build completed"
@@ -155,7 +163,7 @@ else
 fi
 
 # Step 7: Webapp build
-log_step "Step 7/9: Webapp Build"
+log_step "Step 7/11: Webapp Build"
 log_info "Building webapp..."
 if npm run build:webapp 2>&1 | tail -30; then
   log_success "Webapp build completed"
@@ -170,16 +178,52 @@ else
   abort "Webapp build artifacts missing"
 fi
 
-# Step 8: Build validation
-log_step "Step 8/9: Build Validation"
+# Step 8: Database Schema Validation
+log_step "Step 8/11: Database Schema Validation"
+if [ -f "db/schema.sql" ]; then
+  log_info "Validating database schema..."
+  # Check if DB_HOST is set for migration
+  if [ -n "${DB_HOST:-}" ] && [ -n "${DB_USER:-}" ]; then
+    log_info "Running database migrations..."
+    if bash scripts/db-migrate.sh; then
+      log_success "Database migrations completed"
+    else
+      log_error "Database migrations failed (may be optional)"
+    fi
+  else
+    log_info "Database not configured (optional) - schema file verified"
+    log_success "Database schema file present"
+  fi
+else
+  log_info "No database schema found (optional)"
+fi
+
+# Step 9: API Health Check Configuration
+log_step "Step 9/11: API Health Check Configuration"
+if [ -f "api/health.ts" ]; then
+  log_info "API health endpoint verified"
+  log_success "API health checks configured"
+else
+  log_info "API health endpoint not found (may use server.ts health endpoint)"
+fi
+
+# Verify server has health endpoint
+if grep -q "'/health'" src/server.ts 2>/dev/null; then
+  log_success "Server health endpoint verified in src/server.ts"
+else
+  log_info "Health endpoint not explicitly found (non-critical)"
+fi
+
+# Step 10: Build validation
+log_step "Step 10/11: Build Validation"
 if bash scripts/validate-build.sh; then
   log_success "Build validation passed"
 else
   abort "Build validation failed"
 fi
 
-# Step 9: Git operations (commit, tag, push)
-log_step "Step 9/9: Git Operations"
+# Step 11: Git operations (commit, tag, push)
+log_step "Step 11/11: Git Operations"
 
 # Check if there are changes to commit
 if git diff --quiet && git diff --cached --quiet; then

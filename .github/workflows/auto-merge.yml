@@ -60,5 +60,18 @@ jobs:
                 }
               }
             `;
-            await github.graphql(mutation, { pullRequestId: prNodeId, mergeMethod: "SQUASH" });
-            console.log(`✅ Auto-merge enabled for PR #${number}. Will merge automatically when all checks pass.`);
+            
+            try {
+              await github.graphql(mutation, { pullRequestId: prNodeId, mergeMethod: "SQUASH" });
+              console.log(`✅ Auto-merge enabled for PR #${number}. Will merge automatically when all checks pass.`);
+              
+              // Add comment to PR
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: number,
+                body: `🤖 **Auto-merge enabled!**\n\nThis PR will automatically merge when:\n✅ All required CI checks pass\n✅ Branch is up to date\n✅ No conflicts exist\n\n_Powered by GitHub native auto-merge_`
+              });
+            } catch (error) {
+              core.setFailed(`Failed to enable auto-merge: ${error.message}`);
+            }

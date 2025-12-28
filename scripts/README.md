@@ -4,6 +4,62 @@ This directory contains automation scripts for the GXQ Studio DeFi Platform.
 
 ## Available Scripts
 
+### Quick Reference
+
+**Complete Pipeline:**
+```bash
+npm run master              # Full orchestration (recommended)
+```
+
+**Environment & Validation:**
+```bash
+npm run env-check           # Check environment variables
+npm run env-sync            # Validate .env.example sync
+npm run validate-build      # Validate build artifacts
+npm run health              # System health check
+npm run perf                # Performance report
+```
+
+**Database:**
+```bash
+npm run db-migrate          # Run database migrations
+```
+
+**Build & Deploy:**
+```bash
+npm run build               # Build both backend and webapp
+npm run build:backend       # Build backend only
+npm run build:webapp        # Build webapp only
+npm run deploy:vercel       # Deploy webapp to Vercel
+npm run deploy:railway      # Deploy backend to Railway
+npm run deploy:docker       # Deploy with Docker
+```
+
+**Development:**
+```bash
+npm run dev                 # Start development mode
+npm run dev:server          # Start backend dev server
+npm run start:webapp        # Start webapp dev server
+```
+
+**Testing & Quality:**
+```bash
+npm run test                # Run backend tests
+npm run test:webapp         # Run webapp tests
+npm run lint                # Lint backend
+npm run lint:webapp         # Lint webapp
+npm run type-check          # Type check backend
+npm run type-check:webapp   # Type check webapp
+npm run validate            # Run all validation checks
+```
+
+**Monitoring:**
+```bash
+npm run logs                # Monitor logs
+npm run monitor             # Health monitoring
+npm run selfheal            # Self-healing automation
+```
+
 ### PowerShell Scripts
 
 #### Merge-Branches.ps1
@@ -43,6 +99,135 @@ Test suite for validating the Merge-Branches.ps1 script.
 
 ### Shell Scripts
 
+#### master.sh (Master Orchestration)
+
+**NEW**: Comprehensive 11-step production-ready orchestration pipeline.
+
+Orchestrates the complete build, validation, and deployment pipeline including:
+- Environment validation
+- Dependency installation
+- Type-checking
+- Linting
+- Auto-fix
+- Backend build
+- Webapp build
+- Database migrations
+- API health checks
+- Build validation
+- Git operations
+
+**Usage:**
+```bash
+npm run master
+# Or directly
+./scripts/master.sh
+```
+
+**Documentation:** See [AUTOMATION_GUIDE.md](../AUTOMATION_GUIDE.md) for comprehensive guide.
+
+#### env-check.sh
+
+Validates required environment variables are present.
+
+**Usage:**
+```bash
+npm run env-check
+# Or directly
+./scripts/env-check.sh
+```
+
+#### env-sync-check.sh
+
+**NEW**: Ensures `.env.example` is synchronized with production requirements.
+
+Validates:
+- All required variables are documented
+- No real secrets in templates
+- Security audit for committed secrets
+
+**Usage:**
+```bash
+npm run env-sync
+# Or directly
+./scripts/env-sync-check.sh
+```
+
+#### db-migrate.sh
+
+**NEW**: Runs database migrations and seed data.
+
+**Usage:**
+```bash
+npm run db-migrate
+# Or directly
+./scripts/db-migrate.sh
+```
+
+**Requirements:**
+- PostgreSQL client tools (`psql`)
+- Database environment variables configured
+
+#### validate-build.sh
+
+Validates all build artifacts are present and correct.
+
+**Usage:**
+```bash
+npm run validate-build
+# Or directly
+./scripts/validate-build.sh
+```
+
+#### health-check.sh
+
+Comprehensive system health monitoring.
+
+**Usage:**
+```bash
+npm run health
+# Or directly
+./scripts/health-check.sh
+```
+
+**Checks:**
+- Backend service availability
+- Webapp service availability
+- Database connectivity
+- Solana RPC endpoint health
+- Environment variables
+- System resources
+
+#### auto-fix.sh
+
+Automatically fixes common code issues.
+
+**Usage:**
+```bash
+./scripts/auto-fix.sh
+```
+
+#### gxq-selfheal.sh
+
+Self-healing automation for production issues.
+
+**Usage:**
+```bash
+npm run selfheal
+# Or directly
+./scripts/gxq-selfheal.sh
+```
+
+#### performance-report.sh
+
+Generates performance metrics report.
+
+**Usage:**
+```bash
+npm run perf
+# Or directly
+./scripts/performance-report.sh
+```
+
 #### merge-coverage.sh
 
 Merges code coverage reports from backend and webapp.
@@ -59,6 +244,50 @@ Migration script for Railway deployment.
 **Usage:**
 ```bash
 ./scripts/migrate-to-railway.sh
+```
+
+#### deploy-vercel.sh
+
+Deploys webapp to Vercel.
+
+**Usage:**
+```bash
+npm run deploy:vercel
+# Or directly
+./scripts/deploy-vercel.sh
+```
+
+#### deploy-railway.sh
+
+Deploys backend to Railway.
+
+**Usage:**
+```bash
+npm run deploy:railway
+# Or directly
+./scripts/deploy-railway.sh
+```
+
+#### deploy-docker.sh
+
+Builds and deploys using Docker.
+
+**Usage:**
+```bash
+npm run deploy:docker
+# Or directly
+./scripts/deploy-docker.sh
+```
+
+#### monitor-logs.sh
+
+Monitors application logs.
+
+**Usage:**
+```bash
+npm run logs
+# Or directly
+./scripts/monitor-logs.sh
 ```
 
 #### setup-env.sh

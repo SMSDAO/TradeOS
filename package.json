@@ -44,6 +44,8 @@
     "validate-build": "bash scripts/validate-build.sh",
     "selfheal": "bash scripts/gxq-selfheal.sh",
     "env-check": "bash scripts/env-check.sh",
+    "env-sync": "bash scripts/env-sync-check.sh",
+    "db-migrate": "bash scripts/db-migrate.sh",
     "health": "bash scripts/health-check.sh",
     "perf": "bash scripts/performance-report.sh"
   },
