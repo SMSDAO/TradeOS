@@ -243,6 +243,20 @@ The workflow uses GitHub's native auto-merge API, which automatically respects a
 - Required signatures
 - Restrictions on who can push
 
+**How to Use:**
+1. Create your PR as normal
+2. Add the `auto-merge` label to the PR
+3. Get at least 1 approval from a team member
+4. The workflow will automatically enable GitHub's auto-merge
+5. When all CI checks pass, GitHub will automatically merge the PR
+6. A comment will be added to confirm auto-merge is enabled
+
+**Troubleshooting:**
+- If the workflow fails with "Missing 'auto-merge' label", add the label via GitHub UI
+- If it fails with "Not enough approvals", request and receive a review approval
+- If it fails with "Changes requested", address the review comments first
+- If it fails with "PR is draft", mark the PR as ready for review
+
 ### Running CI Locally
 
 ```bash
