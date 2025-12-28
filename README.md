@@ -601,6 +601,50 @@ npm run build:backend     # Build backend only
 npm run build:webapp      # Build webapp only
 ```
 
+### Master Orchestration & Automation
+
+The project includes a comprehensive master orchestration script that automates the full build, validation, and deployment pipeline:
+
+```bash
+# Run full master orchestration (recommended before deploying)
+npm run master            # Complete build & validation pipeline
+
+# Individual orchestration scripts
+npm run env-check         # Validate required environment variables
+npm run env-sync          # Check .env.example is in sync
+npm run db-migrate        # Run database migrations (if DB configured)
+npm run validate-build    # Validate all build artifacts exist
+npm run health            # Run system health checks
+npm run perf              # Generate performance report
+```
+
+**Master Orchestration Pipeline Steps:**
+1. Environment validation (required variables)
+2. Clean dependency installation (backend + webapp)
+3. TypeScript type-checking (strict mode)
+4. Code linting (ESLint with zero-warning policy)
+5. Auto-fix pass (format & fix issues)
+6. Backend build (TypeScript compilation)
+7. Webapp build (Next.js production build)
+8. Database schema validation & migration (if configured)
+9. API health check configuration validation
+10. Build artifact validation
+11. Git operations (commit, tag, push)
+
+**Environment Requirements:**
+
+All required environment variables must be documented in `.env.example` as placeholders. The system validates:
+- Required variables are present in your local `.env`
+- All production variables are documented in `.env.example`
+- No real secrets are committed to `.env.example`
+
+**Database Support:**
+
+Optional PostgreSQL database support with automated migrations:
+- Schema: `db/schema.sql`
+- Migrations: `npm run db-migrate`
+- Configuration: Set `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` in `.env`
+
 ### Required Secrets for CI/CD
 
 Repository maintainers should configure these secrets in **Settings → Secrets and variables → Actions**:
