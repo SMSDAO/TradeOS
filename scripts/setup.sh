@@ -186,7 +186,7 @@ sync_vercel_env() {
   fi
   
   # Extract NEXT_PUBLIC_RPC_URL from .env
-  NEXT_PUBLIC_RPC_URL=$(grep -E "^NEXT_PUBLIC_RPC_URL=" .env | cut -d= -f2- || echo "")
+  NEXT_PUBLIC_RPC_URL=$(grep -E "^NEXT_PUBLIC_RPC_URL=" .env | cut -d= -f2- | sed 's/^["'\'']\(.*\)["'\'']$/\1/' || echo "")
   
   if [ -z "$NEXT_PUBLIC_RPC_URL" ]; then
     warn "NEXT_PUBLIC_RPC_URL not found in .env, skipping Vercel sync"
@@ -216,7 +216,7 @@ sync_vercel_env() {
   
   # Set environment variable in Vercel
   log "Setting NEXT_PUBLIC_RPC_URL in Vercel..."
-  if ! echo "$NEXT_PUBLIC_RPC_URL" | vercel env add NEXT_PUBLIC_RPC_URL production --token "$VERCEL_TOKEN" --scope "$VERCEL_PROJECT_ID" 2>/dev/null; then
+  if ! vercel env add NEXT_PUBLIC_RPC_URL production "$NEXT_PUBLIC_RPC_URL" --token "$VERCEL_TOKEN" 2>/dev/null; then
     warn "Failed to set NEXT_PUBLIC_RPC_URL in Vercel"
   else
     ok "NEXT_PUBLIC_RPC_URL synced to Vercel"
