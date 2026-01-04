@@ -9,7 +9,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const OUTPUT_DIR = '/tmp/coverage-analysis';
 
@@ -138,7 +137,6 @@ function extractFunctions(filePath) {
  * Generate test template for a file
  */
 function generateTestTemplate(filePath) {
-  const relativePath = path.relative(process.cwd(), filePath);
   const fileName = path.basename(filePath, '.ts');
   const functions = extractFunctions(filePath);
   
