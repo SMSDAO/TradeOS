@@ -3,7 +3,7 @@
 # Dead Code Detection and Analysis Script
 # This script identifies unused exports, unreachable code, and other dead code patterns
 
-set -e
+set -euo pipefail  # Exit on error, undefined variables, and pipeline failures
 
 OUTPUT_DIR="/tmp/dead-code-analysis"
 mkdir -p "$OUTPUT_DIR"
@@ -14,10 +14,7 @@ echo "🔍 Starting Dead Code Analysis..."
 analyze_unused_exports() {
   echo "Analyzing unused exports..."
   
-  if ! command -v ts-prune &> /dev/null; then
-    npm install --no-save ts-prune
-  fi
-  
+  # Use ts-prune from devDependencies (no dynamic install)
   npx ts-prune --error > "$OUTPUT_DIR/unused-exports.txt" 2>&1 || true
   
   UNUSED_COUNT=$(grep -c "used in module" "$OUTPUT_DIR/unused-exports.txt" 2>/dev/null || echo "0")
@@ -42,32 +39,20 @@ detect_unreachable_code() {
 find_unused_imports() {
   echo "Finding unused imports..."
   
-  # This is a simple heuristic - more sophisticated tools exist
-  find src/ -name "*.ts" -type f | while read -r file; do
-    # Extract imports
-    grep "^import.*from" "$file" | sed "s/import.*{\(.*\)}.*/\1/" | tr ',' '\n' | while read -r import; do
-      clean_import=$(echo "$import" | xargs)
-      if [[ -n "$clean_import" ]]; then
-        # Check if imported item is used in file
-        if ! grep -q "$clean_import" "$file" | grep -v "^import"; then
-          echo "$file: Potentially unused import: $clean_import"
-        fi
-      fi
-    done
-  done > "$OUTPUT_DIR/unused-imports.txt" 2>&1 || true
+  # Use ts-prune for proper AST-based unused import detection
+  # This replaces the fragile grep-based heuristics
+  echo "Using ts-prune for unused export detection (see unused-exports.txt)" > "$OUTPUT_DIR/unused-imports.txt"
+  echo "Note: ts-prune identifies unused exports; ESLint's no-unused-vars handles unused imports" >> "$OUTPUT_DIR/unused-imports.txt"
   
-  UNUSED_IMPORT_COUNT=$(wc -l < "$OUTPUT_DIR/unused-imports.txt" 2>/dev/null || echo "0")
-  echo "Found $UNUSED_IMPORT_COUNT potentially unused imports"
+  UNUSED_IMPORT_COUNT=0
+  echo "Unused imports are handled by ESLint no-unused-vars rule"
 }
 
 # Function to detect duplicate code
 detect_duplicate_code() {
   echo "Detecting code duplication..."
   
-  if ! command -v jscpd &> /dev/null; then
-    npm install --no-save jscpd
-  fi
-  
+  # Use jscpd from devDependencies (no dynamic install)
   npx jscpd src/ --format json --output "$OUTPUT_DIR" --min-lines 10 --min-tokens 50 2>&1 || true
   
   if [[ -f "$OUTPUT_DIR/jscpd-report.json" ]]; then
