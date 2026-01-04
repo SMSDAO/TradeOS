@@ -3,7 +3,7 @@
 # Dev Branch Validation Script
 # Validates that the dev branch is production-ready and fully synced
 
-set -e  # Exit on error
+set -euo pipefail  # Exit on error, undefined vars, and pipeline failures
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔍 Dev Branch Production Readiness Validation"
@@ -64,7 +64,7 @@ echo "Phase 2: Security Checks"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Check for .env files in git
-if git ls-files | grep -q "^\.env$"; then
+if git ls-files | grep -q "^\.env$" || false; then
     check_fail ".env file is tracked in git (SECURITY RISK)"
 else
     check_pass "No .env file in git"

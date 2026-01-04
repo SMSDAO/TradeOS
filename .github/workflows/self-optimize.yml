@@ -9,10 +9,9 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
   issues: write
-  checks: write
 
 concurrency:
   group: self-optimize-${{ github.ref }}
@@ -74,9 +73,7 @@ jobs:
           echo "## Unused Code Detection" > /tmp/unused-code-report.md
           echo "" >> /tmp/unused-code-report.md
           
-          # Install ts-prune for unused export detection
-          npm install --no-save ts-prune
-          
+          # Use ts-prune from node_modules (installed via npm ci with package.json devDependencies)
           # Detect unused exports
           echo "### Unused Exports" >> /tmp/unused-code-report.md
           npx ts-prune --error || echo "Unused exports detected" >> /tmp/unused-code-report.md
@@ -101,9 +98,7 @@ jobs:
           echo "## Code Complexity Analysis" > /tmp/complexity-report.md
           echo "" >> /tmp/complexity-report.md
           
-          # Install complexity analysis tool
-          npm install --no-save eslint-plugin-complexity
-          
+          # Use eslint-plugin-complexity from node_modules (installed via package.json)
           # Run complexity analysis
           echo "Analyzing cyclomatic complexity..." >> /tmp/complexity-report.md
           
@@ -237,7 +232,12 @@ jobs:
             echo "" >> /tmp/risky-code-report.md
           fi
           
-          echo "risky_patterns_found=true" >> $GITHUB_OUTPUT
+          # Set risky_patterns_found conditionally based on actual findings
+          RISKY_FOUND="false"
+          if [[ $EVAL_COUNT -gt 0 ]] || [[ $ANY_COUNT -gt 100 ]] || [[ $KEY_COUNT -gt 0 ]]; then
+            RISKY_FOUND="true"
+          fi
+          echo "risky_patterns_found=$RISKY_FOUND" >> $GITHUB_OUTPUT
       
       - name: Commit automated fixes
         id: commit-fixes
@@ -255,7 +255,14 @@ jobs:
           
           [skip ci]" || echo "No changes to commit"
           
-          git push origin ${{ github.event.pull_request.head.ref }} || echo "Push failed"
+          # NOTE: Auto-push disabled per security review (PR#135)
+          # Automated fixes should be reviewed before merging
+          # if ! git push origin ${{ github.event.pull_request.head.ref }}; then
+          #   echo "push_failed=true" >> $GITHUB_OUTPUT
+          #   echo "::error::Push to PR branch failed. This may be due to concurrent updates or permission issues."
+          #   exit 1
+          # fi
+          echo "Automated fixes committed locally. Review required before push." || true
       
       - name: Generate comprehensive PR comment
         id: generate-comment
@@ -264,52 +271,41 @@ jobs:
           echo "" >> /tmp/pr-comment.md
           echo "This PR has been analyzed for code quality, security, and optimization opportunities." >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
           
-          # Add each report section
-          cat /tmp/eslint-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/unused-code-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/complexity-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/coverage-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/risky-code-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          # Add summary
-          echo "" >> /tmp/pr-comment.md
+          # Add summary section (concise)
           echo "### 📊 Summary" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "- ✅ Automated fixes have been applied where safe" >> /tmp/pr-comment.md
-          echo "- 📝 Review the reports above for manual attention items" >> /tmp/pr-comment.md
-          echo "- 🔍 Check inline comments for specific recommendations" >> /tmp/pr-comment.md
+          echo "- ✅ Automated fixes reviewed (see artifacts for details)" >> /tmp/pr-comment.md
+          echo "- 📝 Review inline comments for specific recommendations" >> /tmp/pr-comment.md
           echo "- ⚠️ Address any flagged security or complexity issues" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "### Next Steps" >> /tmp/pr-comment.md
+          
+          # Add link to artifacts
+          echo "### 📦 Full Reports" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "1. Review automated changes committed by this workflow" >> /tmp/pr-comment.md
-          echo "2. Address any flagged security or complexity issues" >> /tmp/pr-comment.md
-          echo "3. Consider refactoring high-complexity functions" >> /tmp/pr-comment.md
-          echo "4. Add tests for low-coverage areas" >> /tmp/pr-comment.md
-          echo "5. Remove or document TODO/FIXME items" >> /tmp/pr-comment.md
+          echo "Detailed reports have been uploaded as workflow artifacts:" >> /tmp/pr-comment.md
+          echo "- ESLint auto-fix results" >> /tmp/pr-comment.md
+          echo "- Unused code detection" >> /tmp/pr-comment.md
+          echo "- Code complexity analysis" >> /tmp/pr-comment.md
+          echo "- Test coverage gaps" >> /tmp/pr-comment.md
+          echo "- Risky code patterns" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
+          echo "Download artifacts from the workflow run to view full details." >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          
+          # Add brief highlights from each report (first 10 lines max)
+          echo "### Highlights" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          echo "#### ESLint" >> /tmp/pr-comment.md
+          head -n 10 /tmp/eslint-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No issues found" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          echo "#### Unused Code" >> /tmp/pr-comment.md
+          head -n 10 /tmp/unused-code-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No unused code found" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          echo "#### Risky Patterns" >> /tmp/pr-comment.md
+          head -n 15 /tmp/risky-code-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No risky patterns found" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          
           echo "---" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "*🤖 Generated by Continuous Self-Optimization Workflow*" >> /tmp/pr-comment.md
@@ -426,8 +422,42 @@ jobs:
               }
             }
             
+            // Deduplicate comments: aggregate multiple findings on same file/line
+            const commentMap = new Map();
+            for (const comment of comments) {
+              const key = `${comment.path}:${comment.line}`;
+              if (!commentMap.has(key)) {
+                commentMap.set(key, {
+                  path: comment.path,
+                  line: comment.line,
+                  bodies: []
+                });
+              }
+              commentMap.get(key).bodies.push(comment.body);
+            }
+            
+            // Create consolidated comments
+            const consolidatedComments = [];
+            for (const [key, data] of commentMap) {
+              if (data.bodies.length > 1) {
+                // Multiple issues on same line - combine them
+                const combinedBody = '### Multiple Issues Found\n\n' + data.bodies.map((b, i) => `${i+1}. ${b}`).join('\n\n---\n\n');
+                consolidatedComments.push({
+                  path: data.path,
+                  line: data.line,
+                  body: combinedBody
+                });
+              } else {
+                consolidatedComments.push({
+                  path: data.path,
+                  line: data.line,
+                  body: data.bodies[0]
+                });
+              }
+            }
+            
             // Post inline comments (max 50 to avoid rate limits)
-            const limitedComments = comments.slice(0, 50);
+            const limitedComments = consolidatedComments.slice(0, 50);
             
             if (limitedComments.length > 0) {
               try {
