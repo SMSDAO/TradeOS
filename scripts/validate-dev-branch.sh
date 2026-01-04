@@ -3,7 +3,7 @@
 # Dev Branch Validation Script
 # Validates that the dev branch is production-ready and fully synced
 
-set -e  # Exit on error
+set -euo pipefail  # Exit on error, undefined variables, and pipeline failures
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔍 Dev Branch Production Readiness Validation"

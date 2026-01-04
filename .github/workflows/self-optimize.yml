@@ -74,8 +74,7 @@ jobs:
           echo "## Unused Code Detection" > /tmp/unused-code-report.md
           echo "" >> /tmp/unused-code-report.md
           
-          # Install ts-prune for unused export detection
-          npm install --no-save ts-prune
+          # Use ts-prune from devDependencies (already installed via npm ci)
           
           # Detect unused exports
           echo "### Unused Exports" >> /tmp/unused-code-report.md
@@ -101,8 +100,7 @@ jobs:
           echo "## Code Complexity Analysis" > /tmp/complexity-report.md
           echo "" >> /tmp/complexity-report.md
           
-          # Install complexity analysis tool
-          npm install --no-save eslint-plugin-complexity
+          # Use eslint-plugin-complexity from devDependencies (already installed via npm ci)
           
           # Run complexity analysis
           echo "Analyzing cyclomatic complexity..." >> /tmp/complexity-report.md
@@ -237,7 +235,12 @@ jobs:
             echo "" >> /tmp/risky-code-report.md
           fi
           
-          echo "risky_patterns_found=true" >> $GITHUB_OUTPUT
+          # Set risky_patterns_found only if any issues detected
+          if [[ $EVAL_COUNT -gt 0 ]] || [[ $ANY_COUNT -gt 100 ]] || [[ $TODO_COUNT -gt 0 ]] || [[ $CONSOLE_COUNT -gt 0 ]] || [[ $KEY_COUNT -gt 0 ]]; then
+            echo "risky_patterns_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "risky_patterns_found=false" >> $GITHUB_OUTPUT
+          fi
       
       - name: Commit automated fixes
         id: commit-fixes
@@ -255,7 +258,14 @@ jobs:
           
           [skip ci]" || echo "No changes to commit"
           
-          git push origin ${{ github.event.pull_request.head.ref }} || echo "Push failed"
+          # Push to PR branch with proper error handling
+          # Note: If push fails due to conflicts, fail the job and post a comment
+          if ! git push origin ${{ github.event.pull_request.head.ref }}; then
+            echo "push_failed=true" >> $GITHUB_OUTPUT
+            echo "❌ Push to PR branch failed. This may be due to concurrent updates on the branch." >&2
+            exit 1
+          fi
+          echo "push_failed=false" >> $GITHUB_OUTPUT
       
       - name: Generate comprehensive PR comment
         id: generate-comment
@@ -264,51 +274,41 @@ jobs:
           echo "" >> /tmp/pr-comment.md
           echo "This PR has been analyzed for code quality, security, and optimization opportunities." >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
+          
+          # Add concise summary only
+          echo "### 📊 Quick Summary" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          # Add each report section
-          cat /tmp/eslint-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
+          # Count issues from reports
+          UNUSED_COUNT=$(grep -c "used in module" /tmp/unused-exports.txt 2>/dev/null || echo "0")
+          TODO_COUNT=$(grep -r "TODO\|FIXME" src/ --include="*.ts" 2>/dev/null | wc -l || echo "0")
+          CONSOLE_COUNT=$(grep -r "console.log" src/ --include="*.ts" --exclude="*logger*" 2>/dev/null | wc -l || echo "0")
+          
+          echo "- 🔍 **Unused Exports**: $UNUSED_COUNT found" >> /tmp/pr-comment.md
+          echo "- 📝 **TODO/FIXME Comments**: $TODO_COUNT found" >> /tmp/pr-comment.md
+          echo "- ⚠️ **console.log() Usage**: $CONSOLE_COUNT instances" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          cat /tmp/unused-code-report.md >> /tmp/pr-comment.md
+          echo "### 📦 Detailed Reports" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/complexity-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
+          echo "Full analysis reports are available as workflow artifacts:" >> /tmp/pr-comment.md
+          echo "- Download artifacts from the **Actions** tab to view detailed reports" >> /tmp/pr-comment.md
+          echo "- Reports include: ESLint fixes, unused code analysis, complexity metrics, coverage gaps, and risky patterns" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          cat /tmp/coverage-report.md >> /tmp/pr-comment.md
+          echo "### ✅ Actions Taken" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          
-          cat /tmp/risky-code-report.md >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "---" >> /tmp/pr-comment.md
+          echo "- Automated ESLint fixes applied where safe" >> /tmp/pr-comment.md
+          echo "- Code formatted according to style guide" >> /tmp/pr-comment.md
+          echo "- Inline comments added for manual review items" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          # Add summary
-          echo "" >> /tmp/pr-comment.md
-          echo "### 📊 Summary" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "- ✅ Automated fixes have been applied where safe" >> /tmp/pr-comment.md
-          echo "- 📝 Review the reports above for manual attention items" >> /tmp/pr-comment.md
-          echo "- 🔍 Check inline comments for specific recommendations" >> /tmp/pr-comment.md
-          echo "- ⚠️ Address any flagged security or complexity issues" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "### Next Steps" >> /tmp/pr-comment.md
+          echo "### 📋 Next Steps" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "1. Review automated changes committed by this workflow" >> /tmp/pr-comment.md
-          echo "2. Address any flagged security or complexity issues" >> /tmp/pr-comment.md
-          echo "3. Consider refactoring high-complexity functions" >> /tmp/pr-comment.md
-          echo "4. Add tests for low-coverage areas" >> /tmp/pr-comment.md
-          echo "5. Remove or document TODO/FIXME items" >> /tmp/pr-comment.md
+          echo "2. Address any flagged security or complexity issues in inline comments" >> /tmp/pr-comment.md
+          echo "3. Download and review detailed reports from workflow artifacts" >> /tmp/pr-comment.md
+          echo "4. Consider refactoring high-complexity functions" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "---" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
@@ -365,7 +365,8 @@ jobs:
               .split('\n')
               .filter(f => f.endsWith('.ts') || f.endsWith('.tsx'));
             
-            const comments = [];
+            // Use a Map to deduplicate comments by file:line
+            const commentsMap = new Map();
             
             // Parse complexity issues
             try {
@@ -378,11 +379,10 @@ jobs:
                 
                 for (const message of result.messages) {
                   if (message.ruleId && (message.ruleId.includes('complexity') || message.ruleId.includes('max-'))) {
-                    comments.push({
-                      path: file,
-                      line: message.line,
-                      body: `⚠️ **${message.ruleId}**: ${message.message}\n\n**Suggestion:** Consider refactoring this function to reduce complexity and improve maintainability.`
-                    });
+                    const key = `${file}:${message.line}`;
+                    const existing = commentsMap.get(key) || { path: file, line: message.line, issues: [] };
+                    existing.issues.push(`⚠️ **${message.ruleId}**: ${message.message}`);
+                    commentsMap.set(key, existing);
                   }
                 }
               }
@@ -390,41 +390,44 @@ jobs:
               console.log('No complexity issues to comment on');
             }
             
-            // Add comments for TODO/FIXME
+            // Add comments for TODO/FIXME, console.log, eval()
             for (const file of changedFiles) {
               try {
                 const content = fs.readFileSync(file, 'utf8');
                 const lines = content.split('\n');
                 
                 lines.forEach((line, index) => {
+                  const lineNum = index + 1;
+                  const key = `${file}:${lineNum}`;
+                  const existing = commentsMap.get(key) || { path: file, line: lineNum, issues: [] };
+                  
                   if (line.includes('TODO') || line.includes('FIXME')) {
-                    comments.push({
-                      path: file,
-                      line: index + 1,
-                      body: '📝 **Technical Debt Detected**: This TODO/FIXME should be addressed before merging to production.\n\n**Action Required:** Either resolve the issue or create a tracking issue.'
-                    });
+                    existing.issues.push('📝 **Technical Debt**: TODO/FIXME should be addressed before merging to production.');
                   }
                   
                   if (line.includes('console.log') && !file.includes('logger')) {
-                    comments.push({
-                      path: file,
-                      line: index + 1,
-                      body: '⚠️ **Logging Issue**: Using console.log in production code.\n\n**Recommendation:** Replace with proper logger utility from `src/utils/logger.ts`.'
-                    });
+                    existing.issues.push('⚠️ **Logging Issue**: Using console.log in production code. Replace with proper logger.');
                   }
                   
                   if (line.includes('eval(')) {
-                    comments.push({
-                      path: file,
-                      line: index + 1,
-                      body: '🚨 **Security Risk**: eval() is dangerous and should be avoided.\n\n**Action Required:** Refactor to use safer alternatives. This is a critical security issue.'
-                    });
+                    existing.issues.push('🚨 **Security Risk**: eval() is dangerous and should be avoided. This is a critical security issue.');
+                  }
+                  
+                  if (existing.issues.length > 0) {
+                    commentsMap.set(key, existing);
                   }
                 });
               } catch (e) {
                 console.log(`Could not analyze file: ${file}`);
               }
             }
+            
+            // Convert Map to array and format comments
+            const comments = Array.from(commentsMap.values()).map(c => ({
+              path: c.path,
+              line: c.line,
+              body: c.issues.join('\n\n')
+            }));
             
             // Post inline comments (max 50 to avoid rate limits)
             const limitedComments = comments.slice(0, 50);
