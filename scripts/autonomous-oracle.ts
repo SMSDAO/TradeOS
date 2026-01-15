@@ -63,11 +63,6 @@ interface FileInfo {
   lines: string[];
 }
 
-interface DependencyNode {
-  file: string;
-  imports: string[];
-}
-
 // ==================== Configuration ====================
 
 const CONFIG = {
@@ -81,7 +76,7 @@ const CONFIG = {
     unvalidatedAccount: /AccountInfo.*without.*validation|unvalidated.*account/i,
     sqlInjection: /query.*\+|raw.*sql|execute.*\(/i,
     unsafeEval: /eval\(|new Function\(/,
-    hardcodedSecrets: /['\"]sk_|['\"]pk_|['\"]secret_/,
+    hardcodedSecrets: /['"]sk_|['"]pk_|['"]secret_/,
   },
   architecturePatterns: {
     circularDep: /circular.*dependency|mutual.*import/i,
@@ -94,7 +89,7 @@ const CONFIG = {
     missingLookupTable: /AddressLookupTableProgram/,
     staticPriorityFee: /priorityFee.*=.*\d+[;\s]/,
     missingComputeBudget: /ComputeBudgetProgram/,
-    unsafeMath: /amount\s*[\+\-\*\/]\s*amount|balance\s*[\+\-\*\/]/,
+    unsafeMath: /amount\s*[+\-*/]\s*amount|balance\s*[+\-*/]/,
   },
   gasOptimization: {
     maxComputeUnits: 1400000,
@@ -286,7 +281,7 @@ class AutonomousOracle {
 
   private resolveImportPath(fromFile: string, importPath: string): string | null {
     const fromDir = path.dirname(fromFile);
-    let resolved = path.join(fromDir, importPath);
+    const resolved = path.join(fromDir, importPath);
 
     // Add .ts/.tsx extension if not present
     if (!resolved.match(/\.(ts|tsx|js|jsx)$/)) {
@@ -579,7 +574,7 @@ class AutonomousOracle {
       if (!/(arbitrage|profit|balance|amount|price)/i.test(fileInfo.content)) continue;
 
       // Check for unsafe arithmetic operations
-      const unsafeOps = fileInfo.content.match(/\b(amount|balance|profit|price)\s*[\+\-\*\/]\s*\w+/gi);
+      const unsafeOps = fileInfo.content.match(/\b(amount|balance|profit|price)\s*[+\-*/]\s*\w+/gi);
       
       if (unsafeOps && unsafeOps.length > 0) {
         // Check if BN.js or safe math is used
@@ -599,8 +594,8 @@ class AutonomousOracle {
       }
 
       // Check for floating point in financial calculations
-      if (/\b(amount|balance|profit)\s*[\*\/]\s*[\d\.]+/i.test(fileInfo.content)) {
-        const hasDecimals = fileInfo.content.match(/[\d]+\.[\d]+/);
+      if (/\b(amount|balance|profit)\s*[*/]\s*[\d.]+/i.test(fileInfo.content)) {
+        const hasDecimals = fileInfo.content.match(/\d+\.\d+/);
         if (hasDecimals) {
           this.addResult({
             category: 'optimization',
@@ -907,7 +902,7 @@ class AutonomousOracle {
 
       // Look for commented out code
       const commentedCodeLines = fileInfo.lines.filter(line => 
-        /^[\s]*\/\/\s*\w+\s*[=\(]/.test(line)
+        /^[\s]*\/\/\s*\w+\s*[=(]/.test(line)
       ).length;
 
       if (commentedCodeLines > 20) {
