@@ -70,6 +70,7 @@ export interface AnalysisContext {
     liquidity?: number;
     priceImpact?: number;
     slippage?: number;
+    priceConfidence?: number;
   };
 
   // Risk parameters

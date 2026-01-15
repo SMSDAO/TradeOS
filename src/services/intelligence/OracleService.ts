@@ -299,8 +299,8 @@ export class OracleService {
       }
     });
 
-    const avgScore =
-      confidenceScores.reduce((a, b) => a + b, 0) / confidenceScores.length;
+    const avgScore: number =
+      (confidenceScores.reduce((a: number, b: number) => a + b, 0) / confidenceScores.length) || 0;
 
     if (avgScore >= 2.5) return "HIGH";
     if (avgScore >= 1.5) return "MEDIUM";
