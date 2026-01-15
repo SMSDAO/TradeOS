@@ -25,6 +25,8 @@ export default function SwapPage() {
   const [settings, setSettings] = useState<TradingSettings>({
     autoExecute: false,
     priorityFee: "medium",
+    jitoTip: 10000, // 0.00001 SOL default tip
+    executionSpeed: "normal",
     slippage: 1,
   });
 
