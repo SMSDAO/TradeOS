@@ -22,7 +22,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@jup-ag/api": "^6.0.45",
+    "@jup-ag/api": "^6.0.48",
     "@pythnetwork/hermes-client": "^2.1.0",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",
