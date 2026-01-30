@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { exec } from "child_process";
 import { promisify } from "util";
 import path from "path";
+import { access, constants } from "node:fs/promises";
 
 const execAsync = promisify(exec);
 
@@ -76,24 +77,25 @@ const SCRIPTS = {
 export async function GET(request: NextRequest) {
   try {
     const scriptsDir = path.join(process.cwd(), "..", "scripts");
-    
-    // Get current status of each script
+
     const scriptsWithStatus = await Promise.all(
       Object.entries(SCRIPTS).map(async ([filename, metadata]) => {
         const scriptPath = path.join(scriptsDir, filename);
         let exists = false;
         let lastModified = null;
-        
+
         try {
-          const { stdout } = await execAsync(`stat -c %Y "${scriptPath}" 2>/dev/null || stat -f %m "${scriptPath}" 2>/dev/null`);
+          const { stdout } = await execAsync(
+            `stat -c %Y "${scriptPath}" 2>/dev/null || stat -f %m "${scriptPath}" 2>/dev/null`
+          );
           exists = true;
           lastModified = new Date(parseInt(stdout.trim()) * 1000).toISOString();
         } catch {
           exists = false;
         }
-        
+
         return {
-          id: filename.replace('.sh', ''),
+          id: filename.replace(".sh", ""),
           filename,
           ...metadata,
           exists,
@@ -113,7 +115,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to list scripts",
+        error:
+          error instanceof Error ? error.message : "Failed to list scripts",
       },
       { status: 500 }
     );
@@ -135,8 +138,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const scriptFilename = scriptId.endsWith('.sh') ? scriptId : `${scriptId}.sh`;
-    const scriptMetadata = SCRIPTS[scriptFilename as keyof typeof SCRIPTS];
+    // ✅ Validate scriptId (prevent traversal, injection, weird chars)
+    if (!/^[a-zA-Z0-9_\-]+(\.sh)?$/.test(scriptId)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid scriptId format" },
+        { status: 400 }
+      );
+    }
+
+    const scriptFilename = scriptId.endsWith(".sh")
+      ? scriptId
+      : `${scriptId}.sh`;
+
+    const scriptMetadata =
+      SCRIPTS[scriptFilename as keyof typeof SCRIPTS];
 
     if (!scriptMetadata) {
       return NextResponse.json(
@@ -148,9 +163,9 @@ export async function POST(request: NextRequest) {
     const scriptsDir = path.join(process.cwd(), "..", "scripts");
     const scriptPath = path.join(scriptsDir, scriptFilename);
 
-    // Verify script exists
+    // ✅ Verify script exists without shell commands
     try {
-      await execAsync(`test -f "${scriptPath}"`);
+      await access(scriptPath, constants.F_OK);
     } catch {
       return NextResponse.json(
         { success: false, error: `Script file not found: ${scriptPath}` },
@@ -174,13 +189,13 @@ export async function POST(request: NextRequest) {
     // Execute script with timeout
     console.log(`[Admin Scripts API] Executing: ${scriptPath}`);
     const startTime = Date.now();
-    
+
     try {
       const { stdout, stderr } = await execAsync(`bash "${scriptPath}"`, {
-        timeout: 600000, // 10 minutes max
-        maxBuffer: 10 * 1024 * 1024, // 10MB buffer
+        timeout: 600000,
+        maxBuffer: 10 * 1024 * 1024,
       });
-      
+
       const executionTime = Date.now() - startTime;
 
       return NextResponse.json({
@@ -190,37 +205,41 @@ export async function POST(request: NextRequest) {
           filename: scriptFilename,
         },
         execution: {
-          stdout: stdout.slice(-5000), // Last 5000 chars
-          stderr: stderr.slice(-2000), // Last 2000 chars
+          stdout: stdout.slice(-5000),
+          stderr: stderr.slice(-2000),
           executionTime: `${(executionTime / 1000).toFixed(2)}s`,
           timestamp: new Date().toISOString(),
         },
       });
     } catch (error: any) {
       const executionTime = Date.now() - startTime;
-      
-      return NextResponse.json({
-        success: false,
-        script: {
-          ...scriptMetadata,
-          filename: scriptFilename,
+
+      return NextResponse.json(
+        {
+          success: false,
+          script: {
+            ...scriptMetadata,
+            filename: scriptFilename,
+          },
+          error: error.message || "Script execution failed",
+          execution: {
+            stdout: error.stdout?.slice(-5000) || "",
+            stderr: error.stderr?.slice(-2000) || "",
+            exitCode: error.code,
+            executionTime: `${(executionTime / 1000).toFixed(2)}s`,
+            timestamp: new Date().toISOString(),
+          },
         },
-        error: error.message || "Script execution failed",
-        execution: {
-          stdout: error.stdout?.slice(-5000) || "",
-          stderr: error.stderr?.slice(-2000) || "",
-          exitCode: error.code,
-          executionTime: `${(executionTime / 1000).toFixed(2)}s`,
-          timestamp: new Date().toISOString(),
-        },
-      }, { status: 500 });
+        { status: 500 }
+      );
     }
   } catch (error) {
     console.error("[Admin Scripts API] Error executing script:", error);
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to execute script",
+        error:
+          error instanceof Error ? error.message : "Failed to execute script",
       },
       { status: 500 }
     );
