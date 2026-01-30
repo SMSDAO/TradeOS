@@ -25,9 +25,11 @@ async function prepareDeploymentTransaction(): Promise<{
   console.log("📋 Step 1: Preparing deployment transaction...\n");
 
   // Initialize connection and builder
-  const connection = new ResilientSolanaConnection([
-    process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com",
-  ]);
+  const connection = new ResilientSolanaConnection({
+    endpoints: [
+      process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com",
+    ],
+  });
   const builder = new TransactionBuilder(connection);
 
   // Create a sample deployment transaction
@@ -155,9 +157,11 @@ async function executeApprovedTransaction(
   console.log("🚀 Step 4: Executing approved transaction...\n");
 
   // Initialize connection and builder
-  const connection = new ResilientSolanaConnection([
-    process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com",
-  ]);
+  const connection = new ResilientSolanaConnection({
+    endpoints: [
+      process.env.SOLANA_RPC_URL || "https://api.mainnet-beta.solana.com",
+    ],
+  });
   const builder = new TransactionBuilder(connection);
 
   // Deserialize transaction

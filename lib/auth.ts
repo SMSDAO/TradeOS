@@ -49,7 +49,7 @@ export async function verifyPassword(
  */
 export function generateToken(
   payload: JWTPayload,
-  options?: { expiresIn?: string }
+  options?: { expiresIn?: string | number }
 ): string {
   const jwtSecret = process.env.JWT_SECRET;
   
@@ -64,12 +64,13 @@ export function generateToken(
     iat: Math.floor(Date.now() / 1000),
   };
   
+  // Determine the expiration value - work around TypeScript type inference issue
+  const expiresIn = options?.expiresIn || JWT_EXPIRATION;
+  
   return jwt.sign(
     tokenPayload,
     jwtSecret,
-    {
-      expiresIn: options?.expiresIn || JWT_EXPIRATION,
-    }
+    { expiresIn } as jwt.SignOptions
   );
 }
 

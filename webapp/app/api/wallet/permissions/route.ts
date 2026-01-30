@@ -8,7 +8,7 @@ import {
   authorizeRequest,
   validateWalletOwnership,
   UserRole,
-} from "@/../../lib/auth";
+} from "../../../../../lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const { walletAddress, action } = body;
 
     // Authorize the request
-    const auth = authorizeRequest(authHeader, [UserRole.USER, UserRole.ADMIN]);
+    const auth = authorizeRequest(authHeader || undefined, [UserRole.USER, UserRole.ADMIN]);
 
     if (!auth.authorized) {
       return NextResponse.json(

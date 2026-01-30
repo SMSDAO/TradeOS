@@ -12,7 +12,6 @@ import {
   SolflareWalletAdapter,
   LedgerWalletAdapter,
   TorusWalletAdapter,
-  SlopeWalletAdapter,
   CoinbaseWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
@@ -105,7 +104,6 @@ export const WalletContextProvider: FC<{ children: ReactNode }> = ({
       new SolflareWalletAdapter(),
       new LedgerWalletAdapter(),
       new TorusWalletAdapter(),
-      new SlopeWalletAdapter(),
       new CoinbaseWalletAdapter(),
       // WalletConnect and other adapters can be added here
       // Note: WalletConnect requires additional configuration
