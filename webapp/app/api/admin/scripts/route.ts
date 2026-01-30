@@ -161,14 +161,24 @@ export async function POST(request: NextRequest) {
     }
 
     const scriptsDir = path.join(process.cwd(), "..", "scripts");
-    const scriptPath = path.join(scriptsDir, scriptFilename);
+    const resolvedScriptsDir = path.resolve(scriptsDir);
+    const scriptPath = path.join(resolvedScriptsDir, scriptFilename);
+    const resolvedScriptPath = path.resolve(scriptPath);
+
+    // ✅ Ensure the resolved path is within the scripts directory
+    if (!resolvedScriptPath.startsWith(resolvedScriptsDir + path.sep)) {
+      return NextResponse.json(
+        { success: false, error: "Resolved script path is outside of scripts directory" },
+        { status: 400 }
+      );
+    }
 
     // ✅ Verify script exists without shell commands
     try {
-      await access(scriptPath, constants.F_OK);
+      await access(resolvedScriptPath, constants.F_OK);
     } catch {
       return NextResponse.json(
-        { success: false, error: `Script file not found: ${scriptPath}` },
+        { success: false, error: `Script file not found: ${resolvedScriptPath}` },
         { status: 404 }
       );
     }
@@ -180,9 +190,9 @@ export async function POST(request: NextRequest) {
         script: {
           ...scriptMetadata,
           filename: scriptFilename,
-          path: scriptPath,
+          path: resolvedScriptPath,
         },
-        wouldExecute: `bash ${scriptPath}`,
+        wouldExecute: `bash ${resolvedScriptPath}`,
       });
     }
 
