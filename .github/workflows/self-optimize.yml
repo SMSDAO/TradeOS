@@ -262,7 +262,7 @@ jobs:
           #   echo "::error::Push to PR branch failed. This may be due to concurrent updates or permission issues."
           #   exit 1
           # fi
-          echo "Automated fixes committed locally. Review required before push." || true
+          echo "Automated fixes committed locally. Review required before push."
       
       - name: Generate comprehensive PR comment
         id: generate-comment
