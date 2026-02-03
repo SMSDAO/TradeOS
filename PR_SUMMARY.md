@@ -21,10 +21,10 @@ This PR addresses all review comments from PR #135 regarding the self-optimizati
 **Files Changed:** `scripts/validate-dev-branch.sh`
 
 **Changes:**
-- Replaced `set -e` with `set -euo pipefail` (line 6)
+- Replaced `set -e` with `set -euo pipefail`
   - `-u`: Treats unset variables as errors
   - `-o pipefail`: Ensures pipeline failures are caught
-- Added `|| false` to grep commands that may legitimately not match (lines 67, 74)
+- Added `|| false` to grep commands that may legitimately not match
 
 **Benefits:** Better error detection and handling. Script will fail fast on undefined variables and pipeline errors.
 
