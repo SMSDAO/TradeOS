@@ -73,13 +73,13 @@ echo "risky_patterns_found=$RISKY_FOUND" >> $GITHUB_OUTPUT
 
 **File**: `.github/workflows/self-optimize.yml`
 
-**Problem**: Failed git push was silently ignored with `|| echo "Push failed"`.
+**Problem**: Failed git push was silently ignored with `|| echo "Push failed"`, and documentation implied that automated fixes were still being committed locally.
 
-**Fix**: **Disabled auto-push entirely** per security review:
-- Automated fixes are committed locally only
-- Auto-push commented out with security note
-- Prevents pushing potentially broken code to contributor branches
-- Safer approach: generate separate PR for review
+**Fix**: **Disabled auto-push entirely** per security review and clarified commit behavior:
+- Automated fixes are generated in the workflow run but are neither committed nor pushed with the current `contents: read` permission
+- Auto-push logic is commented out with a security note
+- Prevents pushing or committing potentially broken code to contributor branches
+- Safer approach: generate a separate PR for review or explicitly grant `contents: write` if local commits are ever enabled
 
 ### 7. Duplicate Inline Comments (addresses review comment #2)
 
