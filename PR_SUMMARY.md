@@ -48,7 +48,7 @@ This PR addresses all review comments from PR #135 regarding the self-optimizati
 
 **Changes:**
 - Removed unused `execSync` import (line 12) - was not used anywhere in the script
-- Removed unused `relativePath` variable (line 141) - was computed but never used
+- Removed unused `relativePath` variable (line 140) - was computed but never used
 
 **Benefits:** Cleaner code, no ESLint warnings, passes syntax validation.
 
