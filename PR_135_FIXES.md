@@ -30,7 +30,7 @@ All tools now use pinned versions installed via `npm ci` in CI workflows.
 - `-u`: Exit on undefined variables
 - `-o pipefail`: Fail pipelines if any command fails
 
-Added `|| false` pattern for expected failures (e.g., `grep -q` that may not match).
+Added explicit handling for expected non-zero exits (e.g., `grep -q` that may not match`) without inverting the security check logic.
 
 ### 3. Dead Code Analysis Logic (addresses review comment #3)
 
