@@ -33,9 +33,9 @@ This PR addresses all review comments from PR #135 regarding the self-optimizati
 **Files Changed:** `scripts/analyze-dead-code.sh`
 
 **Changes:**
-- Changed `set -e` to `set -euo pipefail` (line 5)
-- Removed ad-hoc `npm install --no-save ts-prune` (line 18)
-- Removed ad-hoc `npm install --no-save jscpd` (line 68)
+- Changed `set -e` to `set -euo pipefail` (line 6)
+- Removed ad-hoc `npm install --no-save ts-prune` (line 17)
+- Removed ad-hoc `npm install --no-save jscpd` (line 54)
 - Replaced flawed grep-based unused-import detection with proper ts-prune AST analysis (lines 42-47)
   - Old approach used fragile `grep -q` pipeline that could give false positives/negatives
   - New approach relies on ts-prune which does proper AST-based analysis
