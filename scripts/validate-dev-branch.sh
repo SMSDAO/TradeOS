@@ -64,7 +64,7 @@ echo "Phase 2: Security Checks"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Check for .env files in git
-if git ls-files | grep -q "^\.env$" || false; then
+if git ls-files | grep -q "^\.env$"; then
     check_fail ".env file is tracked in git (SECURITY RISK)"
 else
     check_pass "No .env file in git"
