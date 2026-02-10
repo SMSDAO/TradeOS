@@ -207,8 +207,10 @@ describe("Wallet Governance", () => {
       const keypair = Keypair.generate();
       const originalKey = new Uint8Array(keypair.secretKey);
 
-      // Simulate key wiping
-      keypair.secretKey.fill(0);
+      // Simulate key wiping by modifying the Uint8Array directly
+      for (let i = 0; i < keypair.secretKey.length; i++) {
+        keypair.secretKey[i] = 0;
+      }
 
       // Verify key was wiped
       expect(keypair.secretKey.every((byte) => byte === 0)).toBe(true);

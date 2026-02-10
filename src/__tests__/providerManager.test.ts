@@ -31,12 +31,15 @@ describe("ProviderManager", () => {
   describe("Initialization", () => {
     it("should initialize with default providers", () => {
       const stats = providerManager.getStatistics();
-      expect(stats.totalProviders).toBe(6);
+      expect(stats.totalProviders).toBe(9);
       expect(stats.preferredOrder).toEqual([
         "marginfi",
         "solend",
         "kamino",
+        "tulip",
+        "drift",
         "mango",
+        "jet",
         "portFinance",
         "saveFinance",
       ]);

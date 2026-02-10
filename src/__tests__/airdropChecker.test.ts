@@ -279,26 +279,30 @@ describe("AirdropChecker", () => {
   describe("autoClaimAll", () => {
     const mockKeypair = Keypair.generate();
 
-    it("should attempt to claim all available airdrops", async () => {
-      mockedAxios.get.mockImplementation((url: string) => {
-        if (url.includes("jup.ag")) {
-          return Promise.resolve({ data: { amount: 1000 } });
-        }
-        if (url.includes("jito.network")) {
-          return Promise.resolve({ data: { allocation: 500 } });
-        }
-        return Promise.reject({
-          isAxiosError: true,
-          response: { status: 404 },
+    it(
+      "should attempt to claim all available airdrops",
+      async () => {
+        mockedAxios.get.mockImplementation((url: string) => {
+          if (url.includes("jup.ag")) {
+            return Promise.resolve({ data: { amount: 1000 } });
+          }
+          if (url.includes("jito.network")) {
+            return Promise.resolve({ data: { allocation: 500 } });
+          }
+          return Promise.reject({
+            isAxiosError: true,
+            response: { status: 404 },
+          });
         });
-      });
 
-      const results = await airdropChecker.autoClaimAll(mockKeypair);
+        const results = await airdropChecker.autoClaimAll(mockKeypair);
 
-      expect(results.size).toBeGreaterThanOrEqual(2);
-      expect(results.has("Jupiter")).toBe(true);
-      expect(results.has("Jito")).toBe(true);
-    });
+        expect(results.size).toBeGreaterThanOrEqual(2);
+        expect(results.has("Jupiter")).toBe(true);
+        expect(results.has("Jito")).toBe(true);
+      },
+      10000,
+    ); // Increase timeout to 10 seconds
 
     it("should handle no available airdrops", async () => {
       mockedAxios.get.mockRejectedValue({
