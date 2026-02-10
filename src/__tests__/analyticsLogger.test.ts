@@ -1,4 +1,4 @@
-import { AnalyticsLogger } from "../services/analyticsLogger.js";
+import { AnalyticsLogger } from "../services/analyticsLogger";
 import { existsSync, rmSync } from "fs";
 
 describe("AnalyticsLogger", () => {

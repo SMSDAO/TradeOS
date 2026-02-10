@@ -1,5 +1,5 @@
 import { Connection } from "@solana/web3.js";
-import { ProviderManager } from "../services/providerManager.js";
+import { ProviderManager } from "../services/providerManager";
 
 // Mock Connection to avoid actual network calls in tests
 jest.mock("@solana/web3.js", () => {

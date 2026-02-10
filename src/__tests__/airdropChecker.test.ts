@@ -1,5 +1,5 @@
 import { Connection, PublicKey, Keypair } from "@solana/web3.js";
-import { AirdropChecker } from "../services/airdropChecker.js";
+import { AirdropChecker } from "../services/airdropChecker";
 
 // Mock axios
 jest.mock("axios");
