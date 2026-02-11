@@ -206,9 +206,9 @@ describe("Wallet Governance", () => {
     it("should wipe keys from memory after use", () => {
       // Test key wiping with a mutable Uint8Array (simulating in-memory key storage)
       const secretKey = new Uint8Array(64);
-      // Fill with random data to simulate a real key
+      // Fill with deterministic non-zero data to simulate a real key
       for (let i = 0; i < secretKey.length; i++) {
-        secretKey[i] = Math.floor(Math.random() * 256);
+        secretKey[i] = (i + 1) & 0xff;
       }
       
       const originalKey = new Uint8Array(secretKey);

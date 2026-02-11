@@ -279,37 +279,36 @@ describe("AirdropChecker", () => {
   describe("autoClaimAll", () => {
     const mockKeypair = Keypair.generate();
 
-    // Skipping this test as it requires complex async mocking with delays
-    // The autoClaimAll method includes 2-second delays between claims
-    // which makes testing difficult without extensive mocking
-    it.skip(
-      "should attempt to claim all available airdrops",
-      async () => {
-        mockedAxios.get.mockImplementation((url: string) => {
-          if (url.includes("jup.ag")) {
-            return Promise.resolve({ data: { amount: 1000 } });
-          }
-          if (url.includes("jito.network")) {
-            return Promise.resolve({ data: { allocation: 500 } });
-          }
-          return Promise.reject({
-            isAxiosError: true,
-            response: { status: 404 },
-          });
+    // TODO: Re-enable this test with proper fake timer mocking
+    // The autoClaimAll method includes 2-second delays between claims (line 656 in airdropChecker.ts)
+    // Jest fake timers (useFakeTimers + advanceTimersByTimeAsync) don't advance properly
+    // with the current async/await + setTimeout pattern. Consider refactoring to inject
+    // a delay function that can be mocked, or extract the delay logic for easier testing.
+    it.skip("should attempt to claim all available airdrops", async () => {
+      mockedAxios.get.mockImplementation((url: string) => {
+        if (url.includes("jup.ag")) {
+          return Promise.resolve({ data: { amount: 1000 } });
+        }
+        if (url.includes("jito.network")) {
+          return Promise.resolve({ data: { allocation: 500 } });
+        }
+        return Promise.reject({
+          isAxiosError: true,
+          response: { status: 404 },
         });
+      });
 
-        // Mock POST for claiming
-        mockedAxios.post.mockResolvedValue({
-          data: { signature: "mock-signature" },
-        });
+      // Mock POST for claiming
+      mockedAxios.post.mockResolvedValue({
+        data: { signature: "mock-signature" },
+      });
 
-        const results = await airdropChecker.autoClaimAll(mockKeypair);
+      const results = await airdropChecker.autoClaimAll(mockKeypair);
 
-        expect(results.size).toBeGreaterThanOrEqual(2);
-        expect(results.has("Jupiter")).toBe(true);
-        expect(results.has("Jito")).toBe(true);
-      },
-    );
+      expect(results.size).toBeGreaterThanOrEqual(2);
+      expect(results.has("Jupiter")).toBe(true);
+      expect(results.has("Jito")).toBe(true);
+    });
 
     it("should handle no available airdrops", async () => {
       mockedAxios.get.mockRejectedValue({
