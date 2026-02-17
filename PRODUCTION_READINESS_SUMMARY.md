@@ -65,68 +65,65 @@ All requested features have been successfully implemented with the following sco
 
 ### 4. Admin CRM & Advanced Dashboards ✅
 
-**New Admin Pages Created** (10 pages):
+**New Admin Pages Created** (10 UI prototypes):
+
+**⚠️ Important: These are UI scaffolds/prototypes pending backend integration.**
 
 1. **Users Management** (`/admin/users`)
-   - User list and search
-   - Add/export functionality
-   - User permissions management
+   - UI layout with user list structure
+   - Placeholder buttons (Add User, Export)
+   - Search input placeholder
+   - **Status**: Backend API integration required
 
 2. **Billing & Subscriptions** (`/admin/billing`)
-   - Revenue dashboard
-   - Active subscriptions tracking
-   - Pending invoices overview
-   - Transaction history
+   - Dashboard layout with metrics cards
+   - Revenue, subscriptions, invoices overview
+   - **Status**: Stripe integration and backend API required
 
 3. **Fee Management** (`/admin/fees`)
-   - Dev fee configuration
-   - Trading fee settings
-   - Fee distribution management
+   - Fee configuration input fields
+   - Dev fee and trading fee controls
+   - **Status**: State management and save API required
 
 4. **Bot Management** (`/admin/bots`)
-   - Sniper bot control panel
-   - Auto-trade bot configuration
-   - Bot activity monitoring
-   - Real-time enable/disable
+   - Bot control panel UI
+   - Enable/disable toggle buttons (local state only)
+   - **Status**: Backend bot control API required
 
 5. **CRM Dashboard** (`/admin/crm`)
-   - User analytics
-   - Engagement tracking
-   - Customer insights
+   - Analytics layout placeholder
+   - **Status**: Backend integration required
 
 6. **Price Feed Management** (`/admin/prices`)
-   - Oracle configuration
-   - Price source management (Pyth, Jupiter, Switchboard)
-   - Real-time feed status
+   - Oracle status display
+   - Price source indicators
+   - **Status**: Live data integration required
 
 7. **Portfolio & PNL** (`/admin/portfolio`)
-   - Total portfolio value
-   - 24h profit/loss tracking
-   - Trade history
-   - Performance metrics
+   - Portfolio metrics dashboard
+   - PNL tracking layout
+   - **Status**: Real-time data API required
 
 8. **DAO Management** (`/admin/dao`)
-   - Governance proposals
-   - Voting interface
-   - DAO treasury overview
+   - Governance UI placeholder
+   - **Status**: DAO smart contract integration required
 
 9. **AI Control Panel** (`/admin/ai-control`)
-   - Oracle intelligence configuration
-   - Strategy agent settings
-   - AI-powered trading controls
+   - AI settings layout
+   - Strategy controls placeholder
+   - **Status**: AI backend integration required
 
 10. **Wallet Manager** (`/admin/wallet-manager`)
-    - Generate new wallets
-    - Backup wallet functionality
-    - Restore from backup
-    - Upload/download key files
+    - Wallet operation UI layout
+    - Generate/restore placeholders
+    - **Status**: Secure wallet backend API required
 
 **Design Consistency:**
 - All pages use GitHub color theme
 - Consistent layout and navigation
 - Responsive grid layouts
 - Professional card-based UI
-- Status indicators with color coding
+- Clear indication of prototype status
 
 ### 5. Windows Admin Desktop App ✅
 

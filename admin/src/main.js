@@ -48,11 +48,12 @@ function createWindow() {
 }
 
 function createMenu() {
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+  
   const template = [
     {
       label: 'File',
       submenu: [
-        { label: 'Settings', click: () => { /* TODO */ } },
         { type: 'separator' },
         { label: 'Exit', role: 'quit' }
       ]
@@ -60,12 +61,54 @@ function createMenu() {
     {
       label: 'Admin',
       submenu: [
-        { label: 'Users' },
-        { label: 'Billing' },
-        { label: 'Bots' },
-        { label: 'CRM' },
-        { label: 'Prices' },
-        { label: 'Fees' }
+        { 
+          label: 'Users',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/users`);
+            }
+          }
+        },
+        { 
+          label: 'Billing',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/billing`);
+            }
+          }
+        },
+        { 
+          label: 'Bots',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/bots`);
+            }
+          }
+        },
+        { 
+          label: 'CRM',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/crm`);
+            }
+          }
+        },
+        { 
+          label: 'Prices',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/prices`);
+            }
+          }
+        },
+        { 
+          label: 'Fees',
+          click: () => {
+            if (mainWindow) {
+              mainWindow.loadURL(`${backendUrl}/admin/fees`);
+            }
+          }
+        }
       ]
     },
     {
@@ -91,7 +134,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (!mainWindow) {
     createWindow();
   }
 });

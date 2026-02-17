@@ -21,8 +21,7 @@
     "appId": "com.gxqstudio.tradeos.admin",
     "productName": "TradeOS Admin",
     "win": {
-      "target": [{"target": "nsis", "arch": ["x64"]}],
-      "icon": "assets/icon.ico"
+      "target": [{"target": "nsis", "arch": ["x64"]}]
     },
     "nsis": {
       "oneClick": false,

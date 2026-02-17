@@ -16,13 +16,11 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-ENVIRONMENT=${1:-production}
 ERRORS=0
 WARNINGS=0
 
 echo "=================================="
 echo "Vercel Environment Validation"
-echo "Environment: $ENVIRONMENT"
 echo "=================================="
 echo ""
 

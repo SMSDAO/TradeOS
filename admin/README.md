@@ -38,3 +38,8 @@ npm run build
 ```
 
 Build artifacts are generated in `dist/` folder.
+
+**Note on Application Icon**: The build uses the default Electron icon. To add a custom icon:
+1. Create `admin/assets/` directory
+2. Add your `icon.ico` file
+3. Update `package.json` build config: add `"icon": "assets/icon.ico"` to the `win` section

@@ -2,12 +2,19 @@
 
 import { useState, useEffect } from 'react';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export default function UsersPage() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // TODO: Fetch users from API
+    // Placeholder: Backend integration pending
     setLoading(false);
   }, []);
 
@@ -46,9 +53,15 @@ export default function UsersPage() {
             </div>
           ) : (
             <div className="space-y-2">
-              <p className="text-[var(--gh-fg-muted)]">
-                No users found. User data will be populated when connected to backend.
-              </p>
+              <div className="bg-[var(--gh-canvas-inset)] border border-[var(--gh-border-default)] rounded-md p-4">
+                <p className="text-[var(--gh-fg-muted)] text-sm mb-2">
+                  ⚠️ <strong>UI Prototype</strong> - Backend integration pending
+                </p>
+                <p className="text-[var(--gh-fg-subtle)] text-xs">
+                  User management features will be functional once connected to backend API.
+                  Buttons and search are currently non-functional placeholders.
+                </p>
+              </div>
             </div>
           )}
         </div>

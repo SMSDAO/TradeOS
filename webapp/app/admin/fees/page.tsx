@@ -11,10 +11,12 @@ export default function FeesPage() {
             <div>
               <label className="block text-sm font-medium text-[var(--gh-fg-default)] mb-2">Dev Fee Percentage</label>
               <input type="number" step="0.01" defaultValue="0.10" className="w-full px-3 py-2 border border-[var(--gh-border-default)] rounded-md bg-[var(--gh-canvas-default)]" />
+              <p className="text-xs text-[var(--gh-fg-muted)] mt-1">⚠️ UI prototype - save functionality pending backend integration</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-[var(--gh-fg-default)] mb-2">Trading Fee</label>
-              <input type="number" step="0.01" defaultValue="0.003" className="w-full px-3 py-2 border border-[var(--gh-border-default)] rounded-md bg-[var(--gh-canvas-default)]" />
+              <input type="number" step="0.001" defaultValue="0.003" className="w-full px-3 py-2 border border-[var(--gh-border-default)] rounded-md bg-[var(--gh-canvas-default)]" />
+              <p className="text-xs text-[var(--gh-fg-muted)] mt-1">⚠️ UI prototype - save functionality pending backend integration</p>
             </div>
           </div>
         </div>

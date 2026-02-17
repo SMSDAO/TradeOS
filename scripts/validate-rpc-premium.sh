@@ -16,9 +16,19 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# Load environment variables if .env exists
+# Load environment variables if .env exists (safer parsing)
 if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+    set -a
+    while IFS='=' read -r key value; do
+        # Skip comments and empty lines
+        if [[ ! $key =~ ^# ]] && [[ -n $key ]]; then
+            # Remove quotes from value if present
+            value="${value%\"}"
+            value="${value#\"}"
+            export "$key=$value"
+        fi
+    done < .env
+    set +a
 fi
 
 echo "=================================="
@@ -94,7 +104,9 @@ if [ -z "$SOLANA_RPC_URL" ]; then
     echo -e "${RED}✗ SOLANA_RPC_URL is not set!${NC}"
     ERRORS=$((ERRORS + 1))
 else
-    echo "SOLANA_RPC_URL: ${SOLANA_RPC_URL:0:50}..."
+    # Extract hostname without exposing API keys in URL
+    RPC_HOST=$(echo "$SOLANA_RPC_URL" | sed -E 's|^https?://([^/]+).*|\1|' | sed -E 's/\?.*//')
+    echo "SOLANA_RPC_URL: Configured (host: ${RPC_HOST})"
     
     if is_forbidden_rpc "$SOLANA_RPC_URL"; then
         echo -e "${RED}✗ FORBIDDEN: Using free/public RPC endpoint in production!${NC}"
