@@ -5,9 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win",
+    "build": "electron-builder --win --x64",
     "build:win": "electron-builder --win --x64",
-    "build:win32": "electron-builder --win --ia32",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
@@ -22,7 +21,7 @@
     "appId": "com.gxqstudio.tradeos.admin",
     "productName": "TradeOS Admin",
     "win": {
-      "target": [{"target": "nsis", "arch": ["x64", "ia32"]}],
+      "target": [{"target": "nsis", "arch": ["x64"]}],
       "icon": "assets/icon.ico"
     },
     "nsis": {

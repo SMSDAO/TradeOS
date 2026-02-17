@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 export default function BillingPage() {
   return (
     <div className="min-h-screen bg-[var(--gh-canvas-default)] p-8">

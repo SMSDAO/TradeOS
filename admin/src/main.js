@@ -3,6 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 
+// Application constants
+const APP_NAME = 'TradeOS Admin';
+const APP_WIDTH = 1280;
+const APP_HEIGHT = 800;
+
 // Load environment variables from parent directory
 const envPath = path.join(__dirname, '../../.env');
 if (fs.existsSync(envPath)) {
@@ -13,14 +18,14 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 800,
+    width: APP_WIDTH,
+    height: APP_HEIGHT,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
-    title: 'TradeOS Admin',
+    title: APP_NAME,
     autoHideMenuBar: false,
   });
 

@@ -27,7 +27,10 @@ echo "=================================="
 echo ""
 
 # Check if we're in production
-if [ "${NODE_ENV}" != "production" ] && [ "${DEPLOYMENT_PLATFORM}" != "vercel" ] && [ "${DEPLOYMENT_PLATFORM}" != "railway" ]; then
+if [[ "${NODE_ENV}" == "production" ]] || [[ "${DEPLOYMENT_PLATFORM}" =~ ^(vercel|railway)$ ]]; then
+    # We are in production - proceed with strict validation
+    :
+else
     echo -e "${YELLOW}⚠ Not in production mode. Skipping strict RPC validation.${NC}"
     exit 0
 fi
