@@ -65,7 +65,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## 🌐 Live Deployment
 
-Production: [https://jup-nine.vercel.app/](https://jup-nine.vercel.app/)
+Production: [Deployed on Vercel under CastQuest project]
 
 ## 📦 Environment Variables
 

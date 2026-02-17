@@ -137,7 +137,7 @@ npm run lint     # Run ESLint
 
 ## 🌍 Live Deployment
 
-Production URL: [https://jup-nine.vercel.app/](https://jup-nine.vercel.app/)
+Production URL: [Deployed on Vercel under CastQuest project]
 
 ## 🎯 SEO & Metadata
 
