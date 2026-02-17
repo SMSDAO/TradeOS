@@ -10,14 +10,14 @@ All requested features have been successfully implemented with the following sco
 
 **Files Modified:**
 - Created `.nvmrc` with Node 24
-- Updated `package.json` engines (root and webapp)
-- Updated 12+ GitHub Actions workflows
-- Updated `vercel.json` runtime to nodejs22.x
+- Updated `package.json` engines (root and webapp) to target Node 24
+- Updated 12+ GitHub Actions workflows to run on Node 24
+- Updated `vercel.json` runtime to nodejs22.x (current Vercel production runtime)
 
 **Impact:**
-- Ensures latest Node.js features and security patches
-- Improved performance and stability
-- Consistent runtime across all environments
+- Ensures latest Node.js features and security patches for local development and CI (Node 24 target)
+- Improved performance and stability across non-Vercel environments
+- Documented runtime divergence (Node 24 locally/CI vs nodejs22.x on Vercel) with a plan to align Vercel to Node 24+ once supported and validated
 
 ### 2. Vercel & Environment Configuration ✅
 
