@@ -59,6 +59,10 @@
   ],
   "author": "GXQ STUDIO",
   "license": "MIT",
+  "engines": {
+    "node": ">=24",
+    "npm": ">=10"
+  },
   "dependencies": {
     "@jup-ag/api": "^6.0.0",
     "@octokit/rest": "^20.0.2",
