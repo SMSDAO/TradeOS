@@ -295,7 +295,7 @@ resolver.registerManualMapping('monads.skr', actualWalletAddress);
 ## Support
 
 For issues or questions:
-- GitHub Issues: [SMSDAO/reimagined-jupiter](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [SMSDAO/TradeOS](https://github.com/SMSDAO/TradeOS/issues)
 - Documentation: See README.md and other docs in the repository
 
 ## License

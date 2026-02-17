@@ -21,12 +21,12 @@ This project adheres to a code of conduct. By participating, you are expected to
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR-USERNAME/reimagined-jupiter.git
-   cd reimagined-jupiter
+   git clone https://github.com/YOUR-USERNAME/TradeOS.git
+   cd TradeOS
    ```
 3. **Add the upstream repository**:
    ```bash
-   git remote add upstream https://github.com/SMSDAO/reimagined-jupiter.git
+   git remote add upstream https://github.com/SMSDAO/TradeOS.git
    ```
 4. **Create a branch** for your changes:
    ```bash

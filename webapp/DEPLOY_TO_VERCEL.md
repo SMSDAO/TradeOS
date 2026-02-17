@@ -13,7 +13,7 @@ When deploying to Vercel, you must configure it to use **this directory** (`weba
 ### Via Vercel Dashboard
 
 1. Go to https://vercel.com/new
-2. Import repository: `SMSDAO/reimagined-jupiter`
+2. Import repository: `SMSDAO/TradeOS`
 3. **Click "Edit" next to "Root Directory"**
 4. Enter: `webapp`
 5. Add environment variable: `NEXT_PUBLIC_RPC_URL`

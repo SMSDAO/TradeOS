@@ -196,8 +196,8 @@ MAX_SLIPPAGE=0.02              # 2% slippage
 
 ```bash
 # Clone repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install

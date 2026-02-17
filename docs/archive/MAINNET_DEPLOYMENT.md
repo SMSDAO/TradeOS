@@ -43,8 +43,8 @@ This bot is now configured for **REAL MAINNET TRANSACTIONS** with actual cryptoc
 
 1. **Clone the repository** (if not already done):
    ```bash
-   git clone https://github.com/SMSDAO/reimagined-jupiter.git
-   cd reimagined-jupiter
+   git clone https://github.com/SMSDAO/TradeOS.git
+   cd TradeOS
    ```
 
 2. **Install dependencies**:
@@ -364,7 +364,7 @@ GAS_BUFFER=1.5             # 50% buffer on gas estimates
 
 1. **Check logs first**: `tail -100 logs/arbitrage-executions.jsonl`
 2. **Review documentation**: `IMPLEMENTATION_GUIDE.md`
-3. **Check GitHub issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+3. **Check GitHub issues**: https://github.com/SMSDAO/TradeOS/issues
 4. **Security issues**: Report privately to maintainers
 
 ## Legal Disclaimer
@@ -381,7 +381,7 @@ The developers are not responsible for any losses, damages, or issues arising fr
 ## Support
 
 For questions or issues:
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Documentation: See `IMPLEMENTATION_GUIDE.md`
 - Security: Report vulnerabilities privately
 

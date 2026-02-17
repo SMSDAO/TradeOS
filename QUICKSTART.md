@@ -12,8 +12,8 @@ Get your GXQ Studio Solana Trading Bot running in 5 minutes.
 
 ```bash
 # Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install
@@ -187,7 +187,7 @@ docker logs -f gxq-bot
 
 ## 🆘 Need Help?
 
-- **Issues:** [GitHub Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- **Issues:** [GitHub Issues](https://github.com/SMSDAO/TradeOS/issues)
 - **Discord:** [Join Community]
 - **Docs:** [Full Documentation](./README.md)
 

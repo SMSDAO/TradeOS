@@ -347,7 +347,7 @@ A: monads.solana (10% fee from profits)
 
 - **Discord**: Join GXQ Studio community
 - **Twitter**: @GXQStudio
-- **GitHub**: [Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- **GitHub**: [Issues](https://github.com/SMSDAO/TradeOS/issues)
 - **Email**: support@gxqstudio.com
 
 ## Disclaimer

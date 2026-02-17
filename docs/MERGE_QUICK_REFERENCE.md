@@ -162,7 +162,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### "Not in a git repository"
 ```powershell
 # Run from repository root
-cd /path/to/reimagined-jupiter
+cd /path/to/TradeOS
 ./scripts/Merge-Branches.ps1 -AutoSweep
 ```
 

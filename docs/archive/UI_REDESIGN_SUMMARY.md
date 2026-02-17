@@ -402,8 +402,8 @@ return () => clearInterval(interval);
 - **README**: `/webapp/README.md`
 
 ### Community
-- **GitHub**: [SMSDAO/reimagined-jupiter](https://github.com/SMSDAO/reimagined-jupiter)
-- **Issues**: [GitHub Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- **GitHub**: [SMSDAO/TradeOS](https://github.com/SMSDAO/TradeOS)
+- **Issues**: [GitHub Issues](https://github.com/SMSDAO/TradeOS/issues)
 - **Discord**: GXQ Studio Community
 - **Twitter**: @GXQStudio
 

@@ -415,8 +415,8 @@ The GXQ Studio Solana Trading Bot system is now **production-ready** with comple
 
 ### 1. Setup (5 minutes)
 ```bash
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 npm install
 npm run setup-env  # Interactive configuration
 npm run build
