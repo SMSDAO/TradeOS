@@ -467,7 +467,7 @@ QUICKNODE_WSS_URL=your_quicknode_wss_url
 ## Support & Contact
 
 For issues, questions, or contributions:
-- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/TradeOS/issues)
 - Discord: GXQ Studio Community
 - Twitter: @GXQStudio
 

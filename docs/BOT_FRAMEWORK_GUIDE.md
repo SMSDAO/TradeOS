@@ -707,5 +707,5 @@ class BotSandbox {
 
 For bot framework questions or issues:
 - **Documentation**: https://docs.gxq.studio/bot-framework
-- **Examples**: https://github.com/SMSDAO/reimagined-jupiter/tree/main/examples
-- **Issue Tracker**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Examples**: https://github.com/SMSDAO/TradeOS/tree/main/examples
+- **Issue Tracker**: https://github.com/SMSDAO/TradeOS/issues

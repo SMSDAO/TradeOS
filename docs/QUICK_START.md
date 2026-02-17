@@ -6,8 +6,8 @@
 
 ```bash
 # 1. Clone and install
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 npm install
 
 # 2. Configure environment

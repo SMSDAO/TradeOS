@@ -50,7 +50,7 @@ The most advanced Solana DeFi platform with flash loan arbitrage, sniper bot, to
 
 #### Via Vercel Dashboard:
 1. Go to https://vercel.com/new
-2. Import: `SMSDAO/reimagined-jupiter`
+2. Import: `SMSDAO/TradeOS`
 3. **Set Root Directory**: `webapp` ← **REQUIRED**
 4. Add env: `NEXT_PUBLIC_RPC_URL`
 5. Deploy
@@ -117,8 +117,8 @@ See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed instructions and troublesh
 
 ```bash
 # Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install
@@ -910,7 +910,7 @@ webapp/
 
 2. **Import to Vercel**
    - Go to [vercel.com/new](https://vercel.com/new)
-   - Import `SMSDAO/reimagined-jupiter`
+   - Import `SMSDAO/TradeOS`
    - Set root directory: `webapp`
    - Add environment variable: `NEXT_PUBLIC_RPC_URL`
    - Click Deploy
@@ -922,7 +922,7 @@ webapp/
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env
@@ -1117,7 +1117,7 @@ The GXQ Studio platform is now production-ready with:
 
 1. Go to https://vercel.com/new
 2. Click "Add New Project"
-3. Import GitHub repository: `SMSDAO/reimagined-jupiter`
+3. Import GitHub repository: `SMSDAO/TradeOS`
 4. **⚠️ CRITICAL**: Configure these settings:
    - **Root Directory**: Click "Edit" and enter `webapp` ← **YOU MUST SET THIS**
    - **Framework**: Next.js (auto-detected)
@@ -1334,7 +1334,7 @@ Deploy the backend CLI to a server for automated trading:
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env
@@ -1379,7 +1379,7 @@ Automated system:
 ## 📞 Support
 
 For issues or questions:
-- **GitHub Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **GitHub Issues**: https://github.com/SMSDAO/TradeOS/issues
 - **Documentation**: See all MD files in repository
 - **Vercel Support**: https://vercel.com/support
 
@@ -1644,8 +1644,8 @@ MAX_SLIPPAGE=0.02              # 2% slippage
 
 ```bash
 # Clone repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install
@@ -2188,7 +2188,7 @@ The TypeScript backend can be deployed separately for automated trading:
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 git clone <your-repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 
@@ -2259,7 +2259,7 @@ docker run -d \
 ## 📞 Support
 
 For issues or questions:
-- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/TradeOS/issues)
 - Documentation: See README.md and DEPLOYMENT_READY.md
 
 ---
@@ -2283,7 +2283,7 @@ This is a monorepo with two components:
 ### Method 1: Vercel Dashboard (Recommended)
 
 1. Go to https://vercel.com/new
-2. Import your GitHub repository: `SMSDAO/reimagined-jupiter`
+2. Import your GitHub repository: `SMSDAO/TradeOS`
 3. **IMPORTANT**: Configure the following settings:
    - **Root Directory**: Select `webapp` (click "Edit" next to Root Directory)
    - **Framework Preset**: Next.js (auto-detected)
@@ -2314,7 +2314,7 @@ vercel --prod
 
 Click the button below to deploy:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
 
 ## Troubleshooting
 
@@ -2396,7 +2396,7 @@ The backend CLI (`/src`) is designed to run on your own server for automated tra
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env
@@ -3394,7 +3394,7 @@ When deploying to Vercel, you must configure it to use **this directory** (`weba
 ### Via Vercel Dashboard
 
 1. Go to https://vercel.com/new
-2. Import repository: `SMSDAO/reimagined-jupiter`
+2. Import repository: `SMSDAO/TradeOS`
 3. **Click "Edit" next to "Root Directory"**
 4. Enter: `webapp`
 5. Add environment variable: `NEXT_PUBLIC_RPC_URL`

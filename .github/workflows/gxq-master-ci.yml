@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Create mock environment file
@@ -58,7 +58,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Install backend dependencies
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
@@ -142,7 +142,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
@@ -177,7 +177,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore webapp cache
@@ -242,7 +242,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache

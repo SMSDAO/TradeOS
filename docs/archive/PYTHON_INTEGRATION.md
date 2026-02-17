@@ -566,7 +566,7 @@ finally:
 
 ```bash
 # Ensure Python path is correct
-export PYTHONPATH="${PYTHONPATH}:/path/to/reimagined-jupiter"
+export PYTHONPATH="${PYTHONPATH}:/path/to/TradeOS"
 ```
 
 #### RPC Connection Issues

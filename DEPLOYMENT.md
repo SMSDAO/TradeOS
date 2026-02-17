@@ -393,7 +393,7 @@ AWS offers multiple deployment options. Choose based on your needs:
    az webapp deployment source config \
      --name gxq-studio \
      --resource-group gxq-studio-rg \
-     --repo-url https://github.com/SMSDAO/reimagined-jupiter \
+     --repo-url https://github.com/SMSDAO/TradeOS \
      --branch main \
      --manual-integration
    ```
@@ -437,7 +437,7 @@ Alibaba Cloud supports multiple deployment methods. See `deployment/configs/alib
 2. **Deploy Using VPS Script**
    ```bash
    ssh root@your-ecs-ip
-   wget https://raw.githubusercontent.com/SMSDAO/reimagined-jupiter/main/deployment/scripts/deploy-vps.sh
+   wget https://raw.githubusercontent.com/SMSDAO/TradeOS/main/deployment/scripts/deploy-vps.sh
    chmod +x deploy-vps.sh
    sudo ./deploy-vps.sh
    ```
@@ -490,7 +490,7 @@ Coolify is a self-hostable alternative to Heroku/Railway.
 
 4. **Configure Service**
    - **Name**: GXQ Studio
-   - **Repository**: https://github.com/SMSDAO/reimagined-jupiter
+   - **Repository**: https://github.com/SMSDAO/TradeOS
    - **Branch**: main
    - **Docker Compose File**: docker-compose.yml
 
@@ -563,7 +563,7 @@ aaPanel is a free hosting control panel similar to cPanel.
    ```bash
    # Via Terminal in aaPanel
    cd /www/wwwroot/your-domain.com
-   git clone https://github.com/SMSDAO/reimagined-jupiter.git .
+   git clone https://github.com/SMSDAO/TradeOS.git .
    ```
 
 6. **Configure Environment**
@@ -623,7 +623,7 @@ Supports: DigitalOcean, Linode, Vultr, Hetzner, OVH, etc.
 
 1. **Run Deployment Script**
    ```bash
-   wget https://raw.githubusercontent.com/SMSDAO/reimagined-jupiter/main/deployment/scripts/deploy-vps.sh
+   wget https://raw.githubusercontent.com/SMSDAO/TradeOS/main/deployment/scripts/deploy-vps.sh
    chmod +x deploy-vps.sh
    sudo ./deploy-vps.sh
    ```
@@ -641,7 +641,7 @@ Supports: DigitalOcean, Linode, Vultr, Hetzner, OVH, etc.
 
 2. **Configure Environment**
    ```bash
-   sudo nano /home/gxq/reimagined-jupiter/.env
+   sudo nano /home/gxq/TradeOS/.env
    ```
 
 3. **Restart Service**
@@ -671,8 +671,8 @@ If you prefer manual setup:
 
 4. **Clone Repository**
    ```bash
-   git clone https://github.com/SMSDAO/reimagined-jupiter.git
-   cd reimagined-jupiter
+   git clone https://github.com/SMSDAO/TradeOS.git
+   cd TradeOS
    ```
 
 5. **Install Dependencies and Build**
@@ -704,8 +704,8 @@ curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
 
 # Deploy with Docker Compose
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 cp .env.example .env
 nano .env  # Edit configuration
 
@@ -757,8 +757,8 @@ docker-compose down          # Stop all
 
 ```bash
 # Clone repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install
@@ -964,7 +964,7 @@ docker-compose up -d
 
 **For PM2 deployments**:
 ```bash
-cd /home/gxq/reimagined-jupiter
+cd /home/gxq/TradeOS
 git pull
 npm ci
 npm run build:backend
@@ -1181,9 +1181,9 @@ netstat -tuln | grep 3000
 
 ## Support & Resources
 
-- **GitHub Repository**: https://github.com/SMSDAO/reimagined-jupiter
+- **GitHub Repository**: https://github.com/SMSDAO/TradeOS
 - **Documentation**: See `docs/` directory
-- **Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Issues**: https://github.com/SMSDAO/TradeOS/issues
 - **Security**: See `SECURITY.md` for security policy
 - **Contributing**: See `CONTRIBUTING.md` for contribution guidelines
 

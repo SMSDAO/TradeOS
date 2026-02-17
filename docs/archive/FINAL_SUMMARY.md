@@ -20,7 +20,7 @@ The GXQ Studio platform is now production-ready with:
 
 1. Go to https://vercel.com/new
 2. Click "Add New Project"
-3. Import GitHub repository: `SMSDAO/reimagined-jupiter`
+3. Import GitHub repository: `SMSDAO/TradeOS`
 4. **⚠️ CRITICAL**: Configure these settings:
    - **Root Directory**: Click "Edit" and enter `webapp` ← **YOU MUST SET THIS**
    - **Framework**: Next.js (auto-detected)
@@ -237,7 +237,7 @@ Deploy the backend CLI to a server for automated trading:
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env
@@ -282,7 +282,7 @@ Automated system:
 ## 📞 Support
 
 For issues or questions:
-- **GitHub Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **GitHub Issues**: https://github.com/SMSDAO/TradeOS/issues
 - **Documentation**: See all MD files in repository
 - **Vercel Support**: https://vercel.com/support
 

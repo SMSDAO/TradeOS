@@ -25,7 +25,7 @@ git push origin main
 ### Step 1: Local Development
 
 ```bash
-cd /path/to/reimagined-jupiter/webapp
+cd /path/to/TradeOS/webapp
 
 # Install dependencies (first time only)
 npm install
@@ -78,7 +78,7 @@ The workflow automatically:
 ### Step 5: Verify Deployment
 
 1. **Check GitHub Actions**
-   - Go to: https://github.com/SMSDAO/reimagined-jupiter/actions
+   - Go to: https://github.com/SMSDAO/TradeOS/actions
    - Verify workflow completed successfully
 
 2. **Review Pull Request**
