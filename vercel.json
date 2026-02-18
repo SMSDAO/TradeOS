@@ -5,23 +5,12 @@
   "installCommand": "cd webapp && npm install",
   "framework": "nextjs",
   "outputDirectory": "webapp/.next",
-  "regions": ["iad1"],
+  "regions": [
+    "iad1"
+  ],
   "cleanUrls": true,
   "trailingSlash": false,
-  "crons": [
-    {
-      "path": "/api/monitor",
-      "schedule": "*/1 * * * *"
-    },
-    {
-      "path": "/api/execute",
-      "schedule": "*/5 * * * *"
-    },
-    {
-      "path": "/api/health",
-      "schedule": "*/5 * * * *"
-    }
-  ],
+  "crons": null,
   "functions": {
     "api/**/*.ts": {
       "runtime": "nodejs22.x",
