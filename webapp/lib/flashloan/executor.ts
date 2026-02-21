@@ -7,8 +7,12 @@ import {
   ComputeBudgetProgram,
   VersionedTransaction,
   TransactionMessage,
-} from '@solana/web3.js';
-import { FlashloanProvider, selectBestProvider, getProviderByName } from './providers';
+} from "@solana/web3.js";
+import {
+  FlashloanProvider,
+  selectBestProvider,
+  getProviderByName,
+} from "./providers";
 
 /**
  * Arbitrage Opportunity Interface
@@ -45,9 +49,8 @@ export class FlashloanExecutor {
   private minProfitThreshold: number;
 
   constructor(
-    connection: Connection, 
-    jupiterApiUrl: string = 'https://api.jup.ag/v6',
-    minProfitThreshold: number = 0.001 // 0.1% of loan amount
+    connection: Connection,
+    jupiterApiUrl: string = "https://api.jup.ag/v6",
   ) {
     this.connection = connection;
     this.jupiterApiUrl = jupiterApiUrl;
@@ -57,7 +60,7 @@ export class FlashloanExecutor {
   /**
    * Execute arbitrage with flashloan
    * Main entry point for flashloan arbitrage execution
-   * 
+   *
    * @param opportunity Arbitrage opportunity details
    * @param userPublicKey User's public key
    * @param providerName Optional specific provider to use
@@ -66,10 +69,10 @@ export class FlashloanExecutor {
   async executeArbitrageWithFlashloan(
     opportunity: ArbitrageOpportunity,
     userPublicKey: PublicKey,
-    providerName?: string
+    providerName?: string,
   ): Promise<FlashloanExecutionResult> {
     try {
-      console.log('[FlashloanExecutor] Starting arbitrage execution');
+      console.log("[FlashloanExecutor] Starting arbitrage execution");
       console.log(`  Input: ${opportunity.inputMint}`);
       console.log(`  Output: ${opportunity.outputMint}`);
       console.log(`  Amount: ${opportunity.amount}`);
@@ -120,25 +123,25 @@ export class FlashloanExecutor {
         opportunity.inputMint,
         opportunity.outputMint,
         opportunity.amount,
-        opportunity.slippageBps || 50
+        opportunity.slippageBps || 50,
       );
 
       if (!quote) {
         return {
           success: false,
-          error: 'Failed to get Jupiter quote',
+          error: "Failed to get Jupiter quote",
         };
       }
 
       console.log(`[FlashloanExecutor] Jupiter quote received`);
       console.log(`  Out Amount: ${quote.outAmount}`);
-      console.log(`  Price Impact: ${quote.priceImpactPct || 'N/A'}`);
+      console.log(`  Price Impact: ${quote.priceImpactPct || "N/A"}`);
 
       // Step 5: Calculate profitability including flashloan fee
       const profitability = this.calculateProfitability(
         opportunity.amount,
         parseInt(quote.outAmount),
-        provider.fee
+        provider.fee,
       );
 
       if (!profitability.profitable) {
@@ -148,27 +151,29 @@ export class FlashloanExecutor {
         };
       }
 
-      console.log(`[FlashloanExecutor] Profitable! Expected: ${profitability.profit}`);
+      console.log(
+        `[FlashloanExecutor] Profitable! Expected: ${profitability.profit}`,
+      );
 
       // Step 6: Build atomic transaction
       const transaction = await this.buildFlashloanTransaction(
         provider,
         opportunity,
         quote,
-        userPublicKey
+        userPublicKey,
       );
 
       if (!transaction) {
         return {
           success: false,
-          error: 'Failed to build transaction',
+          error: "Failed to build transaction",
         };
       }
 
       // Step 7: Simulate transaction
-      console.log('[FlashloanExecutor] Simulating transaction...');
+      console.log("[FlashloanExecutor] Simulating transaction...");
       const simulation = await this.connection.simulateTransaction(transaction);
-      
+
       if (simulation.value.err) {
         return {
           success: false,
@@ -176,24 +181,26 @@ export class FlashloanExecutor {
         };
       }
 
-      console.log('[FlashloanExecutor] Simulation successful!');
+      console.log("[FlashloanExecutor] Simulation successful!");
 
-      // Production Note: Transaction requires user's wallet signature
-      // For client-side signing, serialize and return the transaction:
+      // Note: In production, the transaction would be signed by the user's wallet
+      // and sent to the network. For API endpoint, we return the unsigned transaction
+      // or the transaction data for the client to sign.
+
+      // TODO: Return serialized transaction for client-side signing
       // const serializedTx = transaction.serialize({ requireAllSignatures: false });
-      // return { ...result, serializedTransaction: serializedTx }
-      
+
       return {
         success: true,
-        signature: 'SIMULATION_SUCCESS', // Simulation only - requires client-side signing
+        signature: "SIMULATION_SUCCESS", // Simulation only - requires client-side signing
         profit: profitability.profit,
         provider: provider.name,
       };
     } catch (error) {
-      console.error('[FlashloanExecutor] Execution error:', error);
+      console.error("[FlashloanExecutor] Execution error:", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: error instanceof Error ? error.message : "Unknown error",
       };
     }
   }
@@ -203,20 +210,23 @@ export class FlashloanExecutor {
    * @param opportunity Arbitrage opportunity to validate
    * @returns Validation result
    */
-  private validateOpportunity(opportunity: ArbitrageOpportunity): { valid: boolean; error?: string } {
+  private validateOpportunity(opportunity: ArbitrageOpportunity): {
+    valid: boolean;
+    error?: string;
+  } {
     if (!opportunity.inputMint || !opportunity.outputMint) {
-      return { valid: false, error: 'Input and output mints are required' };
+      return { valid: false, error: "Input and output mints are required" };
     }
 
     if (!opportunity.amount || opportunity.amount <= 0) {
-      return { valid: false, error: 'Amount must be greater than 0' };
+      return { valid: false, error: "Amount must be greater than 0" };
     }
 
     try {
       new PublicKey(opportunity.inputMint);
       new PublicKey(opportunity.outputMint);
     } catch (error) {
-      return { valid: false, error: 'Invalid mint address' };
+      return { valid: false, error: "Invalid mint address" };
     }
 
     return { valid: true };
@@ -234,11 +244,11 @@ export class FlashloanExecutor {
     inputMint: string,
     outputMint: string,
     amount: number,
-    slippageBps: number
+    slippageBps: number,
   ): Promise<any> {
     try {
       const url = `${this.jupiterApiUrl}/quote?inputMint=${inputMint}&outputMint=${outputMint}&amount=${amount}&slippageBps=${slippageBps}`;
-      
+
       const response = await fetch(url);
       if (!response.ok) {
         console.error(`Jupiter API error: ${response.status}`);
@@ -247,7 +257,7 @@ export class FlashloanExecutor {
 
       return await response.json();
     } catch (error) {
-      console.error('[FlashloanExecutor] Jupiter quote error:', error);
+      console.error("[FlashloanExecutor] Jupiter quote error:", error);
       return null;
     }
   }
@@ -262,14 +272,14 @@ export class FlashloanExecutor {
   private calculateProfitability(
     loanAmount: number,
     outputAmount: number,
-    feeBps: number
+    feeBps: number,
   ): { profitable: boolean; profit: number; reason?: string } {
     // Calculate fee amount
     const feeAmount = Math.floor((loanAmount * feeBps) / 10000);
-    
+
     // Calculate repayment amount
     const repayAmount = loanAmount + feeAmount;
-    
+
     // Check if output > repayment
     if (outputAmount <= repayAmount) {
       return {
@@ -278,12 +288,14 @@ export class FlashloanExecutor {
         reason: `Output ${outputAmount} insufficient to repay ${repayAmount}`,
       };
     }
-    
+
     // Calculate profit
     const profit = outputAmount - repayAmount;
-    
-    // Check minimum profit threshold (configurable via constructor)
-    const minProfit = Math.floor(loanAmount * this.minProfitThreshold);
+
+    // Check minimum profit threshold (0.1% of loan amount by default)
+    // TODO: Make this configurable via constructor or environment variable
+    const minProfitThreshold = 0.001; // 0.1%
+    const minProfit = Math.floor(loanAmount * minProfitThreshold);
     if (profit < minProfit) {
       return {
         profitable: false,
@@ -291,14 +303,14 @@ export class FlashloanExecutor {
         reason: `Profit ${profit} below minimum threshold ${minProfit} (${this.minProfitThreshold * 100}%)`,
       };
     }
-    
+
     return { profitable: true, profit };
   }
 
   /**
    * Build atomic flashloan transaction
    * Creates a transaction with: borrow -> swap -> repay
-   * 
+   *
    * @param provider Flashloan provider
    * @param opportunity Arbitrage opportunity
    * @param quote Jupiter quote
@@ -309,7 +321,7 @@ export class FlashloanExecutor {
     provider: FlashloanProvider,
     opportunity: ArbitrageOpportunity,
     quote: any,
-    userPublicKey: PublicKey
+    userPublicKey: PublicKey,
   ): Promise<Transaction | null> {
     try {
       const transaction = new Transaction();
@@ -319,32 +331,38 @@ export class FlashloanExecutor {
       transaction.add(
         ComputeBudgetProgram.setComputeUnitPrice({
           microLamports: priorityFee,
-        })
+        }),
       );
 
       transaction.add(
         ComputeBudgetProgram.setComputeUnitLimit({
           units: 400000,
-        })
+        }),
       );
 
       // IMPORTANT: Production implementation requires provider-specific SDK integration
       // Each provider has unique program interfaces for borrow/repay operations:
-      // 
+      //
       // Example structure (pseudo-code):
       // 1. const borrowIx = await provider.createBorrowInstruction(amount, tokenMint);
       // 2. const swapIxs = await jupiter.getSwapInstructions(quote);
       // 3. const repayIx = await provider.createRepayInstruction(amount + fee, tokenMint);
-      // 
+      //
       // transaction.add(borrowIx);
       // transaction.add(...swapIxs);
       // transaction.add(repayIx);
       //
       // This creates an atomic bundle that must all succeed or all fail
 
-      console.log('[FlashloanExecutor] Transaction structure prepared (simulation mode)');
-      console.warn('[FlashloanExecutor] WARNING: Actual borrow/repay instructions not implemented');
-      console.warn('[FlashloanExecutor] Provider SDK integration required for production use');
+      console.log(
+        "[FlashloanExecutor] Transaction structure prepared (simulation mode)",
+      );
+      console.warn(
+        "[FlashloanExecutor] WARNING: Actual borrow/repay instructions not implemented",
+      );
+      console.warn(
+        "[FlashloanExecutor] Provider SDK integration required for production use",
+      );
 
       // Get recent blockhash
       const { blockhash } = await this.connection.getLatestBlockhash();
@@ -353,7 +371,7 @@ export class FlashloanExecutor {
 
       return transaction;
     } catch (error) {
-      console.error('[FlashloanExecutor] Build transaction error:', error);
+      console.error("[FlashloanExecutor] Build transaction error:", error);
       return null;
     }
   }
@@ -365,23 +383,28 @@ export class FlashloanExecutor {
   private async calculatePriorityFee(): Promise<number> {
     try {
       const recentFees = await this.connection.getRecentPrioritizationFees();
-      
+
       if (!recentFees || recentFees.length === 0) {
         return 10000; // Default: 10,000 microlamports
       }
-      
+
       // Calculate median fee
-      const fees = recentFees.map(f => f.prioritizationFee).sort((a, b) => a - b);
+      const fees = recentFees
+        .map((f) => f.prioritizationFee)
+        .sort((a, b) => a - b);
       const medianFee = fees[Math.floor(fees.length / 2)] || 10000;
-      
+
       // Apply multiplier for urgency
       const urgencyMultiplier = 2.5;
       const adjustedFee = medianFee * urgencyMultiplier;
-      
+
       // Cap at reasonable maximum
       return Math.min(adjustedFee, 500000);
     } catch (error) {
-      console.error('[FlashloanExecutor] Priority fee calculation error:', error);
+      console.error(
+        "[FlashloanExecutor] Priority fee calculation error:",
+        error,
+      );
       return 10000;
     }
   }

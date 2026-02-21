@@ -4,10 +4,55 @@
 [![CodeQL](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/codeql-analysis.yml)
 [![codecov](https://codecov.io/gh/SMSDAO/reimagined-jupiter/branch/main/graph/badge.svg)](https://codecov.io/gh/SMSDAO/reimagined-jupiter)
 [![Deploy Preview](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-preview.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-preview.yml)
+[![Deploy Railway](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-railway.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-railway.yml)
 
 The most advanced Solana DeFi platform with flash loan arbitrage, sniper bot, token launchpad, and comprehensive Web3 UI.
 
+## 🚀 Quick Start
+
+```bash
+# Interactive setup
+./quick-start.sh
+
+# Or use Make commands
+make help          # Show all available commands
+make dev           # Start local development
+make docker-up     # Start with Docker
+```
+
+## 📦 Deployment Options
+
+**Deploy to any platform in minutes!** See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive guides.
+
+| Platform | Best For | Command | Guide |
+|----------|----------|---------|-------|
+| 🌐 **Vercel** | Webapp (Serverless) | `vercel --prod` | [Guide](DEPLOYMENT.md#vercel-serverless) |
+| 🚂 **Railway** | Backend (Container) | `railway up` | [Guide](DEPLOYMENT.md#railway-container) |
+| ☁️ **AWS** | Enterprise Scale | `make deploy-aws` | [Guide](DEPLOYMENT.md#aws) |
+| 🔷 **Azure** | Microsoft Cloud | `make deploy-azure` | [Guide](DEPLOYMENT.md#azure) |
+| 🐳 **Docker** | Any Server | `make docker-up` | [Guide](DEPLOYMENT.md#docker) |
+| 💻 **VPS** | Full Control | `make deploy-vps` | [Guide](DEPLOYMENT.md#vps-manual) |
+| 🏠 **Localhost** | Development | `make dev` | [Guide](DEPLOYMENT.md#localhost) |
+
+### Key Features
+- ✅ **Unified Server**: Single entry point for all deployments
+- ✅ **Docker Orchestration**: Backend + Webapp + Monitoring
+- ✅ **50+ Make Commands**: Simplified management
+- ✅ **Automated Scripts**: One-command VPS deployment
+- ✅ **Health Checks**: Kubernetes-compatible endpoints
+- ✅ **WebSocket Support**: Real-time updates with auto-reconnect
+- ✅ **Monitoring**: Prometheus + Grafana integration
+
 ## 🆕 Latest Updates
+
+**✨ Multi-Platform Deployment Support**
+
+- ✅ **Unified Server**: `src/server.ts` works across all platforms
+- ✅ **Docker Excellence**: Multi-stage builds, dev & prod configs
+- ✅ **Comprehensive Docs**: 26KB deployment guide covering 8+ platforms
+- ✅ **Automation**: Makefile with 50+ commands, deployment scripts
+- ✅ **CI/CD**: Docker build workflow, automated testing
+- ✅ **WebSocket Stability**: Enhanced reconnection logic
 
 **✨ Production-Ready API with Comprehensive Validation & Automated Deployment**
 
@@ -18,7 +63,7 @@ The most advanced Solana DeFi platform with flash loan arbitrage, sniper bot, to
 - ✅ **Enhanced Security**: Rate limiting, input sanitization, and authentication validation
 - ✅ **Complete Documentation**: Comprehensive guides for API, validation, deployment, and configuration
 
-📖 **[Quick Start Guide](./docs/QUICK_START.md)** | **[API Validation](./docs/API_VALIDATION.md)** | **[Deployment Guide](./docs/DEPLOYMENT_AUTOMATION.md)**
+📖 **[Deployment Guide](./DEPLOYMENT.md)** | **[Quick Start](./docs/QUICK_START.md)** | **[API Validation](./docs/API_VALIDATION.md)**
 
 ## 🌐 Web Application (NEW!)
 
@@ -52,6 +97,54 @@ vercel --prod
 ```
 
 See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed instructions and troubleshooting.
+
+### Quick Deploy to Railway
+
+**Railway provides 24/7 backend hosting with automated arbitrage scanning!**
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/SMSDAO/reimagined-jupiter?referralCode=gxq)
+
+#### Automated Setup:
+```bash
+bash scripts/setup-railway.sh
+```
+
+#### Manual Setup:
+```bash
+# Install Railway CLI
+curl -fsSL https://railway.app/install.sh | sh
+
+# Login and link to project
+railway login
+railway link 2077acd9-f81f-47ba-b8c7-8bf6905f45fc
+
+# Set environment variables
+railway variables --set SOLANA_RPC_URL="your-rpc-url"
+railway variables --set WALLET_PRIVATE_KEY="your-private-key"
+
+# Deploy
+railway up
+```
+
+**Features:**
+- ✅ 24/7 automated arbitrage scanning
+- ✅ Auto-deployment on push to main
+- ✅ Preview deployments for PRs
+- ✅ Health check monitoring with auto-restart
+- ✅ Secret synchronization workflow
+- ✅ Automatic rollback on failure
+- ✅ Real-time logs and metrics
+
+**Required Secrets:**
+- `RAILWAY_TOKEN` - Railway API token
+- `RAILWAY_PROJECT_ID` - `2077acd9-f81f-47ba-b8c7-8bf6905f45fc`
+- `SOLANA_RPC_URL` - Solana RPC endpoint
+- `WALLET_PRIVATE_KEY` - Wallet private key (base58)
+- `ADMIN_USERNAME` - Admin username
+- `ADMIN_PASSWORD` - Admin password
+- `JWT_SECRET` - JWT secret
+
+📖 See [docs/RAILWAY_DEPLOYMENT.md](docs/RAILWAY_DEPLOYMENT.md) for complete Railway deployment guide.
 
 ## 🚀 Backend CLI Features
 
@@ -277,6 +370,43 @@ src/
 └── index.ts        # Main entry point and CLI
 ```
 
+## 🤖 Merge Automation (NEW!)
+
+**High-performance PowerShell script for automated branch merging with parallel processing:**
+
+### Features
+- ⚡ **5x Faster**: Parallel processing reduces 42m → 8m (80% improvement)
+- 🔄 **Parallel Jobs**: Up to 8 branches merged simultaneously
+- 🛡️ **Safe**: Automatic conflict resolution, rollback, and health checks
+- 📊 **Monitored**: Comprehensive performance metrics and benchmarking
+- 🧪 **Tested**: Full test suite with health validation
+
+### Quick Start
+```powershell
+# Merge specific branches
+./scripts/Merge-Branches.ps1 -SourceBranches @("feature/auth", "feature/api")
+
+# Auto-sweep all feature branches
+./scripts/Merge-Branches.ps1 -AutoSweep -MaxParallelJobs 8
+
+# Dry run (test without changes)
+./scripts/Merge-Branches.ps1 -SourceBranches @("feature/test") -DryRun
+```
+
+### Documentation
+- **[Merge Automation Guide](./docs/MERGE_AUTOMATION.md)** - Complete user manual
+- **[GitHub Actions Integration](./docs/GITHUB_ACTIONS_INTEGRATION.md)** - CI/CD workflows
+- **[Performance Results](./docs/PERFORMANCE_RESULTS.md)** - Detailed benchmarks
+
+### Performance Benchmarks
+| Configuration | Time | Speedup | Memory |
+|---------------|------|---------|--------|
+| Sequential (baseline) | 42m 30s | 1.0x | 2.1 GB |
+| Parallel (4 jobs) | 18m 45s | 2.3x | 3.2 GB |
+| Optimized (8 jobs) | 8m 30s | 5.0x | 3.5 GB |
+
+See [Performance Results](./docs/PERFORMANCE_RESULTS.md) for detailed analysis.
+
 ## 🔧 Development
 
 ```bash
@@ -291,6 +421,9 @@ npm test
 
 # Validate API endpoints
 npm run validate-endpoints http://localhost:3000
+
+# Test merge automation (PowerShell)
+pwsh ./scripts/Test-MergeBranches.ps1
 ```
 
 ## 🔒 API Security & Validation
@@ -321,6 +454,32 @@ See [API Validation Guide](./docs/API_VALIDATION.md) for complete documentation.
 - ✅ Issue creation on deployment failure
 
 See [Deployment Automation Guide](./docs/DEPLOYMENT_AUTOMATION.md) for setup instructions.
+
+## 🧠 Autonomous Oracle - CI/CD Intelligence
+
+The **Autonomous Oracle** continuously analyzes the codebase during CI/CD pipeline execution to ensure code quality, security, and performance optimization.
+
+### Key Capabilities
+- **🏗️ Architecture Analysis**: Detects circular dependencies, god classes, and architectural debt
+- **🔒 Security Scanning**: Identifies vulnerabilities, validates RBAC/encryption usage
+- **⚡ Gas Optimization**: Analyzes compute units and priority fees for Solana efficiency
+- **⚙️ Mainnet Compatibility**: Validates versioned transactions and best practices
+- **🧬 Evolution Intelligence**: Identifies technical debt and suggests modern patterns
+- **🎫 Auto-Ticketing**: Creates GitHub issues for critical findings
+
+### Health Score System
+- **90-100**: Excellent - Deploy with confidence
+- **70-89**: Good - Minor improvements recommended
+- **50-69**: Fair - Address issues before deployment
+- **0-49**: Poor - Critical issues require immediate attention
+
+### Integration
+The oracle runs automatically in CI/CD and blocks deployment if critical issues are detected:
+- ❌ Critical issues = Deployment blocked
+- ⚠️ High issues (>2) = Review required
+- ✅ No blockers = Safe to deploy
+
+See [AUTONOMOUS_ORACLE.md](./AUTONOMOUS_ORACLE.md) for complete documentation.
 
 ## 📊 Flash Loan Provider Comparison
 
@@ -424,6 +583,11 @@ npm run coverage:analyze
 - **[Enhanced Scanner](./ENHANCED_SCANNER.md)** - Real-time arbitrage scanning
 - **[Self-Optimization](.github/SELF_OPTIMIZATION_GUIDE.md)** - Automated code quality workflow
 
+### DevOps & Automation
+- **[Merge Automation Guide](./docs/MERGE_AUTOMATION.md)** - PowerShell merge automation (80% faster)
+- **[GitHub Actions Integration](./docs/GITHUB_ACTIONS_INTEGRATION.md)** - CI/CD workflow integration
+- **[Performance Results](./docs/PERFORMANCE_RESULTS.md)** - Benchmark analysis and optimization metrics
+
 ### Features & Guides
 - **[Flash Loan Enhancements](./FLASH_LOAN_ENHANCEMENTS.md)** - Flash loan system details
 - **[Security Guide](./SECURITY_GUIDE.md)** - Security best practices
@@ -461,8 +625,9 @@ This project includes a comprehensive CI/CD pipeline with automated testing, sec
 - **Type Safety**: Strict TypeScript checking
 - **Test Coverage**: Automated coverage collection with 90% target
 - **Security Scanning**: CodeQL analysis and npm audit
-- **Preview Deployments**: Automatic Vercel preview for every PR
+- **Preview Deployments**: Automatic Vercel and Railway previews for every PR
 - **Auto-merge**: Automated PR merging when all checks pass
+- **Dual Deployment**: Automatic deployment to both Vercel (webapp) and Railway (backend) on push to main
 
 ### Running CI Checks Locally
 
@@ -482,15 +647,68 @@ npm run build:backend     # Build backend only
 npm run build:webapp      # Build webapp only
 ```
 
+### Master Orchestration & Automation
+
+The project includes a comprehensive master orchestration script that automates the full build, validation, and deployment pipeline:
+
+```bash
+# Run full master orchestration (recommended before deploying)
+npm run master            # Complete build & validation pipeline
+
+# Individual orchestration scripts
+npm run env-check         # Validate required environment variables
+npm run env-sync          # Check .env.example is in sync
+npm run db-migrate        # Run database migrations (if DB configured)
+npm run validate-build    # Validate all build artifacts exist
+npm run health            # Run system health checks
+npm run perf              # Generate performance report
+```
+
+**Master Orchestration Pipeline Steps:**
+1. Environment validation (required variables)
+2. Clean dependency installation (backend + webapp)
+3. TypeScript type-checking (strict mode)
+4. Code linting (ESLint with zero-warning policy)
+5. Auto-fix pass (format & fix issues)
+6. Backend build (TypeScript compilation)
+7. Webapp build (Next.js production build)
+8. Database schema validation & migration (if configured)
+9. API health check configuration validation
+10. Build artifact validation
+11. Git operations (commit, tag, push)
+
+**Environment Requirements:**
+
+All required environment variables must be documented in `.env.example` as placeholders. The system validates:
+- Required variables are present in your local `.env`
+- All production variables are documented in `.env.example`
+- No real secrets are committed to `.env.example`
+
+**Database Support:**
+
+Optional PostgreSQL database support with automated migrations:
+- Schema: `db/schema.sql`
+- Migrations: `npm run db-migrate`
+- Configuration: Set `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` in `.env`
+
 ### Required Secrets for CI/CD
 
 Repository maintainers should configure these secrets in **Settings → Secrets and variables → Actions**:
 
-#### Vercel Deployment
+#### Vercel Deployment (Webapp)
 - `VERCEL_TOKEN` - Vercel authentication token
 - `VERCEL_PROJECT_ID` - Vercel project ID  
 - `VERCEL_ORG_ID` - Vercel organization/team ID
 - `NEXT_PUBLIC_RPC_URL` - Solana RPC URL for webapp
+
+#### Railway Deployment (Backend)
+- `RAILWAY_TOKEN` - Railway API authentication token
+- `RAILWAY_PROJECT_ID` - Railway project ID (`2077acd9-f81f-47ba-b8c7-8bf6905f45fc`)
+- `SOLANA_RPC_URL` - Solana RPC endpoint URL
+- `WALLET_PRIVATE_KEY` - Wallet private key (base58 format)
+- `ADMIN_USERNAME` - Admin panel username
+- `ADMIN_PASSWORD` - Admin panel password
+- `JWT_SECRET` - JWT authentication secret
 
 #### Code Coverage
 - `CODECOV_TOKEN` - Codecov upload token
