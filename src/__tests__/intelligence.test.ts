@@ -2,14 +2,14 @@
  * Intelligence System Tests
  */
 
-import { RBACService } from "../services/rbac.js";
-import { AgentRegistry } from "../services/intelligence/AgentRegistry.js";
-import { OracleService } from "../services/intelligence/OracleService.js";
-import { RiskAgent } from "../services/intelligence/agents/RiskAgent.js";
-import { LiquidityAgent } from "../services/intelligence/agents/LiquidityAgent.js";
-import { ExecutionAgent } from "../services/intelligence/agents/ExecutionAgent.js";
-import { ProfitOptimizationAgent } from "../services/intelligence/agents/ProfitOptimizationAgent.js";
-import { AnalysisContext } from "../services/intelligence/types.js";
+import { RBACService } from "../services/rbac";
+import { AgentRegistry } from "../services/intelligence/AgentRegistry";
+import { OracleService } from "../services/intelligence/OracleService";
+import { RiskAgent } from "../services/intelligence/agents/RiskAgent";
+import { LiquidityAgent } from "../services/intelligence/agents/LiquidityAgent";
+import { ExecutionAgent } from "../services/intelligence/agents/ExecutionAgent";
+import { ProfitOptimizationAgent } from "../services/intelligence/agents/ProfitOptimizationAgent";
+import { AnalysisContext } from "../services/intelligence/types";
 
 describe("Intelligence System", () => {
   let rbacService: RBACService;

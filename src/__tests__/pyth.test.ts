@@ -1,5 +1,5 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { PythNetworkIntegration } from "../integrations/pyth.js";
+import { PythNetworkIntegration } from "../integrations/pyth";
 
 // Mock Connection and Pyth client
 jest.mock("@solana/web3.js", () => {

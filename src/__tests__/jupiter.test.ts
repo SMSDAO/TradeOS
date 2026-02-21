@@ -1,5 +1,5 @@
 import { Connection } from "@solana/web3.js";
-import { JupiterV6Integration } from "../integrations/jupiter.js";
+import { JupiterV6Integration } from "../integrations/jupiter";
 
 // Mock axios
 jest.mock("axios");

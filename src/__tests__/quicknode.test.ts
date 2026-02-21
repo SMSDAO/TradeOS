@@ -1,4 +1,4 @@
-import { QuickNodeIntegration } from "../integrations/quicknode.js";
+import { QuickNodeIntegration } from "../integrations/quicknode";
 
 // Mock axios
 jest.mock("axios");
@@ -6,7 +6,7 @@ import axios from "axios";
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 // Mock config
-jest.mock("../config/index.js", () => ({
+jest.mock("../config/index", () => ({
   config: {
     quicknode: {
       rpcUrl: "https://test-quicknode-rpc.com",

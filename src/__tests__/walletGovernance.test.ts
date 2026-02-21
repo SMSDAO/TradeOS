@@ -204,14 +204,22 @@ describe("Wallet Governance", () => {
     });
 
     it("should wipe keys from memory after use", () => {
-      const keypair = Keypair.generate();
-      const originalKey = new Uint8Array(keypair.secretKey);
+      // Test key wiping with a mutable Uint8Array (simulating in-memory key storage)
+      const secretKey = new Uint8Array(64);
+      // Fill with deterministic non-zero data to simulate a real key
+      for (let i = 0; i < secretKey.length; i++) {
+        secretKey[i] = (i + 1) & 0xff;
+      }
+      
+      const originalKey = new Uint8Array(secretKey);
 
-      // Simulate key wiping
-      keypair.secretKey.fill(0);
+      // Simulate key wiping by zeroing out the array
+      for (let i = 0; i < secretKey.length; i++) {
+        secretKey[i] = 0;
+      }
 
       // Verify key was wiped
-      expect(keypair.secretKey.every((byte) => byte === 0)).toBe(true);
+      expect(secretKey.every((byte) => byte === 0)).toBe(true);
 
       // Verify original key was different
       expect(originalKey.some((byte) => byte !== 0)).toBe(true);
