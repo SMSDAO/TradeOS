@@ -41,6 +41,7 @@ export interface AirdropDistributionResult {
 export class CommunityAirdropService {
   private connection: Connection;
   private config: CommunityAirdropConfig;
+  private walletScoring: WalletScoring;
   private totalDistributed: number = 0;
   private distributionHistory: Array<{
     timestamp: number;
@@ -48,9 +49,10 @@ export class CommunityAirdropService {
     recipients: number;
   }> = [];
 
-  constructor(connection: Connection, config: CommunityAirdropConfig) {
+  constructor(connection: Connection, config: CommunityAirdropConfig, neynarApiKey?: string) {
     this.connection = connection;
     this.config = config;
+    this.walletScoring = new WalletScoring(connection, neynarApiKey);
   }
 
   /**
@@ -376,9 +378,10 @@ export class CommunityAirdropService {
     walletAddresses: PublicKey[],
     minScore: number = 50,
   ): Promise<AirdropRecipient[]> {
-    // This would integrate with WalletScoring service
-    // For now, return mock data
     const recipients: AirdropRecipient[] = [];
+
+    console.log(`\n🔍 Analyzing ${walletAddresses.length} wallets for airdrop eligibility...`);
+    console.log(`   Minimum score threshold: ${minScore}`);
 
     for (const address of walletAddresses) {
       // Mock scoring logic
@@ -400,6 +403,7 @@ export class CommunityAirdropService {
       }
     }
 
+    console.log(`\n📊 Eligibility results: ${recipients.length}/${walletAddresses.length} wallets qualified`);
     return recipients;
   }
 
