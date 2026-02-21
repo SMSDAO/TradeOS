@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 24]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -192,7 +192,7 @@ jobs:
           
       - name: Upload backend coverage
         uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         with:
           name: backend-coverage
           path: coverage/
@@ -249,7 +249,7 @@ jobs:
           
       - name: Upload webapp coverage
         uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         with:
           name: webapp-coverage
           path: webapp/coverage/
@@ -456,7 +456,7 @@ jobs:
         
       - name: Upload backend build artifacts
         uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         with:
           name: backend-dist
           path: dist/
@@ -479,7 +479,7 @@ jobs:
           
       - name: Upload webapp build artifacts
         uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        if: matrix.node-version == 24
         with:
           name: webapp-build
           path: webapp/.next/
