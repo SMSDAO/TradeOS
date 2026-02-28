@@ -126,7 +126,12 @@ echo "Checking for Premium RPC Alternatives..."
 HAS_PREMIUM_BACKUP=false
 
 if [ -n "$QUICKNODE_RPC_URL" ] && is_premium_rpc "$QUICKNODE_RPC_URL"; then
-    echo -e "${GREEN}✓ QuickNode RPC configured${NC}"
+    echo -e "${GREEN}✓ QuickNode RPC configured (QUICKNODE_RPC_URL)${NC}"
+    HAS_PREMIUM_BACKUP=true
+fi
+
+if [ -n "$NEXT_PUBLIC_QUICKNODE_RPC" ] && is_premium_rpc "$NEXT_PUBLIC_QUICKNODE_RPC"; then
+    echo -e "${GREEN}✓ QuickNode RPC configured (NEXT_PUBLIC_QUICKNODE_RPC)${NC}"
     HAS_PREMIUM_BACKUP=true
 fi
 

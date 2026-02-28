@@ -3,9 +3,9 @@
 # Vercel Environment Validation Script
 # ==============================================================================
 # This script validates that required environment variables are set for
-# Vercel deployment (preview and production environments)
+# Vercel deployment
 #
-# Usage: bash scripts/validate-vercel-env.sh [preview|production]
+# Usage: bash scripts/validate-vercel-env.sh
 # ==============================================================================
 
 set -e
@@ -27,7 +27,7 @@ echo ""
 # Function to check required variable
 check_required() {
     local var_name=$1
-    local var_value=$(eval echo \$$var_name)
+    local var_value="${!var_name}"
     
     if [ -z "$var_value" ]; then
         echo -e "${RED}✗ MISSING:${NC} $var_name"
@@ -40,7 +40,7 @@ check_required() {
 # Function to check optional variable
 check_optional() {
     local var_name=$1
-    local var_value=$(eval echo \$$var_name)
+    local var_value="${!var_name}"
     
     if [ -z "$var_value" ]; then
         echo -e "${YELLOW}⚠ OPTIONAL:${NC} $var_name (not set)"
