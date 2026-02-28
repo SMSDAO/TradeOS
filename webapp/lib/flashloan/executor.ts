@@ -46,6 +46,7 @@ export interface FlashloanExecutionResult {
 export class FlashloanExecutor {
   private connection: Connection;
   private jupiterApiUrl: string;
+  private minProfitThreshold: number;
 
   constructor(
     connection: Connection,
@@ -53,6 +54,7 @@ export class FlashloanExecutor {
   ) {
     this.connection = connection;
     this.jupiterApiUrl = jupiterApiUrl;
+    this.minProfitThreshold = minProfitThreshold;
   }
 
   /**
@@ -298,7 +300,7 @@ export class FlashloanExecutor {
       return {
         profitable: false,
         profit,
-        reason: `Profit ${profit} below minimum threshold ${minProfit} (${minProfitThreshold * 100}%)`,
+        reason: `Profit ${profit} below minimum threshold ${minProfit} (${this.minProfitThreshold * 100}%)`,
       };
     }
 

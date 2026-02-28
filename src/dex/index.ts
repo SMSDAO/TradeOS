@@ -2,6 +2,21 @@ import { Connection, PublicKey, TransactionInstruction } from "@solana/web3.js";
 import { DEXInfo } from "../types.js";
 import { JupiterV6Integration } from "../integrations/jupiter.js";
 
+/**
+ * DEX Integrations - Simplified Quote Fallbacks
+ * 
+ * These DEX classes provide fee-based quote estimates as fallbacks.
+ * For production arbitrage, the system uses Jupiter aggregator which
+ * queries all these DEXs and provides optimal routing with real-time prices.
+ * 
+ * Purpose:
+ * - Individual DEX monitoring and diagnostics
+ * - Fee estimation for specific DEX pairs
+ * - Fallback quotes when Jupiter is unavailable
+ * 
+ * For arbitrage scanning, see: src/strategies/* which use Jupiter integration
+ */
+
 export abstract class BaseDEX {
   protected connection: Connection;
   protected programId: PublicKey;
