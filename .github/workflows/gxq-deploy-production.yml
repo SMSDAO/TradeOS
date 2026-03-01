@@ -52,14 +52,14 @@ jobs:
         run: bash scripts/validate-build.sh
       
       - name: Upload backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: backend-dist
           path: dist/
           retention-days: 1
       
       - name: Upload webapp artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: webapp-build
           path: webapp/.next/
