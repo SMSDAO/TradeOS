@@ -80,7 +80,7 @@ git push origin copilot/redesign-user-interface
 
 After pushing, verify the PR status:
 
-1. Check PR #29 at https://github.com/SMSDAO/reimagined-jupiter/pull/29
+1. Check PR #29 at https://github.com/SMSDAO/TradeOS/pull/29
 2. Confirm "mergeable" status is now true (not "dirty")
 3. Verify CI/CD checks pass (if configured)
 4. Review the file changes in the PR to ensure they match expectations

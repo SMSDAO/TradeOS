@@ -519,7 +519,7 @@ npm run dev
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Documentation: See DOCUMENTATION.md
 - Community: Discord/Telegram (if available)
 

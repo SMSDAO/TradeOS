@@ -593,7 +593,7 @@ Use Dependabot or Renovate:
 ## Support
 
 - **Documentation**: See `SMART_BRAIN_OPERATOR.md` for script details
-- **Issues**: Report at https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Issues**: Report at https://github.com/SMSDAO/TradeOS/issues
 - **Discussions**: Use GitHub Discussions for questions
 
 ---

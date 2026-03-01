@@ -379,7 +379,7 @@ All original requirements have been met:
 For questions or issues:
 - **Documentation**: See `TICKER_SERVICE_DOCS.md`
 - **API Reference**: See `/api/tickers` section in docs
-- **GitHub Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **GitHub Issues**: https://github.com/SMSDAO/TradeOS/issues
 - **Implementation Details**: See `TICKER_IMPLEMENTATION_SUMMARY.md`
 
 ## 🏆 Conclusion

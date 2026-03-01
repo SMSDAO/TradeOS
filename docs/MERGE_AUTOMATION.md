@@ -43,8 +43,8 @@ The `Merge-Branches.ps1` script provides high-performance automated branch mergi
 
 ```bash
 # Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Make script executable (Unix/Mac)
 chmod +x scripts/Merge-Branches.ps1
@@ -567,8 +567,8 @@ MIT License - See repository LICENSE file
 
 ## Support
 
-- GitHub Issues: [SMSDAO/reimagined-jupiter/issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
-- Documentation: [GitHub Wiki](https://github.com/SMSDAO/reimagined-jupiter/wiki)
+- GitHub Issues: [SMSDAO/TradeOS/issues](https://github.com/SMSDAO/TradeOS/issues)
+- Documentation: [GitHub Wiki](https://github.com/SMSDAO/TradeOS/wiki)
 - Discord: [GXQ Studio Community](https://discord.gg/gxqstudio)
 
 ---

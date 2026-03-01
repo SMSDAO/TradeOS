@@ -484,7 +484,7 @@ CRON_SECRET=your-cron-secret
 
 For security issues, please contact: security@gxqstudio.com (example)
 
-For general support: [Create an issue](https://github.com/SMSDAO/reimagined-jupiter/issues)
+For general support: [Create an issue](https://github.com/SMSDAO/TradeOS/issues)
 
 ---
 

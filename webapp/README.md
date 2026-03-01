@@ -1,6 +1,6 @@
 # GXQ Studio WebApp 🚀
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS)
 
 The most advanced Solana DeFi platform with comprehensive trading, staking, and token launch capabilities.
 
@@ -45,8 +45,8 @@ The most advanced Solana DeFi platform with comprehensive trading, staking, and 
 
 ```bash
 # Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter/webapp
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS/webapp
 
 # Install dependencies
 npm install
@@ -65,7 +65,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## 🌐 Live Deployment
 
-Production: [https://jup-nine.vercel.app/](https://jup-nine.vercel.app/)
+Production: [Deployed on Vercel under CastQuest project]
 
 ## 📦 Environment Variables
 
@@ -196,7 +196,7 @@ For detailed deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 ## 🆘 Support & Issues
 
-- **GitHub Issues**: [Create an issue](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- **GitHub Issues**: [Create an issue](https://github.com/SMSDAO/TradeOS/issues)
 - **Developer Wallet**: monads.solana
 
 ## 🤝 Contributing

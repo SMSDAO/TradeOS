@@ -74,7 +74,7 @@ Push to main → Workflow triggers → Sync to gxq → Create PR → Vercel depl
 
 ### For Vercel Setup
 
-1. **Import repository** to Vercel: `SMSDAO/reimagined-jupiter`
+1. **Import repository** to Vercel: `SMSDAO/TradeOS`
 2. **Configure deployment**:
    - Branch: `gxq` (recommended for automatic sync)
    - Root Directory: `webapp`

@@ -2,7 +2,7 @@
 
 ## 🚀 Quick Deploy to Vercel
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS)
 
 ## 📋 Prerequisites
 
@@ -16,8 +16,8 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter/webapp
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS/webapp
 ```
 
 ### 2. Install Dependencies
@@ -137,7 +137,7 @@ npm run lint     # Run ESLint
 
 ## 🌍 Live Deployment
 
-Production URL: [https://jup-nine.vercel.app/](https://jup-nine.vercel.app/)
+Production URL: [Deployed on Vercel under CastQuest project]
 
 ## 🎯 SEO & Metadata
 
@@ -188,7 +188,7 @@ MIT License - see LICENSE file for details
 ## 🆘 Support
 
 For issues or questions:
-- GitHub Issues: [Create an issue](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [Create an issue](https://github.com/SMSDAO/TradeOS/issues)
 - Developer Wallet: monads.solana
 
 ## 🎉 Acknowledgments

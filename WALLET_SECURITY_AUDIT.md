@@ -2,7 +2,7 @@
 
 ## Date: December 24, 2025
 ## Auditor: GitHub Copilot
-## Repository: SMSDAO/reimagined-jupiter
+## Repository: SMSDAO/TradeOS
 
 ---
 

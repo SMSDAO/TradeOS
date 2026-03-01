@@ -142,7 +142,7 @@ pm2 monit
 ### 2. Vercel Dashboard Deployment
 
 1. Go to https://vercel.com/new
-2. Import your GitHub repository: `SMSDAO/reimagined-jupiter`
+2. Import your GitHub repository: `SMSDAO/TradeOS`
 3. **CRITICAL**: Set Root Directory to `webapp`
 4. Configure environment variables:
    - `NEXT_PUBLIC_RPC_URL`: Your Solana RPC endpoint
@@ -329,7 +329,7 @@ Go to Project Settings → Environment Variables and add:
 
 ```bash
 # Backend
-cd /path/to/reimagined-jupiter
+cd /path/to/TradeOS
 git pull origin main
 npm install
 npm run build
@@ -366,7 +366,7 @@ pm2 restart gxq-studio
 ## Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Documentation: README.md and feature-specific docs
 - Community: Check project Discord/Telegram
 

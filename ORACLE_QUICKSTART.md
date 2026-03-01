@@ -268,9 +268,9 @@ Use multiple LLM providers for consensus:
 
 ## Support
 
-- **Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
-- **Discussions**: https://github.com/SMSDAO/reimagined-jupiter/discussions
-- **Documentation**: https://github.com/SMSDAO/reimagined-jupiter/tree/main/docs
+- **Issues**: https://github.com/SMSDAO/TradeOS/issues
+- **Discussions**: https://github.com/SMSDAO/TradeOS/discussions
+- **Documentation**: https://github.com/SMSDAO/TradeOS/tree/main/docs
 
 ## License
 

@@ -1,8 +1,36 @@
 @import "tailwindcss";
 
 :root {
+  /* GitHub Light Theme Colors */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1f2328;
+  
+  /* GitHub Color Palette */
+  --gh-canvas-default: #ffffff;
+  --gh-canvas-subtle: #f6f8fa;
+  --gh-canvas-inset: #f6f8fa;
+  --gh-border-default: #d0d7de;
+  --gh-border-muted: #d8dee4;
+  
+  /* Text colors */
+  --gh-fg-default: #1f2328;
+  --gh-fg-muted: #656d76;
+  --gh-fg-subtle: #6e7781;
+  
+  /* Accent colors */
+  --gh-accent-fg: #0969da;
+  --gh-accent-emphasis: #0969da;
+  --gh-success-fg: #1a7f37;
+  --gh-danger-fg: #d1242f;
+  --gh-warning-fg: #9a6700;
+  --gh-attention-fg: #9a6700;
+  
+  /* Button colors */
+  --gh-btn-bg: #f6f8fa;
+  --gh-btn-border: #d0d7de;
+  --gh-btn-hover-bg: #f3f4f6;
+  --gh-btn-primary-bg: #1f883d;
+  --gh-btn-primary-hover-bg: #1a7f37;
 }
 
 @theme inline {
@@ -14,8 +42,36 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* GitHub Dark Theme Colors */
+    --background: #0d1117;
+    --foreground: #e6edf3;
+    
+    /* GitHub Dark Color Palette */
+    --gh-canvas-default: #0d1117;
+    --gh-canvas-subtle: #161b22;
+    --gh-canvas-inset: #010409;
+    --gh-border-default: #30363d;
+    --gh-border-muted: #21262d;
+    
+    /* Text colors */
+    --gh-fg-default: #e6edf3;
+    --gh-fg-muted: #848d97;
+    --gh-fg-subtle: #6e7681;
+    
+    /* Accent colors */
+    --gh-accent-fg: #2f81f7;
+    --gh-accent-emphasis: #1f6feb;
+    --gh-success-fg: #3fb950;
+    --gh-danger-fg: #f85149;
+    --gh-warning-fg: #d29922;
+    --gh-attention-fg: #d29922;
+    
+    /* Button colors */
+    --gh-btn-bg: #21262d;
+    --gh-btn-border: #30363d;
+    --gh-btn-hover-bg: #30363d;
+    --gh-btn-primary-bg: #238636;
+    --gh-btn-primary-hover-bg: #2ea043;
   }
 }
 

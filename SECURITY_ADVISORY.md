@@ -229,7 +229,7 @@ Only use funds you can afford to lose.
 ## Contact Information
 
 ### Security Team
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Security Email: (to be configured)
 - Discord/Telegram: (to be configured)
 
