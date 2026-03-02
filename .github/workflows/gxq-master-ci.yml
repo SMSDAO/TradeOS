@@ -158,7 +158,7 @@ jobs:
         run: npm run build:backend
       
       - name: Upload backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: backend-dist
           path: dist/
@@ -196,7 +196,7 @@ jobs:
           NEXT_PUBLIC_RPC_URL: https://api.mainnet-beta.solana.com
       
       - name: Upload webapp artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: webapp-build
           path: webapp/.next/
