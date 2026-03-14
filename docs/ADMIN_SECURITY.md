@@ -457,7 +457,7 @@ npm run hash-password
 
 For security concerns or questions:
 - **Email**: security@gxq.studio
-- **Issue Tracker**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Issue Tracker**: https://github.com/SMSDAO/TradeOS/issues
 - **Documentation**: https://docs.gxq.studio
 
 **Security Vulnerability Reporting:**

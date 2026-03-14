@@ -14,8 +14,8 @@ This guide covers all deployment options for the GXQ Studio Solana Trading Bot S
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 npm install
 ```
 
@@ -259,8 +259,8 @@ sudo apt-get install -y nodejs
 
 3. Clone and setup:
 ```bash
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 npm install
 npm run build
 ```
@@ -544,7 +544,7 @@ docker run --rm gxq-bot env | grep SOLANA
 ## 🆘 Support
 
 ### Resources
-- [GitHub Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- [GitHub Issues](https://github.com/SMSDAO/TradeOS/issues)
 - [Documentation](./README.md)
 - [Security Guide](./SECURITY_GUIDE.md)
 

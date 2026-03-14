@@ -20,7 +20,7 @@ See `webapp/API_CONFIG_GUIDE.md` for complete documentation.
 ### Method 1: Vercel Dashboard (Recommended)
 
 1. Go to https://vercel.com/new
-2. Import your GitHub repository: `SMSDAO/reimagined-jupiter`
+2. Import your GitHub repository: `SMSDAO/TradeOS`
 3. **IMPORTANT**: Configure the following settings:
    - **Root Directory**: Select `webapp` (click "Edit" next to Root Directory)
    - **Framework Preset**: Next.js (auto-detected)
@@ -60,7 +60,7 @@ vercel --prod
 
 Click the button below to deploy:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
 
 ## Troubleshooting
 
@@ -142,7 +142,7 @@ The backend CLI (`/src`) is designed to run on your own server for automated tra
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env

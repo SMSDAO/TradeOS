@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Create mock environment file
@@ -58,7 +58,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Install backend dependencies
@@ -93,7 +93,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
@@ -142,7 +142,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
@@ -158,7 +158,7 @@ jobs:
         run: npm run build:backend
       
       - name: Upload backend artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: backend-dist
           path: dist/
@@ -177,7 +177,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore webapp cache
@@ -196,7 +196,7 @@ jobs:
           NEXT_PUBLIC_RPC_URL: https://api.mainnet-beta.solana.com
       
       - name: Upload webapp artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: webapp-build
           path: webapp/.next/
@@ -214,13 +214,13 @@ jobs:
         uses: actions/checkout@v6
       
       - name: Download backend artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: backend-dist
           path: dist/
       
       - name: Download webapp artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: webapp-build
           path: webapp/.next/
@@ -242,7 +242,7 @@ jobs:
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
