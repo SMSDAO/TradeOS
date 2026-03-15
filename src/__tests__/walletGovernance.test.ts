@@ -207,16 +207,14 @@ describe("Wallet Governance", () => {
       // Test key wiping with a mutable Uint8Array (simulating in-memory key storage)
       const secretKey = new Uint8Array(64);
       // Fill with deterministic non-zero data to simulate a real key
-      for (let i = 0; i < secretKey.length; i++) {
+      secretKey.forEach((_, i) => {
         secretKey[i] = (i + 1) & 0xff;
-      }
+      });
       
       const originalKey = new Uint8Array(secretKey);
 
       // Simulate key wiping by zeroing out the array
-      for (let i = 0; i < secretKey.length; i++) {
-        secretKey[i] = 0;
-      }
+      secretKey.fill(0);
 
       // Verify key was wiped
       expect(secretKey.every((byte) => byte === 0)).toBe(true);
