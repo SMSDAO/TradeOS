@@ -1,5 +1,5 @@
 import { Connection, PublicKey } from "@solana/web3.js";
-import { WalletScoring, WalletTier } from "../services/walletScoring.js";
+import { WalletScoring, WalletTier } from "../services/walletScoring";
 
 // Mock the Connection methods
 jest.mock("@solana/web3.js", () => {

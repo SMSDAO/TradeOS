@@ -1,4 +1,4 @@
-import { EncryptionService } from "../utils/encryption.js";
+import { EncryptionService } from "../utils/encryption";
 
 describe("EncryptionService", () => {
   let encryptionService: EncryptionService;
