@@ -377,6 +377,180 @@ export async function getAirdropPriorityWallets(
   return result.rows;
 }
 
+/**
+ * Insert wallet audit log entry
+ * Records user actions with hashed IP and fingerprint for privacy-safe auditing
+ * 
+ * @param data Audit log data including operation, hashed metadata, and status
+ * @returns QueryResult with inserted audit log entry
+ */
+export async function insertWalletAuditLog(data: {
+  walletId: string;
+  userId: string;
+  operation: string;
+  operationData?: Record<string, any>;
+  ipAddressHash?: string;
+  fingerprintHash?: string;
+  transactionSignature?: string;
+  success?: boolean;
+  errorMessage?: string;
+}): Promise<QueryResult> {
+  const sql = `
+    INSERT INTO wallet_audit_log (
+      wallet_id, user_id, operation, operation_data,
+      ip_address_hash, fingerprint_hash, transaction_signature,
+      success, error_message
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING *;
+  `;
+
+  return query(sql, [
+    data.walletId,
+    data.userId,
+    data.operation,
+    data.operationData ? JSON.stringify(data.operationData) : null,
+    data.ipAddressHash || null,
+    data.fingerprintHash || null,
+    data.transactionSignature || null,
+    data.success ?? true,
+    data.errorMessage || null,
+  ]);
+}
+
+/**
+ * Get user by username
+ */
+export async function getUserByUsername(username: string): Promise<any> {
+  const sql = `
+    SELECT * FROM users
+    WHERE username = $1;
+  `;
+
+  const result = await query(sql, [username]);
+  return result.rows[0] || null;
+}
+
+/**
+ * Get user wallets by user ID
+ */
+export async function getUserWallets(userId: string): Promise<any[]> {
+  const sql = `
+    SELECT * FROM user_wallets
+    WHERE user_id = $1 AND is_active = true
+    ORDER BY is_primary DESC, created_at ASC;
+  `;
+
+  const result = await query(sql, [userId]);
+  return result.rows;
+}
+
+/**
+ * Count user wallets
+ */
+export async function countUserWallets(userId: string): Promise<number> {
+  const sql = `
+    SELECT COUNT(*) as count FROM user_wallets
+    WHERE user_id = $1 AND is_active = true;
+  `;
+
+  const result = await query(sql, [userId]);
+  return parseInt(result.rows[0]?.count || '0');
+}
+
+/**
+ * Validate if user can create more wallets (max 3 enforced)
+ * @param userId User ID to check
+ * @returns Object with validation result and current wallet count
+ */
+export async function validateWalletCreation(userId: string): Promise<{
+  allowed: boolean;
+  currentCount: number;
+  error?: string;
+}> {
+  const currentCount = await countUserWallets(userId);
+  const maxWallets = 3; // Strictly enforced limit
+  
+  if (currentCount >= maxWallets) {
+    return {
+      allowed: false,
+      currentCount,
+      error: `Maximum ${maxWallets} wallets per user exceeded. Current count: ${currentCount}`,
+    };
+  }
+  
+  return {
+    allowed: true,
+    currentCount,
+  };
+}
+
+/**
+ * Insert user wallet with strict 3-wallet limit enforcement
+ * 
+ * Features:
+ * - Validates user doesn't exceed 3-wallet limit before insertion
+ * - Stores encrypted private key with AES-256-GCM metadata (IV, Salt, Tag)
+ * - All wallets are sub-wallets that inherit user RBAC permissions
+ * 
+ * @param data Wallet data including encryption details
+ * @returns QueryResult with inserted wallet
+ * @throws Error if wallet limit exceeded or insertion fails
+ */
+export async function insertUserWallet(data: {
+  userId: string;
+  walletAddress: string;
+  walletLabel?: string;
+  isPrimary?: boolean;
+  encryptedPrivateKey: string;
+  encryptionIv: string;
+  encryptionSalt: string;
+  encryptionTag: string;
+  keyDerivationIterations: number;
+}): Promise<QueryResult> {
+  // Pre-check: Validate user can create more wallets
+  const validation = await validateWalletCreation(data.userId);
+  if (!validation.allowed) {
+    throw new Error(validation.error || 'Cannot create wallet');
+  }
+  
+  const sql = `
+    INSERT INTO user_wallets (
+      user_id, wallet_address, wallet_label, is_primary,
+      encrypted_private_key, encryption_iv, encryption_salt,
+      encryption_tag, key_derivation_iterations
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    RETURNING *;
+  `;
+
+  return query(sql, [
+    data.userId,
+    data.walletAddress,
+    data.walletLabel || null,
+    data.isPrimary || false,
+    data.encryptedPrivateKey,
+    data.encryptionIv,
+    data.encryptionSalt,
+    data.encryptionTag,
+    data.keyDerivationIterations,
+  ]);
+}
+
+/**
+ * Get user wallet by address
+ */
+export async function getUserWalletByAddress(
+  userId: string,
+  walletAddress: string
+): Promise<any> {
+  const sql = `
+    SELECT * FROM user_wallets
+    WHERE user_id = $1 AND wallet_address = $2 AND is_active = true;
+  `;
+
+  const result = await query(sql, [userId, walletAddress]);
+  return result.rows[0] || null;
+}
+
 export default {
   query,
   getClient,
@@ -392,4 +566,11 @@ export default {
   getTrustScoreHistory,
   getHighValueWallets,
   getAirdropPriorityWallets,
+  insertWalletAuditLog,
+  getUserByUsername,
+  getUserWallets,
+  countUserWallets,
+  validateWalletCreation,
+  insertUserWallet,
+  getUserWalletByAddress,
 };

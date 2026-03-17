@@ -14,7 +14,7 @@ echo "🔍 Starting Dead Code Analysis..."
 analyze_unused_exports() {
   echo "Analyzing unused exports..."
   
-  # Use ts-prune from node_modules (installed via package.json)
+  # Use ts-prune from pinned devDependencies (no ad-hoc install)
   npx ts-prune --error > "$OUTPUT_DIR/unused-exports.txt" 2>&1 || true
   
   UNUSED_COUNT=$(grep -c "used in module" "$OUTPUT_DIR/unused-exports.txt" 2>/dev/null || echo "0")
@@ -39,22 +39,19 @@ detect_unreachable_code() {
 find_unused_imports() {
   echo "Finding unused imports..."
   
-  # Use ts-prune to detect unused imports (AST-based approach)
-  # Note: ts-prune already detects unused imports as part of unused exports
-  echo "Unused import detection covered by ts-prune analysis above"
-  
-  # Create a placeholder file to maintain script structure
-  echo "See unused-exports.txt for comprehensive analysis" > "$OUTPUT_DIR/unused-imports.txt"
+  # Use ts-prune for accurate unused import detection instead of fragile grep
+  # ts-prune handles imports properly via AST analysis
+  echo "Note: Unused imports are included in ts-prune unused exports analysis above" > "$OUTPUT_DIR/unused-imports.txt"
   
   UNUSED_IMPORT_COUNT=0
-  echo "Found $UNUSED_IMPORT_COUNT additional unused imports (covered by ts-prune)"
+  echo "Detected via ts-prune (see unused-exports.txt)"
 }
 
 # Function to detect duplicate code
 detect_duplicate_code() {
   echo "Detecting code duplication..."
   
-  # Use jscpd from node_modules (installed via package.json)
+  # Use jscpd from pinned devDependencies (no ad-hoc install)
   npx jscpd src/ --format json --output "$OUTPUT_DIR" --min-lines 10 --min-tokens 50 2>&1 || true
   
   if [[ -f "$OUTPUT_DIR/jscpd-report.json" ]]; then
@@ -127,8 +124,8 @@ This report identifies potentially unused, unreachable, or redundant code in the
 - **Details**: See \`potentially-unreachable.txt\`
 
 ### Unused Imports
-- **Count**: $(wc -l < "$OUTPUT_DIR/unused-imports.txt" 2>/dev/null || echo "0")
-- **Details**: See \`unused-imports.txt\`
+- **Count**: Detected via ts-prune
+- **Details**: See \`unused-exports.txt\` (ts-prune detects both unused exports and imports)
 
 ### Code Duplication
 - **Count**: $(jq '.statistics.total.duplicates // 0' "$OUTPUT_DIR/jscpd-report.json" 2>/dev/null || echo "0")
