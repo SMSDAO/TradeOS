@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Oracle Intelligence System is an advanced, AI-driven decision-making layer that provides comprehensive pre-execution analysis for the reimagined-jupiter bot framework. It utilizes specialized agents to evaluate arbitrage opportunities across multiple dimensions: strategy, risk, liquidity, execution, and profit optimization.
+The Oracle Intelligence System is an advanced, AI-driven decision-making layer that provides comprehensive pre-execution analysis for the TradeOS bot framework. It utilizes specialized agents to evaluate arbitrage opportunities across multiple dimensions: strategy, risk, liquidity, execution, and profit optimization.
 
 ## Architecture
 

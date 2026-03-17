@@ -338,7 +338,7 @@ To improve the script:
 
 ## License
 
-This script is part of the reimagined-jupiter repository. See repository LICENSE for details.
+This script is part of the TradeOS repository. See repository LICENSE for details.
 
 ## Support
 

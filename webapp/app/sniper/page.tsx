@@ -26,6 +26,8 @@ export default function SniperPage() {
   const [settings, setSettings] = useState<TradingSettings>({
     autoExecute: false,
     priorityFee: "critical", // Sniper bot should default to critical priority
+    jitoTip: 50000, // Higher Jito tip for sniping (0.00005 SOL)
+    executionSpeed: "mev-protected",
     slippage: 10, // Higher default slippage for new tokens
   });
 

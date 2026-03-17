@@ -27,6 +27,8 @@ export default function StakingPage() {
   const [settings, setSettings] = useState<TradingSettings>({
     autoExecute: false,
     priorityFee: "medium",
+    jitoTip: 10000,
+    executionSpeed: "normal",
     slippage: 1,
   });
 

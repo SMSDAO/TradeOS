@@ -26,8 +26,8 @@ This guide provides step-by-step instructions for deploying the complete product
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 npm install
 cd webapp && npm install && cd ..
 ```

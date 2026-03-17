@@ -392,5 +392,5 @@ When adding new scripts:
 ## Support
 
 For issues or questions:
-- GitHub Issues: [SMSDAO/reimagined-jupiter/issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
-- Documentation: [GitHub Wiki](https://github.com/SMSDAO/reimagined-jupiter/wiki)
+- GitHub Issues: [SMSDAO/TradeOS/issues](https://github.com/SMSDAO/TradeOS/issues)
+- Documentation: [GitHub Wiki](https://github.com/SMSDAO/TradeOS/wiki)

@@ -2,7 +2,7 @@
  * Risk Controller Tests
  */
 
-import { RiskController, getRiskController } from '../lib/risk-controller.js';
+import { RiskController } from '../lib/risk-controller';
 
 describe('RiskController', () => {
   let riskController: RiskController;

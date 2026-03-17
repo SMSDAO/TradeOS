@@ -620,7 +620,7 @@ For non-critical workloads, consider spot instances (if available).
 
 ### Support
 
-- **GitHub Issues:** [github.com/SMSDAO/reimagined-jupiter/issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- **GitHub Issues:** [github.com/SMSDAO/TradeOS/issues](https://github.com/SMSDAO/TradeOS/issues)
 - **Railway Support:** [help.railway.app](https://help.railway.app/)
 
 ---

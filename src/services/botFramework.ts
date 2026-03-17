@@ -816,7 +816,7 @@ export class BotExecutionEngine {
           );
 
           // If Oracle recommends ABORT, stop execution
-          if (oracleResult.recommendation === "ABORT") {
+          if (oracleResult.overallRecommendation === "ABORT") {
             errorMessage = `Oracle intelligence blocked execution: ${oracleResult.reasoning}`;
 
             // Log Oracle abort
@@ -844,7 +844,7 @@ export class BotExecutionEngine {
 
           // If Oracle recommends ADJUST, apply adjustments
           if (
-            oracleResult.recommendation === "ADJUST" &&
+            oracleResult.overallRecommendation === "ADJUST" &&
             oracleResult.adjustments
           ) {
             console.log(
@@ -922,11 +922,11 @@ export class BotExecutionEngine {
         try {
           // Important: Distribution must happen BEFORE key wipe
           distributionSignature =
-            await this.profitDistributionManager.distributeSolProfit(
+            (await this.profitDistributionManager.distributeSolProfit(
               profitLamports,
               signer,
               signer.publicKey, // Calling wallet gets gas/slippage coverage
-            );
+            )) || undefined;
 
           if (distributionSignature) {
             console.log(`✅ DAO skim completed: ${distributionSignature}`);

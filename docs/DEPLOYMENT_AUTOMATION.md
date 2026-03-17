@@ -158,7 +158,7 @@ railway rollback
 ## Deployment Environments
 
 ### Production (Vercel)
-- **URL:** `https://reimagined-jupiter.vercel.app`
+- **URL:** `https://TradeOS.vercel.app`
 - **Branch:** `main`
 - **Auto-deploy:** Yes
 - **Rollback:** Automatic on failure

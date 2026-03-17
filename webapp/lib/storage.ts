@@ -138,7 +138,7 @@ async function deriveKey(
 
   const importedKey = await crypto.subtle.importKey(
     "raw",
-    passwordBuffer,
+    passwordBuffer as BufferSource,
     { name: "PBKDF2" },
     false,
     ["deriveBits", "deriveKey"],
@@ -147,7 +147,7 @@ async function deriveKey(
   return crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
-      salt: salt,
+      salt: salt as BufferSource,
       iterations: 100000,
       hash: "SHA-256",
     },
@@ -183,10 +183,10 @@ export async function encryptPrivateKey(
   const encryptedBuffer = await crypto.subtle.encrypt(
     {
       name: "AES-GCM",
-      iv: iv,
+      iv: iv as BufferSource,
     },
     key,
-    data,
+    data as BufferSource,
   );
 
   // Convert to base64 for storage

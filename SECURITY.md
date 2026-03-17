@@ -209,7 +209,7 @@ We strive to comply with:
 
 - **Security Team**: security@gxqstudio.com
 - **General Inquiries**: info@gxqstudio.com
-- **GitHub**: https://github.com/SMSDAO/reimagined-jupiter
+- **GitHub**: https://github.com/SMSDAO/TradeOS
 
 ## Acknowledgments
 

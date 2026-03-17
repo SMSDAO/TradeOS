@@ -10,7 +10,7 @@
  */
 
 import crypto from "crypto";
-import { verifyToken } from "../lib/auth.js";
+import { verifyToken } from "../../lib/auth.js";
 
 export interface User {
   id: string;
@@ -403,7 +403,11 @@ export class RBACService {
 
     return {
       valid: true,
-      user: verification.payload,
+      user: verification.payload ? {
+        id: verification.payload.userId || '',
+        username: verification.payload.walletAddress || '',
+        role: verification.payload.role || 'user',
+      } : undefined,
     };
   }
 
