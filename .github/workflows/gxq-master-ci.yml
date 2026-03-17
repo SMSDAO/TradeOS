@@ -24,10 +24,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
@@ -53,10 +53,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
@@ -65,7 +65,7 @@ jobs:
         run: npm ci
         
       - name: Cache backend node_modules
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
@@ -75,7 +75,7 @@ jobs:
         run: npm ci
         
       - name: Cache webapp node_modules
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -88,16 +88,16 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
@@ -113,7 +113,7 @@ jobs:
         run: npm run type-check
       
       - name: Restore webapp cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -137,16 +137,16 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
@@ -158,7 +158,7 @@ jobs:
         run: npm run build:backend
       
       - name: Upload backend artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: backend-dist
           path: dist/
@@ -172,16 +172,16 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
       
       - name: Restore webapp cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -196,7 +196,7 @@ jobs:
           NEXT_PUBLIC_RPC_URL: https://api.mainnet-beta.solana.com
       
       - name: Upload webapp artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: webapp-build
           path: webapp/.next/
@@ -211,16 +211,16 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       
       - name: Download backend artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: backend-dist
           path: dist/
       
       - name: Download webapp artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: webapp-build
           path: webapp/.next/
@@ -237,16 +237,16 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
       - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
@@ -259,7 +259,7 @@ jobs:
         continue-on-error: true
       
       - name: Restore webapp cache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}

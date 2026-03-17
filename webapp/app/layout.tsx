@@ -33,6 +33,11 @@ export default function RootLayout({
           name="keywords"
           content="Solana DeFi, Flash Loan Arbitrage, Jupiter Swap, Token Launchpad, Sniper Bot, Pump.fun, Raydium, GXQ Studio, Airdrop Game, MEV Protection, Solana Trading, DeFi API, NFT Staking, Crypto Arbitrage, Solana Ecosystem"
         />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#0969da" />
       </head>
       <body className="antialiased" suppressHydrationWarning>
         <ClientLayout>{children}</ClientLayout>
