@@ -207,7 +207,7 @@ export default function TermsPage() {
               </p>
               <p className="text-white">Platform: GXQ Studio</p>
               <p className="text-gray-400 text-sm mt-4">
-                Deployed on Vercel: https://jup-nine.vercel.app/
+                Deployed on Vercel for the CastQuest project
               </p>
             </div>
           </section>

@@ -8,7 +8,7 @@
    - Go to [vercel.com](https://vercel.com)
    - Click "Add New" → "Project"
    - Select "Import Git Repository"
-   - Choose this repository: `SMSDAO/reimagined-jupiter`
+   - Choose this repository: `SMSDAO/TradeOS`
 
 2. **Configure Project**:
    - **Root Directory**: Leave as `.` (root) - The root `vercel.json` will handle the webapp directory
@@ -38,7 +38,7 @@ npm i -g vercel
 vercel login
 
 # Deploy from repository root
-cd /path/to/reimagined-jupiter
+cd /path/to/TradeOS
 vercel
 
 # For production deployment
@@ -49,7 +49,7 @@ vercel --prod
 
 Click this button to deploy instantly:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS)
 
 ## Post-Deployment
 

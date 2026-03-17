@@ -1,6 +1,6 @@
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
-import { FlashLoanService } from "../services/flashLoanService.js";
-import { MarginfiProvider } from "../providers/flashLoan.js";
+import { FlashLoanService } from "../services/flashLoanService";
+import { MarginfiProvider } from "../providers/flashLoan";
 
 // Mock dependencies
 jest.mock("@solana/web3.js", () => {

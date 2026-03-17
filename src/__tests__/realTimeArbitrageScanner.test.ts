@@ -2,15 +2,15 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import {
   RealTimeArbitrageScanner,
   OpportunityCallback,
-} from "../services/realTimeArbitrageScanner.js";
-import { TokenConfig } from "../types.js";
-import { JupiterV6Integration } from "../integrations/jupiter.js";
+} from "../services/realTimeArbitrageScanner";
+import { TokenConfig } from "../types";
+import { JupiterV6Integration } from "../integrations/jupiter";
 
 // Mock JupiterV6Integration
-jest.mock("../integrations/jupiter.js");
+jest.mock("../integrations/jupiter");
 
 // Mock config
-jest.mock("../config/index.js", () => ({
+jest.mock("../config/index", () => ({
   config: {
     scanner: {
       pollingIntervalMs: 1000,

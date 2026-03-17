@@ -247,12 +247,12 @@ export class AirdropService {
     this.donationPercentage = donationPercentage;
 
     // Register protocol checkers
-    this.checkers = new Map([
-      ["JUPITER", new JupiterChecker()],
-      ["JITO", new JitoChecker()],
-      ["PYTH", new PythChecker()],
-      ["KAMINO", new KaminoChecker()],
-      ["MARGINFI", new MarginfiChecker()],
+    this.checkers = new Map<Protocol, ProtocolChecker>([
+      ["JUPITER", new JupiterChecker() as ProtocolChecker],
+      ["JITO", new JitoChecker() as ProtocolChecker],
+      ["PYTH", new PythChecker() as ProtocolChecker],
+      ["KAMINO", new KaminoChecker() as ProtocolChecker],
+      ["MARGINFI", new MarginfiChecker() as ProtocolChecker],
     ]);
   }
 

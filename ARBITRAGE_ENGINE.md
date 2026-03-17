@@ -476,7 +476,7 @@ LOG_LEVEL=debug npm start
 ### Support
 
 For issues and questions:
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Documentation: Check repository README and code comments
 
 ---

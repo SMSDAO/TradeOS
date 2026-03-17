@@ -1,5 +1,5 @@
 import { Connection } from "@solana/web3.js";
-import { ProviderManager } from "../services/providerManager.js";
+import { ProviderManager } from "../services/providerManager";
 
 // Mock Connection to avoid actual network calls in tests
 jest.mock("@solana/web3.js", () => {
@@ -31,12 +31,15 @@ describe("ProviderManager", () => {
   describe("Initialization", () => {
     it("should initialize with default providers", () => {
       const stats = providerManager.getStatistics();
-      expect(stats.totalProviders).toBe(6);
+      expect(stats.totalProviders).toBe(9);
       expect(stats.preferredOrder).toEqual([
         "marginfi",
         "solend",
         "kamino",
+        "tulip",
+        "drift",
         "mango",
+        "jet",
         "portFinance",
         "saveFinance",
       ]);

@@ -344,5 +344,5 @@ Common HTTP status codes:
 ## Support
 
 For issues or questions:
-- GitHub: https://github.com/SMSDAO/reimagined-jupiter
+- GitHub: https://github.com/SMSDAO/TradeOS
 - Documentation: Check webapp/README.md
