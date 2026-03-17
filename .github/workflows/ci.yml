@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - dev
   push:
     branches:
       - main
       - develop
+      - dev
   workflow_dispatch:
 
 concurrency:
@@ -28,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -67,7 +69,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -118,7 +120,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -163,7 +165,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -191,8 +193,8 @@ jobs:
           JEST_TIMEOUT: 30000
           
       - name: Upload backend coverage
-        uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v7
+        if: matrix.node-version == 24
         with:
           name: backend-coverage
           path: coverage/
@@ -201,7 +203,7 @@ jobs:
           
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: backend-test-results-node-${{ matrix.node-version }}
           path: |
@@ -218,7 +220,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -248,8 +250,8 @@ jobs:
           NODE_ENV: test
           
       - name: Upload webapp coverage
-        uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v7
+        if: matrix.node-version == 24
         with:
           name: webapp-coverage
           path: webapp/coverage/
@@ -270,17 +272,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           
       - name: Download backend coverage
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: backend-coverage
           path: coverage/
         continue-on-error: true
         
       - name: Download webapp coverage
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: webapp-coverage
           path: webapp/coverage/
@@ -309,7 +311,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -331,7 +333,7 @@ jobs:
         run: npm ci --prefer-offline || npm ci
         
       - name: Download backend build artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: backend-dist
           path: dist/
@@ -347,7 +349,7 @@ jobs:
         run: npm ci --prefer-offline || npm ci
         
       - name: Download webapp build artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: webapp-build
           path: webapp/.next/
@@ -382,7 +384,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -430,7 +432,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18, 20]
+        node-version: [24]
     
     steps:
       - name: Checkout code
@@ -455,8 +457,8 @@ jobs:
         run: npm run build:backend
         
       - name: Upload backend build artifacts
-        uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v7
+        if: matrix.node-version == 24
         with:
           name: backend-dist
           path: dist/
@@ -478,8 +480,8 @@ jobs:
           NEXT_PUBLIC_RPC_URL: ${{ secrets.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com' }}
           
       - name: Upload webapp build artifacts
-        uses: actions/upload-artifact@v6
-        if: matrix.node-version == 20
+        uses: actions/upload-artifact@v7
+        if: matrix.node-version == 24
         with:
           name: webapp-build
           path: webapp/.next/

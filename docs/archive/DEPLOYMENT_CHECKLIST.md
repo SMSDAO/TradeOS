@@ -67,8 +67,8 @@ DEV_FEE_WALLET=your_dev_wallet_address
 ### Backend Deployment Steps
 1. [ ] Clone repository
    ```bash
-   git clone https://github.com/SMSDAO/reimagined-jupiter.git
-   cd reimagined-jupiter
+   git clone https://github.com/SMSDAO/TradeOS.git
+   cd TradeOS
    ```
 
 2. [ ] Install dependencies
@@ -118,7 +118,7 @@ NEXT_PUBLIC_RPC_URL=your_quicknode_rpc_url
 
 #### Method 1: Vercel Dashboard
 1. [ ] Go to https://vercel.com/new
-2. [ ] Import repository: `SMSDAO/reimagined-jupiter`
+2. [ ] Import repository: `SMSDAO/TradeOS`
 3. [ ] **IMPORTANT**: Set Root Directory to `webapp`
 4. [ ] Add environment variables:
    - Key: `NEXT_PUBLIC_RPC_URL`
@@ -304,7 +304,7 @@ NEXT_PUBLIC_RPC_URL=your_quicknode_rpc_url
 - Documentation: `/DOCUMENTATION.md`
 - Production Guide: `/PRODUCTION_IMPROVEMENTS.md`
 - Deployment Guide: `/VERCEL_DEPLOY.md`
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Solana Docs: https://docs.solana.com
 - Jupiter Docs: https://station.jup.ag/docs
 

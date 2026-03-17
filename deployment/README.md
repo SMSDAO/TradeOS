@@ -90,6 +90,6 @@ See [DEPLOYMENT.md](../DEPLOYMENT.md) for comprehensive deployment guides:
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/SMSDAO/reimagined-jupiter/issues
+- GitHub Issues: https://github.com/SMSDAO/TradeOS/issues
 - Documentation: See [DEPLOYMENT.md](../DEPLOYMENT.md)
 - Security: See [SECURITY.md](../SECURITY.md)
