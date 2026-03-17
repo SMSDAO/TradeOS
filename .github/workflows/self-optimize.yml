@@ -267,38 +267,32 @@ jobs:
           echo "This PR has been analyzed for code quality, security, and optimization opportunities." >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          # Add summary section (concise)
-          echo "### 📊 Summary" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "- ✅ Automated fixes reviewed (see artifacts for details)" >> /tmp/pr-comment.md
-          echo "- 📝 Review inline comments for specific recommendations" >> /tmp/pr-comment.md
-          echo "- ⚠️ Address any flagged security or complexity issues" >> /tmp/pr-comment.md
+          # Add concise summary only
+          echo "### 📊 Quick Summary" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          # Add link to artifacts
-          echo "### 📦 Full Reports" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "Detailed reports have been uploaded as workflow artifacts:" >> /tmp/pr-comment.md
-          echo "- ESLint auto-fix results" >> /tmp/pr-comment.md
-          echo "- Unused code detection" >> /tmp/pr-comment.md
-          echo "- Code complexity analysis" >> /tmp/pr-comment.md
-          echo "- Test coverage gaps" >> /tmp/pr-comment.md
-          echo "- Risky code patterns" >> /tmp/pr-comment.md
-          echo "" >> /tmp/pr-comment.md
-          echo "Download artifacts from the workflow run to view full details." >> /tmp/pr-comment.md
+          # Count issues from reports
+          UNUSED_COUNT=$(grep -c "used in module" /tmp/unused-exports.txt 2>/dev/null || echo "0")
+          TODO_COUNT=$(grep -r "TODO\|FIXME" src/ --include="*.ts" 2>/dev/null | wc -l || echo "0")
+          CONSOLE_COUNT=$(grep -r "console.log" src/ --include="*.ts" --exclude="*logger*" 2>/dev/null | wc -l || echo "0")
+          
+          echo "- 🔍 **Unused Exports**: $UNUSED_COUNT found" >> /tmp/pr-comment.md
+          echo "- 📝 **TODO/FIXME Comments**: $TODO_COUNT found" >> /tmp/pr-comment.md
+          echo "- ⚠️ **console.log() Usage**: $CONSOLE_COUNT instances" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          # Add brief highlights from each report (first 10 lines max)
-          echo "### Highlights" >> /tmp/pr-comment.md
+          echo "### 📦 Detailed Reports" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "#### ESLint" >> /tmp/pr-comment.md
-          head -n 10 /tmp/eslint-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No issues found" >> /tmp/pr-comment.md
+          echo "Full analysis reports are available as workflow artifacts:" >> /tmp/pr-comment.md
+          echo "- Download artifacts from the **Actions** tab to view detailed reports" >> /tmp/pr-comment.md
+          echo "- Reports include: ESLint fixes, unused code analysis, complexity metrics, coverage gaps, and risky patterns" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "#### Unused Code" >> /tmp/pr-comment.md
-          head -n 10 /tmp/unused-code-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No unused code found" >> /tmp/pr-comment.md
+          
+          echo "### ✅ Actions Taken" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
-          echo "#### Risky Patterns" >> /tmp/pr-comment.md
-          head -n 15 /tmp/risky-code-report.md >> /tmp/pr-comment.md 2>/dev/null || echo "No risky patterns found" >> /tmp/pr-comment.md
+          echo "- Automated ESLint fixes applied where safe" >> /tmp/pr-comment.md
+          echo "- Code formatted according to style guide" >> /tmp/pr-comment.md
+          echo "- Inline comments added for manual review items" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
           # Add fix-required notice if applicable
@@ -321,10 +315,9 @@ jobs:
           echo "### Next Steps" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "1. Review automated changes committed by this workflow" >> /tmp/pr-comment.md
-          echo "2. Address any flagged security or complexity issues" >> /tmp/pr-comment.md
-          echo "3. Consider refactoring high-complexity functions" >> /tmp/pr-comment.md
-          echo "4. Add tests for low-coverage areas" >> /tmp/pr-comment.md
-          echo "5. Remove or document TODO/FIXME items" >> /tmp/pr-comment.md
+          echo "2. Address any flagged security or complexity issues in inline comments" >> /tmp/pr-comment.md
+          echo "3. Download and review detailed reports from workflow artifacts" >> /tmp/pr-comment.md
+          echo "4. Consider refactoring high-complexity functions" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "---" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
@@ -417,7 +410,7 @@ jobs:
               console.log('No complexity issues to comment on');
             }
             
-            // Add comments for TODO/FIXME
+            // Add comments for TODO/FIXME, console.log, eval()
             for (const file of changedFiles) {
               try {
                 const content = fs.readFileSync(file, 'utf8');
