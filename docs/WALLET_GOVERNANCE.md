@@ -594,7 +594,7 @@ Check if user can create more wallets.
 For wallet security questions:
 - **Security Email**: security@gxq.studio
 - **Documentation**: https://docs.gxq.studio/wallet-governance
-- **Issue Tracker**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Issue Tracker**: https://github.com/SMSDAO/TradeOS/issues
 
 **Lost Wallet Access:**
 If you lose your encryption password, your wallet cannot be recovered. Always backup passwords securely.

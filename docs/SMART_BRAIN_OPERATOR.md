@@ -76,8 +76,8 @@ master.sh
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/SMSDAO/reimagined-jupiter.git
-   cd reimagined-jupiter
+   git clone https://github.com/SMSDAO/TradeOS.git
+   cd TradeOS
    ```
 
 2. **Set up environment variables**
@@ -510,7 +510,7 @@ npm run validate-build || exit 1
 ## Support
 
 - **Documentation**: See `docs/CI_CD_GUIDE.md` and `docs/DEPLOYMENT.md`
-- **Issues**: Report at https://github.com/SMSDAO/reimagined-jupiter/issues
+- **Issues**: Report at https://github.com/SMSDAO/TradeOS/issues
 - **Health Checks**: Automated issues created by scheduled health workflow
 
 ---

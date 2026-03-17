@@ -88,7 +88,7 @@ git push origin gxq
 #### Connect Repository to Vercel
 
 1. Go to [vercel.com/new](https://vercel.com/new)
-2. Import: `SMSDAO/reimagined-jupiter`
+2. Import: `SMSDAO/TradeOS`
 3. Select the `gxq` branch for deployment
 4. Configure:
    - Root Directory: `webapp`

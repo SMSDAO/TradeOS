@@ -1,10 +1,10 @@
 # GXQ STUDIO - Advanced Solana DeFi Platform
 
-[![CI Pipeline](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/ci.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/codeql-analysis.yml)
-[![codecov](https://codecov.io/gh/SMSDAO/reimagined-jupiter/branch/main/graph/badge.svg)](https://codecov.io/gh/SMSDAO/reimagined-jupiter)
-[![Deploy Preview](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-preview.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-preview.yml)
-[![Deploy Railway](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-railway.yml/badge.svg)](https://github.com/SMSDAO/reimagined-jupiter/actions/workflows/deploy-railway.yml)
+[![CI Pipeline](https://github.com/SMSDAO/TradeOS/actions/workflows/ci.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/SMSDAO/TradeOS/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/codeql-analysis.yml)
+[![codecov](https://codecov.io/gh/SMSDAO/TradeOS/branch/main/graph/badge.svg)](https://codecov.io/gh/SMSDAO/TradeOS)
+[![Deploy Preview](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-preview.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-preview.yml)
+[![Deploy Railway](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-railway.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-railway.yml)
 
 The most advanced Solana DeFi platform with flash loan arbitrage, sniper bot, token launchpad, and comprehensive Web3 UI.
 
@@ -85,7 +85,7 @@ make docker-up     # Start with Docker
 
 #### Via Vercel Dashboard:
 1. Go to https://vercel.com/new
-2. Import: `SMSDAO/reimagined-jupiter`
+2. Import: `SMSDAO/TradeOS`
 3. **Set Root Directory**: `webapp` ← **REQUIRED**
 4. Add env: `NEXT_PUBLIC_RPC_URL`
 5. Deploy
@@ -102,7 +102,7 @@ See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed instructions and troublesh
 
 **Railway provides 24/7 backend hosting with automated arbitrage scanning!**
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/SMSDAO/reimagined-jupiter?referralCode=gxq)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/SMSDAO/TradeOS?referralCode=gxq)
 
 #### Automated Setup:
 ```bash
@@ -209,8 +209,8 @@ railway up
 
 ```bash
 # Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # Install dependencies
 npm install
@@ -521,6 +521,51 @@ Cryptocurrency trading and arbitrage involve significant risks:
 
 MIT License - see LICENSE file for details
 
+## 🤖 Continuous Self-Optimization
+
+**NEW!** Every PR is automatically analyzed and optimized by our self-optimization workflow:
+
+### Automated Actions
+- ✅ **Auto-fix ESLint Issues**: Formatting, imports, and style violations
+- ✅ **Dead Code Detection**: Finds unused exports, imports, and unreachable code
+- ✅ **Complexity Analysis**: Identifies functions that need refactoring
+- ✅ **Test Coverage Gaps**: Detects untested code and generates test templates
+- ✅ **Security Scanning**: Flags risky patterns like `eval()`, type safety issues
+- ✅ **Inline PR Comments**: Contextual recommendations on specific code lines
+
+### What Gets Automatically Fixed
+- Code formatting and style
+- Unused imports
+- Simple ESLint violations
+- Type inference improvements
+
+### What Gets Flagged for Review
+- High complexity functions (cyclomatic complexity > 10)
+- Security risks (eval, innerHTML, etc.)
+- Excessive `any` type usage
+- TODO/FIXME in production code
+- Low test coverage (<80%)
+- Mock/placeholder implementations
+
+See **[Self-Optimization Guide](.github/SELF_OPTIMIZATION_GUIDE.md)** for complete documentation.
+
+### Developer Commands
+
+```bash
+# Run all optimizations locally
+npm run optimize
+
+# Fix linting issues
+npm run lint:fix
+npm run lint:webapp:fix
+
+# Analyze dead code
+npm run dead-code:analyze
+
+# Analyze test coverage gaps
+npm run coverage:analyze
+```
+
 ## 📚 Documentation
 
 ### Getting Started
@@ -536,6 +581,7 @@ MIT License - see LICENSE file for details
 - **[Deployment Automation](./docs/DEPLOYMENT_AUTOMATION.md)** - CI/CD workflows and automation
 - **[Vercel Deployment](./VERCEL_DEPLOY.md)** - Vercel-specific instructions
 - **[Enhanced Scanner](./ENHANCED_SCANNER.md)** - Real-time arbitrage scanning
+- **[Self-Optimization](.github/SELF_OPTIMIZATION_GUIDE.md)** - Automated code quality workflow
 
 ### DevOps & Automation
 - **[Merge Automation Guide](./docs/MERGE_AUTOMATION.md)** - PowerShell merge automation (80% faster)
@@ -672,7 +718,7 @@ Repository maintainers should configure these secrets in **Settings → Secrets 
 
 ### CI/CD Workflow Results
 
-Check the [Actions tab](https://github.com/SMSDAO/reimagined-jupiter/actions) to view workflow runs and results. Each PR will show:
+Check the [Actions tab](https://github.com/SMSDAO/TradeOS/actions) to view workflow runs and results. Each PR will show:
 
 - ✅ Lint and type checking results
 - ✅ Test results with coverage report
