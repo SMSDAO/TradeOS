@@ -57,6 +57,8 @@ detect_duplicate_code() {
   if [[ -f "$OUTPUT_DIR/jscpd-report.json" ]]; then
     DUPLICATE_COUNT=$(jq '.statistics.total.duplicates // 0' "$OUTPUT_DIR/jscpd-report.json" 2>/dev/null || echo "0")
     echo "Found $DUPLICATE_COUNT code duplications"
+  else
+    echo "No duplication report generated"
   fi
 }
 
