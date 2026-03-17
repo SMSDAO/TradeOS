@@ -82,8 +82,8 @@ NEXT_PUBLIC_RPC_URL=https://api.mainnet-beta.solana.com
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/SMSDAO/reimagined-jupiter.git
-cd reimagined-jupiter
+git clone https://github.com/SMSDAO/TradeOS.git
+cd TradeOS
 
 # 2. Install dependencies
 npm install
@@ -118,7 +118,7 @@ A Docker configuration will be added in a future update.
 
 1. **Go to** [Vercel Dashboard](https://vercel.com/new)
 
-2. **Import Repository**: `SMSDAO/reimagined-jupiter`
+2. **Import Repository**: `SMSDAO/TradeOS`
 
 3. **Configure Settings**:
    - **Root Directory**: `webapp` ⚠️ **CRITICAL - Must be set!**
@@ -154,7 +154,7 @@ vercel --prod
 
 Click the button below to deploy:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/reimagined-jupiter&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS&root-directory=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20endpoint%20URL&envLink=https://www.quicknode.com)
 
 ## Post-Deployment Verification
 
@@ -304,7 +304,7 @@ Click the button below to deploy:
 ### Support & Resources
 
 - **Documentation**: See README.md and related docs in repository
-- **GitHub Issues**: https://github.com/SMSDAO/reimagined-jupiter/issues
+- **GitHub Issues**: https://github.com/SMSDAO/TradeOS/issues
 - **Solana Docs**: https://docs.solana.com/
 - **Vercel Docs**: https://vercel.com/docs
 - **Next.js Docs**: https://nextjs.org/docs

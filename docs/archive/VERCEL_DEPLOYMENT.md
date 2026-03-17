@@ -143,7 +143,7 @@ The TypeScript backend can be deployed separately for automated trading:
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 git clone <your-repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 
@@ -214,7 +214,7 @@ docker run -d \
 ## 📞 Support
 
 For issues or questions:
-- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [Repository Issues](https://github.com/SMSDAO/TradeOS/issues)
 - Documentation: See README.md and DEPLOYMENT_READY.md
 
 ---

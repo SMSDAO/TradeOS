@@ -411,7 +411,7 @@ npm start
 - Implementation: `webapp/app/prompt-optimizer/IMPLEMENTATION_GUIDE.md`
 
 ### Resources
-- GitHub Repository: SMSDAO/reimagined-jupiter
+- GitHub Repository: SMSDAO/TradeOS
 - Branch: copilot/setup-nextjs-project-structure
 - Route: `/prompt-optimizer`
 

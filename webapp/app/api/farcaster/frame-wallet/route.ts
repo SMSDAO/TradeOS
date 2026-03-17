@@ -7,7 +7,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Keypair } from "@solana/web3.js";
 import bs58 from "bs58";
-import { getCompleteProfile } from "../../../../../../src/integrations/farcaster";
+// TODO: Move getCompleteProfile to webapp or call backend API
+// import { getCompleteProfile } from "../../../../../src/integrations/farcaster.js";
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,7 +34,9 @@ export async function POST(request: NextRequest) {
     let socialProfile = null;
     if (walletAddress) {
       try {
-        socialProfile = await getCompleteProfile(walletAddress);
+        // TODO: Implement Farcaster profile fetching
+        // socialProfile = await getCompleteProfile(walletAddress);
+        console.log("[Farcaster Frame] Profile fetching not yet implemented for wallet:", walletAddress);
       } catch (error) {
         console.warn(
           "[Farcaster Frame] Could not fetch social profile:",

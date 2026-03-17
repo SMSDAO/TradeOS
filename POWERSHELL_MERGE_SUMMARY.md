@@ -144,7 +144,7 @@ Successfully implemented a high-performance PowerShell merge automation script t
 ## 📊 Performance Results
 
 ### Test Scenario
-- **Repository**: reimagined-jupiter (500 MB)
+- **Repository**: TradeOS (500 MB)
 - **Branches**: 8 feature branches
 - **Tests**: Full backend + webapp tests
 - **Hardware**: 8-core CPU, 16GB RAM
@@ -349,7 +349,7 @@ Get-Help ./scripts/Merge-Branches.ps1 -Full
 ```
 
 ### Issue Reporting
-- GitHub Issues: [SMSDAO/reimagined-jupiter/issues](https://github.com/SMSDAO/reimagined-jupiter/issues)
+- GitHub Issues: [SMSDAO/TradeOS/issues](https://github.com/SMSDAO/TradeOS/issues)
 - Label: `merge-automation`
 
 ## ✨ Conclusion

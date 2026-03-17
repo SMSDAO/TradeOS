@@ -141,7 +141,7 @@ Pyth Network + Jupiter + Raydium + Orca + Meteora
 ## Code Structure
 
 ```
-/home/runner/work/reimagined-jupiter/reimagined-jupiter/
+/home/runner/work/TradeOS/TradeOS/
 ├── src/services/
 │   ├── tickerService.ts           # Pyth Network integration
 │   ├── priceAggregator.ts         # Multi-source aggregation

@@ -2,6 +2,19 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { ProfitDistributionService } from "../services/profitDistribution";
 import { SNSDomainResolver } from "../services/snsResolver";
 
+// Mock @solana/web3.js to avoid network calls
+jest.mock("@solana/web3.js", () => {
+  const actual = jest.requireActual("@solana/web3.js");
+  return {
+    ...actual,
+    Connection: jest.fn().mockImplementation(() => ({
+      getSlot: jest.fn().mockResolvedValue(100000),
+      getBalance: jest.fn().mockResolvedValue(1000000000),
+      getAccountInfo: jest.fn().mockResolvedValue(null),
+    })),
+  };
+});
+
 describe("ProfitDistributionService", () => {
   describe("Configuration Validation", () => {
     it("should accept valid configuration with percentages summing to 1.0", () => {

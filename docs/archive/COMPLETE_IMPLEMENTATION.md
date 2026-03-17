@@ -136,7 +136,7 @@ webapp/
 
 2. **Import to Vercel**
    - Go to [vercel.com/new](https://vercel.com/new)
-   - Import `SMSDAO/reimagined-jupiter`
+   - Import `SMSDAO/TradeOS`
    - Set root directory: `webapp`
    - Add environment variable: `NEXT_PUBLIC_RPC_URL`
    - Click Deploy
@@ -148,7 +148,7 @@ webapp/
 ```bash
 # On your server
 git clone <repo>
-cd reimagined-jupiter
+cd TradeOS
 npm install
 npm run build
 cp .env.example .env
