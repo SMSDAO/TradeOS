@@ -9,10 +9,9 @@ on:
     types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: write
-  issues: write
-  checks: write
+  issues: read
 
 concurrency:
   group: self-optimize-${{ github.ref }}
@@ -74,7 +73,7 @@ jobs:
           echo "## Unused Code Detection" > /tmp/unused-code-report.md
           echo "" >> /tmp/unused-code-report.md
           
-          # Use ts-prune from devDependencies (already installed via npm ci)
+          # Use ts-prune from pinned devDependencies (installed via npm ci)
           
           # Detect unused exports
           echo "### Unused Exports" >> /tmp/unused-code-report.md
@@ -100,7 +99,7 @@ jobs:
           echo "## Code Complexity Analysis" > /tmp/complexity-report.md
           echo "" >> /tmp/complexity-report.md
           
-          # Use eslint-plugin-complexity from devDependencies (already installed via npm ci)
+          # Use eslint-plugin-complexity from pinned devDependencies (installed via npm ci)
           
           # Run complexity analysis
           echo "Analyzing cyclomatic complexity..." >> /tmp/complexity-report.md
@@ -198,12 +197,15 @@ jobs:
           echo "### Potential Security Issues:" >> /tmp/risky-code-report.md
           echo "" >> /tmp/risky-code-report.md
           
+          RISKY_FOUND="false"
+          
           # Check for eval usage
           EVAL_COUNT=$(grep -r "eval(" src/ --include="*.ts" 2>/dev/null | wc -l || echo "0")
           if [[ $EVAL_COUNT -gt 0 ]]; then
             echo "⚠️ **eval() usage detected ($EVAL_COUNT instances)** - High security risk" >> /tmp/risky-code-report.md
             grep -rn "eval(" src/ --include="*.ts" 2>/dev/null | head -n 10 >> /tmp/risky-code-report.md || true
             echo "" >> /tmp/risky-code-report.md
+            RISKY_FOUND="true"
           fi
           
           # Check for any usage
@@ -211,6 +213,7 @@ jobs:
           if [[ $ANY_COUNT -gt 100 ]]; then
             echo "⚠️ **Excessive 'any' type usage ($ANY_COUNT instances)** - Type safety compromised" >> /tmp/risky-code-report.md
             echo "" >> /tmp/risky-code-report.md
+            RISKY_FOUND="true"
           fi
           
           # Check for TODO/FIXME comments
@@ -219,6 +222,7 @@ jobs:
             echo "📝 **Found $TODO_COUNT TODO/FIXME comments** - Technical debt identified" >> /tmp/risky-code-report.md
             grep -rn "TODO\|FIXME" src/ --include="*.ts" 2>/dev/null | head -n 20 >> /tmp/risky-code-report.md || true
             echo "" >> /tmp/risky-code-report.md
+            RISKY_FOUND="true"
           fi
           
           # Check for console.log in production code
@@ -226,6 +230,7 @@ jobs:
           if [[ $CONSOLE_COUNT -gt 0 ]]; then
             echo "⚠️ **console.log() in production code ($CONSOLE_COUNT instances)** - Should use logger" >> /tmp/risky-code-report.md
             echo "" >> /tmp/risky-code-report.md
+            RISKY_FOUND="true"
           fi
           
           # Check for private key handling
@@ -233,39 +238,26 @@ jobs:
           if [[ $KEY_COUNT -gt 0 ]]; then
             echo "🔐 **Private key references detected ($KEY_COUNT)** - Verify secure handling" >> /tmp/risky-code-report.md
             echo "" >> /tmp/risky-code-report.md
+            RISKY_FOUND="true"
           fi
           
-          # Set risky_patterns_found only if any issues detected
-          if [[ $EVAL_COUNT -gt 0 ]] || [[ $ANY_COUNT -gt 100 ]] || [[ $TODO_COUNT -gt 0 ]] || [[ $CONSOLE_COUNT -gt 0 ]] || [[ $KEY_COUNT -gt 0 ]]; then
-            echo "risky_patterns_found=true" >> $GITHUB_OUTPUT
-          else
-            echo "risky_patterns_found=false" >> $GITHUB_OUTPUT
-          fi
+          echo "risky_patterns_found=$RISKY_FOUND" >> $GITHUB_OUTPUT
       
-      - name: Commit automated fixes
-        id: commit-fixes
+      - name: Report automated fixes status
+        id: report-fixes
         if: steps.eslint-fix.outputs.fixed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git add -A
-          git commit -m "chore: Apply automated code optimizations
-
-          - Auto-fix ESLint issues
-          - Format code according to style guide
-          - Applied by self-optimization workflow
-          
-          [skip ci]" || echo "No changes to commit"
-          
-          # Push to PR branch with proper error handling
-          # Note: If push fails due to conflicts, fail the job and post a comment
-          if ! git push origin ${{ github.event.pull_request.head.ref }}; then
-            echo "push_failed=true" >> $GITHUB_OUTPUT
-            echo "❌ Push to PR branch failed. This may be due to concurrent updates on the branch." >&2
-            exit 1
-          fi
-          echo "push_failed=false" >> $GITHUB_OUTPUT
+          echo "## ⚠️ Automated Fixes Required" > /tmp/fix-required.md
+          echo "" >> /tmp/fix-required.md
+          echo "This PR has auto-fixable issues. However, automated fixes are NOT pushed to your branch." >> /tmp/fix-required.md
+          echo "" >> /tmp/fix-required.md
+          echo "### Manual Steps Required:" >> /tmp/fix-required.md
+          echo "1. Run \`npm run lint:fix\` locally to apply ESLint fixes" >> /tmp/fix-required.md
+          echo "2. Run \`cd webapp && npm run lint -- --fix\` for webapp fixes" >> /tmp/fix-required.md
+          echo "3. Review and commit the changes" >> /tmp/fix-required.md
+          echo "4. Push to your branch" >> /tmp/fix-required.md
+          echo "" >> /tmp/fix-required.md
+          echo "Alternatively, a maintainer can create a fix branch and PR for you." >> /tmp/fix-required.md
       
       - name: Generate comprehensive PR comment
         id: generate-comment
@@ -303,7 +295,24 @@ jobs:
           echo "- Inline comments added for manual review items" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           
-          echo "### 📋 Next Steps" >> /tmp/pr-comment.md
+          # Add fix-required notice if applicable
+          if [[ -f /tmp/fix-required.md ]]; then
+            cat /tmp/fix-required.md >> /tmp/pr-comment.md
+            echo "" >> /tmp/pr-comment.md
+            echo "---" >> /tmp/pr-comment.md
+            echo "" >> /tmp/pr-comment.md
+          fi
+          
+          # Add summary
+          echo "" >> /tmp/pr-comment.md
+          echo "### 📊 Summary" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          echo "- 📝 Review the reports above for manual attention items" >> /tmp/pr-comment.md
+          echo "- 🔍 Check inline comments for specific recommendations" >> /tmp/pr-comment.md
+          echo "- ⚠️ Address any flagged security or complexity issues" >> /tmp/pr-comment.md
+          echo "- 📦 Full analysis artifacts available in workflow run" >> /tmp/pr-comment.md
+          echo "" >> /tmp/pr-comment.md
+          echo "### Next Steps" >> /tmp/pr-comment.md
           echo "" >> /tmp/pr-comment.md
           echo "1. Review automated changes committed by this workflow" >> /tmp/pr-comment.md
           echo "2. Address any flagged security or complexity issues in inline comments" >> /tmp/pr-comment.md
@@ -365,8 +374,9 @@ jobs:
               .split('\n')
               .filter(f => f.endsWith('.ts') || f.endsWith('.tsx'));
             
+            const comments = [];
             // Use a Map to deduplicate comments by file:line
-            const commentsMap = new Map();
+            const commentMap = new Map();
             
             // Parse complexity issues
             try {
@@ -380,9 +390,19 @@ jobs:
                 for (const message of result.messages) {
                   if (message.ruleId && (message.ruleId.includes('complexity') || message.ruleId.includes('max-'))) {
                     const key = `${file}:${message.line}`;
-                    const existing = commentsMap.get(key) || { path: file, line: message.line, issues: [] };
-                    existing.issues.push(`⚠️ **${message.ruleId}**: ${message.message}`);
-                    commentsMap.set(key, existing);
+                    const commentBody = `⚠️ **${message.ruleId}**: ${message.message}\n\n**Suggestion:** Consider refactoring this function to reduce complexity and improve maintainability.`;
+                    
+                    if (!commentMap.has(key)) {
+                      commentMap.set(key, {
+                        path: file,
+                        line: message.line,
+                        body: commentBody
+                      });
+                    } else {
+                      // Aggregate findings for the same line
+                      const existing = commentMap.get(key);
+                      existing.body += '\n\n---\n\n' + commentBody;
+                    }
                   }
                 }
               }
@@ -399,22 +419,50 @@ jobs:
                 lines.forEach((line, index) => {
                   const lineNum = index + 1;
                   const key = `${file}:${lineNum}`;
-                  const existing = commentsMap.get(key) || { path: file, line: lineNum, issues: [] };
                   
                   if (line.includes('TODO') || line.includes('FIXME')) {
-                    existing.issues.push('📝 **Technical Debt**: TODO/FIXME should be addressed before merging to production.');
+                    const commentBody = '📝 **Technical Debt Detected**: This TODO/FIXME should be addressed before merging to production.\n\n**Action Required:** Either resolve the issue or create a tracking issue.';
+                    
+                    if (!commentMap.has(key)) {
+                      commentMap.set(key, {
+                        path: file,
+                        line: lineNum,
+                        body: commentBody
+                      });
+                    } else {
+                      const existing = commentMap.get(key);
+                      existing.body += '\n\n---\n\n' + commentBody;
+                    }
                   }
                   
                   if (line.includes('console.log') && !file.includes('logger')) {
-                    existing.issues.push('⚠️ **Logging Issue**: Using console.log in production code. Replace with proper logger.');
+                    const commentBody = '⚠️ **Logging Issue**: Using console.log in production code.\n\n**Recommendation:** Replace with proper logger utility from `src/utils/logger.ts`.';
+                    
+                    if (!commentMap.has(key)) {
+                      commentMap.set(key, {
+                        path: file,
+                        line: lineNum,
+                        body: commentBody
+                      });
+                    } else {
+                      const existing = commentMap.get(key);
+                      existing.body += '\n\n---\n\n' + commentBody;
+                    }
                   }
                   
                   if (line.includes('eval(')) {
-                    existing.issues.push('🚨 **Security Risk**: eval() is dangerous and should be avoided. This is a critical security issue.');
-                  }
-                  
-                  if (existing.issues.length > 0) {
-                    commentsMap.set(key, existing);
+                    const commentBody = '🚨 **Security Risk**: eval() is dangerous and should be avoided.\n\n**Action Required:** Refactor to use safer alternatives. This is a critical security issue.';
+                    
+                    if (!commentMap.has(key)) {
+                      commentMap.set(key, {
+                        path: file,
+                        line: lineNum,
+                        body: commentBody
+                      });
+                    } else {
+                      const existing = commentMap.get(key);
+                      existing.body += '\n\n---\n\n' + commentBody;
+                    }
                   }
                 });
               } catch (e) {
@@ -422,15 +470,11 @@ jobs:
               }
             }
             
-            // Convert Map to array and format comments
-            const comments = Array.from(commentsMap.values()).map(c => ({
-              path: c.path,
-              line: c.line,
-              body: c.issues.join('\n\n')
-            }));
+            // Convert map to array (deduplicated comments)
+            const deduplicatedComments = Array.from(commentMap.values());
             
             // Post inline comments (max 50 to avoid rate limits)
-            const limitedComments = comments.slice(0, 50);
+            const limitedComments = deduplicatedComments.slice(0, 50);
             
             if (limitedComments.length > 0) {
               try {

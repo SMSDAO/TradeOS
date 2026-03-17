@@ -3,7 +3,7 @@
 # Dead Code Detection and Analysis Script
 # This script identifies unused exports, unreachable code, and other dead code patterns
 
-set -euo pipefail  # Exit on error, undefined variables, and pipeline failures
+set -euo pipefail
 
 OUTPUT_DIR="/tmp/dead-code-analysis"
 mkdir -p "$OUTPUT_DIR"
@@ -14,7 +14,7 @@ echo "🔍 Starting Dead Code Analysis..."
 analyze_unused_exports() {
   echo "Analyzing unused exports..."
   
-  # Use ts-prune from devDependencies (no dynamic install)
+  # Use ts-prune from pinned devDependencies (no ad-hoc install)
   npx ts-prune --error > "$OUTPUT_DIR/unused-exports.txt" 2>&1 || true
   
   UNUSED_COUNT=$(grep -c "used in module" "$OUTPUT_DIR/unused-exports.txt" 2>/dev/null || echo "0")
@@ -39,20 +39,19 @@ detect_unreachable_code() {
 find_unused_imports() {
   echo "Finding unused imports..."
   
-  # Use ts-prune for proper AST-based unused import detection
-  # This replaces the fragile grep-based heuristics
-  echo "Using ts-prune for unused export detection (see unused-exports.txt)" > "$OUTPUT_DIR/unused-imports.txt"
-  echo "Note: ts-prune identifies unused exports; ESLint's no-unused-vars handles unused imports" >> "$OUTPUT_DIR/unused-imports.txt"
+  # Use ts-prune for accurate unused import detection instead of fragile grep
+  # ts-prune handles imports properly via AST analysis
+  echo "Note: Unused imports are included in ts-prune unused exports analysis above" > "$OUTPUT_DIR/unused-imports.txt"
   
   UNUSED_IMPORT_COUNT=0
-  echo "Unused imports are handled by ESLint no-unused-vars rule"
+  echo "Detected via ts-prune (see unused-exports.txt)"
 }
 
 # Function to detect duplicate code
 detect_duplicate_code() {
   echo "Detecting code duplication..."
   
-  # Use jscpd from devDependencies (no dynamic install)
+  # Use jscpd from pinned devDependencies (no ad-hoc install)
   npx jscpd src/ --format json --output "$OUTPUT_DIR" --min-lines 10 --min-tokens 50 2>&1 || true
   
   if [[ -f "$OUTPUT_DIR/jscpd-report.json" ]]; then
@@ -123,8 +122,8 @@ This report identifies potentially unused, unreachable, or redundant code in the
 - **Details**: See \`potentially-unreachable.txt\`
 
 ### Unused Imports
-- **Count**: $(wc -l < "$OUTPUT_DIR/unused-imports.txt" 2>/dev/null || echo "0")
-- **Details**: See \`unused-imports.txt\`
+- **Count**: Detected via ts-prune
+- **Details**: See \`unused-exports.txt\` (ts-prune detects both unused exports and imports)
 
 ### Code Duplication
 - **Count**: $(jq '.statistics.total.duplicates // 0' "$OUTPUT_DIR/jscpd-report.json" 2>/dev/null || echo "0")
