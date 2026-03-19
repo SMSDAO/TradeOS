@@ -81,9 +81,11 @@ make docker-up     # Start with Docker
 
 ### Quick Deploy to Vercel
 
-**⚠️ IMPORTANT**: When deploying to Vercel, set **Root Directory** to `webapp` in the project settings.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/SMSDAO/TradeOS&root=webapp&env=NEXT_PUBLIC_RPC_URL&envDescription=Solana%20RPC%20URL%20(premium%20recommended%2C%20default%3A%20public%20mainnet)&envLink=https%3A%2F%2Fgithub.com%2FSMSDAO%2FTradeOS%2Fblob%2Fmain%2F.env.example&project-name=gxq-studio&repository-name=TradeOS)
 
-#### Via Vercel Dashboard:
+**⚠️ IMPORTANT**: The deploy button above pre-configures Root Directory to `webapp`. If importing manually, set **Root Directory** to `webapp` in the project settings.
+
+#### Via Vercel Dashboard (manual):
 1. Go to https://vercel.com/new
 2. Import: `SMSDAO/TradeOS`
 3. **Set Root Directory**: `webapp` ← **REQUIRED**
@@ -96,7 +98,7 @@ cd webapp
 vercel --prod
 ```
 
-See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed instructions and troubleshooting.
+See [VERCEL_DEPLOYMENT_CASTQUEST.md](VERCEL_DEPLOYMENT_CASTQUEST.md) for detailed instructions and troubleshooting.
 
 ### Quick Deploy to Railway
 

@@ -1,0 +1,45 @@
+{
+  "name": "GXQ Studio - Solana DeFi Platform",
+  "short_name": "GXQ Studio",
+  "description": "Advanced Solana DeFi platform with flash loan arbitrage, MEV-protected sniper bot, token launchpad, Jupiter swap, and NFT staking.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d1117",
+  "theme_color": "#0969da",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Swap",
+      "url": "/swap",
+      "description": "Jupiter token swap"
+    },
+    {
+      "name": "Arbitrage",
+      "url": "/arbitrage",
+      "description": "Flash loan arbitrage"
+    }
+  ]
+}
