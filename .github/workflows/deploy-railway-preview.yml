@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Check for skip-deployment label
         id: check
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const labels = context.payload.pull_request.labels.map(label => label.name);
@@ -196,7 +196,7 @@ jobs:
           
       - name: Add preview-deployed label
         if: success()
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             try {
@@ -211,7 +211,7 @@ jobs:
             }
           
       - name: Comment preview URL on PR
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const url = '${{ steps.deploy.outputs.url }}';
@@ -276,7 +276,7 @@ jobs:
             
       - name: Create deployment record
         if: success()
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const deployment = await github.rest.repos.createDeployment({
@@ -309,7 +309,7 @@ jobs:
     
     steps:
       - name: Comment on PR
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const skipLabel = '${{ needs.check-skip.outputs.should-deploy }}' === 'false';

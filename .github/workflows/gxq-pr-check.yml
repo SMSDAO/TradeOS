@@ -81,7 +81,7 @@ jobs:
           echo "webapp_size=$WEBAPP_SIZE" >> $GITHUB_OUTPUT
       
       - name: Comment PR with results
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const distSize = '${{ steps.sizes.outputs.dist_size }}';
