@@ -40,7 +40,7 @@ jobs:
 
       - name: Extract metadata for Backend
         id: meta-backend
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/backend
           tags: |
@@ -65,7 +65,7 @@ jobs:
 
       - name: Extract metadata for Webapp
         id: meta-webapp
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/webapp
           tags: |
@@ -90,7 +90,7 @@ jobs:
 
       - name: Extract metadata for Fullstack
         id: meta-fullstack
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/fullstack
           tags: |
