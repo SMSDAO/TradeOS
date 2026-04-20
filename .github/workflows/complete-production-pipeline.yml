@@ -84,7 +84,7 @@ jobs:
           cache: 'npm'
           
       - name: Install backend dependencies (with retry)
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 10
           max_attempts: 3
@@ -92,7 +92,7 @@ jobs:
           command: npm ci
           
       - name: Install webapp dependencies (with retry)
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 10
           max_attempts: 3
@@ -111,7 +111,7 @@ jobs:
         run: npm run type-check && npm run type-check:webapp
         
       - name: Run tests (with retry)
-        uses: nick-fields/retry@v3
+        uses: nick-fields/retry@v4
         with:
           timeout_minutes: 15
           max_attempts: 2
