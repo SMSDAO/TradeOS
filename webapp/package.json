@@ -39,7 +39,7 @@
     "bs58": "^6.0.0",
     "framer-motion": "^12.38.0",
     "jsonwebtoken": "^9.0.3",
-    "next": "16.2.3",
+    "next": "16.2.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "three": "^0.183.2"
