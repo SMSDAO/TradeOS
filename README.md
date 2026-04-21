@@ -35,10 +35,10 @@ powershell -ExecutionPolicy Bypass -File ./scripts/Bootstrap.ps1
 
 ```mermaid
 flowchart LR
-  web[apps/web or webapp] --> shared[shared-types contract]
-  pqc[packages/pqc-auth] --> shared
-  engine[packages/engine] --> shared
-  api[apps/api] --> shared
+  cli[src + api] --> core[Root TypeScript runtime]
+  web[webapp Next.js] --> core
+  admin[admin Electron] --> web
+  scripts[scripts/*] --> core
 ```
 
 ## 📦 Deployment Options
