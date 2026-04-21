@@ -20,6 +20,27 @@ make dev           # Start local development
 make docker-up     # Start with Docker
 ```
 
+### 🧠 Realise (Production Bootstrap)
+
+```bash
+powershell -ExecutionPolicy Bypass -File ./scripts/Bootstrap.ps1
+```
+
+- Runs environment checks (Node.js + npm)
+- Installs dependencies (root + webapp + optional `apps/api`)
+- Initializes `.env` files from examples when missing
+- Builds the project (unless `-SkipBuild` is passed)
+
+`No-Drift` completion tag: `v1.0.0-STABLE` @ `2026-04-21T10:30:49.889+00:00`
+
+```mermaid
+flowchart LR
+  web[apps/web or webapp] --> shared[shared-types contract]
+  pqc[packages/pqc-auth] --> shared
+  engine[packages/engine] --> shared
+  api[apps/api] --> shared
+```
+
 ## 📦 Deployment Options
 
 **Deploy to any platform in minutes!** See [DEPLOYMENT.md](DEPLOYMENT.md) for comprehensive guides.
