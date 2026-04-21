@@ -51,6 +51,7 @@ export class FlashloanExecutor {
   constructor(
     connection: Connection,
     jupiterApiUrl: string = "https://api.jup.ag/v6",
+    minProfitThreshold: number = 0.001,
   ) {
     this.connection = connection;
     this.jupiterApiUrl = jupiterApiUrl;

@@ -54,7 +54,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Full history needed for merge operations
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -139,7 +139,7 @@ jobs:
 
       - name: Upload Merge Logs
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: merge-logs-${{ github.run_number }}-${{ github.run_attempt }}
           path: scripts/merge-log-*.txt
@@ -190,7 +190,7 @@ jobs:
 
       - name: Create Issue on Failure
         if: failure() && github.event_name == 'schedule'
-        uses: actions/github-script@v9
+        uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
@@ -240,7 +240,7 @@ jobs:
 
       - name: Comment Success
         if: success() && github.event_name == 'workflow_dispatch'
-        uses: actions/github-script@v9
+        uses: actions/github-script@v7
         with:
           script: |
             // If triggered manually, post a success comment to a tracking issue
@@ -270,7 +270,7 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Remove Old Log Files
         shell: pwsh

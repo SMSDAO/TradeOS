@@ -28,10 +28,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
@@ -52,14 +52,14 @@ jobs:
         run: bash scripts/validate-build.sh
       
       - name: Upload backend artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: backend-dist
           path: dist/
           retention-days: 1
       
       - name: Upload webapp artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: webapp-build
           path: webapp/.next/
@@ -78,10 +78,10 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       
-      - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
       
@@ -104,15 +104,15 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       
-      - name: Setup Node.js 20.x
-        uses: actions/setup-node@v6
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v4
         with:
           node-version: '24'
       
       - name: Download backend artifacts
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v4
         with:
           name: backend-dist
           path: dist/
@@ -134,7 +134,7 @@ jobs:
     
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
       
       - name: Wait for deployment to stabilize
         run: sleep 30

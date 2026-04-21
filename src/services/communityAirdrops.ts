@@ -11,6 +11,7 @@ import {
   createTransferInstruction,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
+import { WalletScoring } from "./walletScoring";
 
 export interface CommunityAirdropConfig {
   daoWalletAddress: PublicKey;
