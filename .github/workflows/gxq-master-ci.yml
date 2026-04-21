@@ -26,7 +26,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -55,7 +55,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-24-backend-${{ hashFiles('package-lock.json') }}
           
       - name: Install webapp dependencies
         working-directory: ./webapp
@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: webapp/node_modules
-          key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
+          key: ${{ runner.os }}-node-24-webapp-${{ hashFiles('webapp/package-lock.json') }}
 
   lint-and-typecheck:
     name: Lint and Type Check
@@ -90,7 +90,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -100,7 +100,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-24-backend-${{ hashFiles('package-lock.json') }}
       
       - name: Install backend dependencies (if cache miss)
         run: npm ci --prefer-offline || npm ci
@@ -116,7 +116,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: webapp/node_modules
-          key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
+          key: ${{ runner.os }}-node-24-webapp-${{ hashFiles('webapp/package-lock.json') }}
       
       - name: Install webapp dependencies (if cache miss)
         working-directory: ./webapp
@@ -139,7 +139,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -149,7 +149,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-24-backend-${{ hashFiles('package-lock.json') }}
       
       - name: Install backend dependencies (if cache miss)
         run: npm ci --prefer-offline || npm ci
@@ -174,7 +174,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -184,7 +184,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: webapp/node_modules
-          key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
+          key: ${{ runner.os }}-node-24-webapp-${{ hashFiles('webapp/package-lock.json') }}
       
       - name: Install webapp dependencies (if cache miss)
         working-directory: ./webapp
