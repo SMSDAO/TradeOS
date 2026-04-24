@@ -1,11 +1,16 @@
 name: GXQ PR Check
 
 on:
-  pull_request:
-    branches:
-      - master
-      - main
-    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref (branch/tag/SHA) to validate'
+        required: false
+        default: 'main'
+      pr_number:
+        description: 'Optional PR number to post results to'
+        required: false
+        default: ''
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,11 +26,12 @@ jobs:
     name: PR Validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: github.event.pull_request.draft == false
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
         
       - name: Setup Node.js 24.x
         uses: actions/setup-node@v4
@@ -86,6 +92,15 @@ jobs:
           script: |
             const distSize = '${{ steps.sizes.outputs.dist_size }}';
             const webappSize = '${{ steps.sizes.outputs.webapp_size }}';
+            const inputPr = '${{ github.event.inputs.pr_number }}';
+            if (!inputPr) {
+              console.log('No PR number provided; skipping PR comment.');
+              return;
+            }
+            const issueNumber = Number(inputPr);
+            if (!Number.isInteger(issueNumber) || issueNumber <= 0) {
+              throw new Error(`Invalid pr_number input: '${inputPr}'. Must be a positive integer.`);
+            }
             
             const comment = `## 🔍 GXQ PR Check Results
             
@@ -116,7 +131,7 @@ jobs:
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue_number: issueNumber,
               body: comment
             });
 
@@ -124,11 +139,11 @@ jobs:
     name: PR Security Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    if: github.event.pull_request.draft == false
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
         
       - name: Setup Node.js 24.x
         uses: actions/setup-node@v4

@@ -1,12 +1,16 @@
 name: Deploy Preview
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - main
-      - develop
-      - dev
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref (branch/tag/SHA) to deploy'
+        required: false
+        default: 'main'
+      rpc_url:
+        description: 'Optional NEXT_PUBLIC_RPC_URL override'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -61,6 +65,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
         
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -72,12 +78,20 @@ jobs:
       - name: Install webapp dependencies
         working-directory: ./webapp
         run: npm ci
+
+      - name: Validate RPC URL
+        run: |
+          RPC_URL="${{ github.event.inputs.rpc_url || secrets.NEXT_PUBLIC_RPC_URL }}"
+          if [ -z "$RPC_URL" ]; then
+            echo "::error::Either rpc_url input or NEXT_PUBLIC_RPC_URL secret must be provided for manual preview deployment."
+            exit 1
+          fi
         
       - name: Build webapp
         working-directory: ./webapp
         run: npm run build
         env:
-          NEXT_PUBLIC_RPC_URL: ${{ secrets.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com' }}
+          NEXT_PUBLIC_RPC_URL: ${{ github.event.inputs.rpc_url || secrets.NEXT_PUBLIC_RPC_URL }}
           
       - name: Deploy to Vercel
         id: deploy
@@ -89,76 +103,14 @@ jobs:
           working-directory: ./webapp
           scope: ${{ secrets.VERCEL_ORG_ID }}
           
-      - name: Add preview-deployed label
-        uses: actions/github-script@v7
-        with:
-          script: |
-            try {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                labels: ['preview-deployed']
-              });
-            } catch (error) {
-              console.log('Label may already exist:', error.message);
-            }
-          
-      - name: Comment preview URL on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const url = '${{ steps.deploy.outputs.preview-url }}';
-            const comment = `## 🚀 Preview Deployment
-            
-            Your preview deployment is ready!
-            
-            **Preview URL**: ${url}
-            
-            ### Quick Links
-            - [🌐 Preview Site](${url})
-            - [🔍 Health Check](${url}/api/health)
-            - [📊 Vercel Dashboard](https://vercel.com/${{ secrets.VERCEL_ORG_ID }}/${{ secrets.VERCEL_PROJECT_ID }})
-            
-            ### Deployment Details
-            - **Commit**: ${context.sha.substring(0, 7)}
-            - **Branch**: ${context.ref.replace('refs/heads/', '')}
-            - **Author**: @${context.actor}
-            
-            ---
-            
-            *This preview will be automatically updated when you push new commits.*
-            `;
-            
-            // Check if a preview comment already exists
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number
-            });
-            
-            const botComment = comments.find(comment => 
-              comment.user.type === 'Bot' && 
-              comment.body.includes('Preview Deployment')
-            );
-            
-            if (botComment) {
-              // Update existing comment
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: comment
-              });
-            } else {
-              // Create new comment
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: comment
-              });
-            }
+      - name: Add deployment summary
+        run: |
+          DEPLOY_SHA="$(git rev-parse HEAD)"
+          echo "## 🚀 Manual Preview Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: \`$DEPLOY_SHA\`" >> $GITHUB_STEP_SUMMARY
+          echo "- Ref: \`${{ github.event.inputs.ref || github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ steps.deploy.outputs.preview-url }}" >> $GITHUB_STEP_SUMMARY
 
   skip-preview:
     name: Skip Preview (Missing Secrets)
@@ -167,31 +119,11 @@ jobs:
     if: needs.validate-secrets.outputs.has-secrets == 'false'
     
     steps:
-      - name: Comment on PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const comment = `## ⚠️ Preview Deployment Skipped
-            
-            Preview deployment was skipped because required secrets are not configured.
-            
-            ### Required Secrets
-            Repository maintainers need to configure these secrets in repository settings:
-            - \`VERCEL_TOKEN\` - Vercel authentication token
-            - \`VERCEL_PROJECT_ID\` - Vercel project ID
-            - \`VERCEL_ORG_ID\` - Vercel organization/team ID
-            
-            ### How to Configure
-            1. Go to repository **Settings** → **Secrets and variables** → **Actions**
-            2. Add the required secrets
-            3. Re-run this workflow or push a new commit
-            
-            For more information, see the [Vercel deployment documentation](https://vercel.com/docs/deployments/git).
-            `;
-            
-            github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              body: comment
-            });
+      - name: Add skipped summary
+        run: |
+          echo "## ⚠️ Preview Deployment Skipped" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Required Vercel secrets are missing:" >> $GITHUB_STEP_SUMMARY
+          echo "- VERCEL_TOKEN" >> $GITHUB_STEP_SUMMARY
+          echo "- VERCEL_PROJECT_ID" >> $GITHUB_STEP_SUMMARY
+          echo "- VERCEL_ORG_ID" >> $GITHUB_STEP_SUMMARY
