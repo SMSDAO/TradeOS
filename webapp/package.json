@@ -29,7 +29,7 @@
     "@jup-ag/api": "^6.0.45",
     "@pythnetwork/hermes-client": "^3.1.0",
     "@react-three/drei": "^10.7.6",
-    "@react-three/fiber": "^9.5.0",
+    "@react-three/fiber": "^9.6.0",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-coinbase": "^0.1.23",
     "@solana/wallet-adapter-ledger": "^0.9.29",
