@@ -492,7 +492,7 @@ jobs:
             }
       
       - name: Upload analysis artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: self-optimization-reports
