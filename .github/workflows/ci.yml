@@ -46,7 +46,7 @@ jobs:
         run: npm ci
         
       - name: Cache backend node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -56,7 +56,7 @@ jobs:
         run: npm ci
         
       - name: Cache webapp node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -82,7 +82,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -97,7 +97,7 @@ jobs:
         continue-on-error: true
         
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -133,7 +133,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -145,7 +145,7 @@ jobs:
         run: npm run type-check
         
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -178,7 +178,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -234,7 +234,7 @@ jobs:
           cache-dependency-path: webapp/package-lock.json
           
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -324,7 +324,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -339,7 +339,7 @@ jobs:
           path: dist/
         
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -397,7 +397,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -410,7 +410,7 @@ jobs:
         continue-on-error: true
         
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
@@ -445,7 +445,7 @@ jobs:
           cache: 'npm'
           
       - name: Restore backend cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-backend-${{ hashFiles('package-lock.json') }}
@@ -465,7 +465,7 @@ jobs:
           retention-days: 3
           
       - name: Restore webapp cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: webapp/node_modules
           key: ${{ runner.os }}-node-${{ matrix.node-version }}-webapp-${{ hashFiles('webapp/package-lock.json') }}
