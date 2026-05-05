@@ -189,6 +189,14 @@ jobs:
       - name: Install webapp dependencies (if cache miss)
         working-directory: ./webapp
         run: npm ci --prefer-offline || npm ci
+
+      - name: Restore Next.js build cache
+        uses: actions/cache@v5
+        with:
+          path: webapp/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('webapp/package-lock.json') }}-${{ hashFiles('webapp/**/*.ts', 'webapp/**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('webapp/package-lock.json') }}-
       
       - name: Build webapp
         run: npm run build:webapp
@@ -239,17 +247,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
         
-      - name: Setup Node.js 20.x
+      - name: Setup Node.js 24.x
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       
       - name: Restore backend cache
         uses: actions/cache@v5
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-20-backend-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-node-24-backend-${{ hashFiles('package-lock.json') }}
       
       - name: Install backend dependencies (if cache miss)
         run: npm ci --prefer-offline || npm ci
@@ -262,7 +270,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: webapp/node_modules
-          key: ${{ runner.os }}-node-20-webapp-${{ hashFiles('webapp/package-lock.json') }}
+          key: ${{ runner.os }}-node-24-webapp-${{ hashFiles('webapp/package-lock.json') }}
       
       - name: Install webapp dependencies (if cache miss)
         working-directory: ./webapp

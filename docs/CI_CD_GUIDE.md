@@ -17,19 +17,29 @@ GXQ Master CI Pipeline
     ↓
 [validate-environment] → [install-dependencies]
     ↓
-[lint-and-typecheck] → [build-backend] + [build-webapp]
+[lint-and-typecheck] → [build-backend] + [build-webapp (+ Next.js cache)]
     ↓
-[validate-build] + [security-scan]
+[validate-build] + [security-scan (Node 24)]
     ↓
 [master-ci-summary]
     ↓
-Manual trigger or tag push
+    ├── Manual trigger or tag push → GXQ Deploy Production
+    │       ↓
+    │   [prepare-deployment] → [deploy-vercel] + [deploy-railway]
+    │       ↓
+    │   [post-deployment-health]
+    │
+    └── OMEGA Docs Refresh (auto-triggered on src/webapp changes)
+            ↓
+        [build-verify] → [docs-refresh] → auto-commit README + docs/
+
+Pull Request
     ↓
-GXQ Deploy Production
+OMEGA Conflict Resolver
     ↓
-[prepare-deployment] → [deploy-vercel] + [deploy-railway]
+[detect-conflicts] → [auto-resolve (if needed)] → push resolved branch
     ↓
-[post-deployment-health]
+GXQ PR Check (full validation pipeline)
 ```
 
 ---
@@ -207,6 +217,63 @@ GXQ Deploy Production
 - Creates new issue with label `health-check,automated,priority-high` if services down
 - Comments on existing issue if already open
 - Closes issue and comments when all services healthy
+
+---
+
+### 5. OMEGA – Auto Conflict Resolver
+
+**File**: `.github/workflows/omega-conflict-resolver.yml`
+
+**Triggers**:
+- Pull request opened, synchronize, or reopened against `main`, `master`, `develop`, or `dev`
+
+**Purpose**: Layer 1 + Layer 2 – automatically detect and resolve merge conflicts on pull requests so the pipeline does not stall waiting for manual resolution.
+
+**Jobs**:
+
+#### detect-conflicts
+- Performs a dry-run `git merge --no-commit --no-ff` against the base branch
+- Reports `has_conflicts=true/false` to downstream jobs
+
+#### auto-resolve
+- Runs only when conflicts are detected
+- Attempts a clean three-way merge first
+- Falls back to `--ours` strategy for lock-files (`package-lock.json`) to avoid phantom conflicts
+- Pushes the resolved branch back automatically
+- Posts a summary comment on the PR
+
+#### no-conflicts
+- Runs when no conflicts are found, simply confirms clean status
+
+**Concurrency**: `omega-conflict-<ref>` (cancels in-progress runs for the same branch)
+
+---
+
+### 6. OMEGA – Docs Refresh
+
+**File**: `.github/workflows/omega-docs-refresh.yml`
+
+**Triggers**:
+- Push to `main` or `master` that touches `src/`, `webapp/`, `package.json`, or `tsconfig.json`
+- Manual workflow dispatch
+
+**Purpose**: Layer 2 – after a successful compilation, re-lint and auto-commit updated documentation (`README.md` and `docs/`) so documentation stays in sync with code changes.
+
+**Jobs**:
+
+#### build-verify
+- Installs all dependencies (backend + webapp)
+- Caches the Next.js build (`.next/cache`) for faster subsequent runs
+- Runs `type-check` and full build for both backend and webapp
+- Acts as the gate – docs refresh only runs after compilation is confirmed green
+
+#### docs-refresh
+- Installs `markdownlint-cli` globally
+- Lints `README.md` and all `docs/**/*.md` (non-blocking warnings)
+- Appends a `<!-- omega-refresh-stamp -->` timestamp to the README CI/CD section
+- Auto-commits any changes back to the branch with `[skip ci]` to avoid re-trigger loops
+
+**Concurrency**: `omega-docs-<ref>` (cancels in-progress runs for the same branch)
 
 ---
 

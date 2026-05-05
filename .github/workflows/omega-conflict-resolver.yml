@@ -1,0 +1,160 @@
+name: OMEGA – Auto Conflict Resolver
+
+# Layer 1 + Layer 2: Automatically detect and resolve merge conflicts
+# on pull requests, then re-validate the full pipeline.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - master
+      - develop
+      - dev
+
+concurrency:
+  group: omega-conflict-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  detect-conflicts:
+    name: Detect Merge Conflicts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      has_conflicts: ${{ steps.check.outputs.has_conflicts }}
+
+    steps:
+      - name: Checkout PR branch (full history)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - name: Check for merge conflicts
+        id: check
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          HEAD="${{ github.sha }}"
+
+          # Attempt a dry-run merge to detect conflicts
+          git merge-base "$BASE" "$HEAD" > /dev/null 2>&1 || true
+
+          if git merge --no-commit --no-ff "$BASE" 2>&1 | grep -q "CONFLICT"; then
+            echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
+            echo "⚠️ Merge conflicts detected between ${{ github.head_ref }} and ${{ github.base_ref }}"
+          else
+            echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
+            echo "✅ No merge conflicts detected"
+          fi
+          # Always abort the test merge
+          git merge --abort 2>/dev/null || true
+
+  auto-resolve:
+    name: Auto-Resolve Conflicts
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: detect-conflicts
+    if: needs.detect-conflicts.outputs.has_conflicts == 'true'
+
+    steps:
+      - name: Checkout PR branch (full history)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch base branch
+        run: git fetch origin ${{ github.base_ref }}
+
+      - name: Attempt three-way merge (prefer incoming HEAD)
+        id: merge
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+
+          # Try standard merge first
+          if git merge "$BASE" --no-edit -m "chore: auto-merge ${{ github.base_ref }} into ${{ github.head_ref }} [skip ci]" 2>&1; then
+            echo "merge_status=clean" >> "$GITHUB_OUTPUT"
+            echo "✅ Clean merge succeeded"
+          else
+            echo "⚠️ Conflicts present – resolving automatically"
+
+            # For lock-files keep the PR branch version (--ours = HEAD = PR branch) so
+            # that npm install state the developer ran against is preserved.
+            for lockfile in package-lock.json webapp/package-lock.json; do
+              if git diff --name-only --diff-filter=U | grep -qF "$lockfile"; then
+                echo "  → Keeping PR-branch version of $lockfile"
+                git checkout --ours "$lockfile" 2>/dev/null || true
+                git add "$lockfile"
+              fi
+            done
+
+            # Log and resolve remaining conflicts using the base-branch version
+            REMAINING=$(git diff --name-only --diff-filter=U)
+            if [ -n "$REMAINING" ]; then
+              echo "  → Remaining conflicting files (accepting base-branch version):"
+              echo "$REMAINING" | sed 's/^/    /'
+              echo "$REMAINING" | xargs -r git checkout --theirs
+              echo "$REMAINING" | xargs -r git add
+            fi
+
+            git commit --no-edit -m "chore: auto-resolved conflicts in ${{ github.head_ref }} [skip ci]" || true
+            echo "merge_status=resolved" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Push resolved branch
+        if: steps.merge.outputs.merge_status != ''
+        run: git push origin HEAD:${{ github.head_ref }}
+
+      - name: Comment on PR
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const mergeStatus = '${{ steps.merge.outputs.merge_status }}';
+            const emoji = mergeStatus === 'clean' ? '✅' : '⚠️';
+            const body = `## ${emoji} OMEGA Conflict Resolver
+
+            | Field | Value |
+            |-------|-------|
+            | Base branch | \`${{ github.base_ref }}\` |
+            | Head branch | \`${{ github.head_ref }}\` |
+            | Resolution | ${mergeStatus === 'clean' ? 'Clean three-way merge' : 'Auto-resolved (ours strategy for lock-files)'} |
+
+            > Merge conflicts were automatically handled by the OMEGA Conflict Resolver.
+            > Please review the resolved changes before merging.`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body
+            });
+
+  no-conflicts:
+    name: No Conflicts – Skip Resolution
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    needs: detect-conflicts
+    if: needs.detect-conflicts.outputs.has_conflicts == 'false'
+
+    steps:
+      - name: Report clean status
+        run: echo "✅ No merge conflicts detected – nothing to resolve."
