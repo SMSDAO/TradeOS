@@ -5,6 +5,7 @@
 [![codecov](https://codecov.io/gh/SMSDAO/TradeOS/branch/main/graph/badge.svg)](https://codecov.io/gh/SMSDAO/TradeOS)
 [![Deploy Preview](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-preview.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-preview.yml)
 [![Deploy Railway](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-railway.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/deploy-railway.yml)
+[![OMEGA Docs Refresh](https://github.com/SMSDAO/TradeOS/actions/workflows/omega-docs-refresh.yml/badge.svg)](https://github.com/SMSDAO/TradeOS/actions/workflows/omega-docs-refresh.yml)
 
 The most advanced Solana DeFi platform with flash loan arbitrage, sniper bot, token launchpad, and comprehensive Web3 UI.
 
@@ -641,9 +642,23 @@ Before contributing:
 
 This project includes a comprehensive CI/CD pipeline with automated testing, security scanning, and deployment previews.
 
+### 🧠 OMEGA Dual-Layer Swarm System
+
+The repository runs an **OMEGA Dual-Layer Autonomous Swarm System** that couples workflow stability with automated code and documentation correction:
+
+| Layer | Workflow | Purpose |
+|-------|----------|---------|
+| ⚙️ Layer 1 – Workflow Optimization | `gxq-master-ci.yml`, `ci.yml` | Deterministic, cached, parallel-safe CI with Node 24 and Next.js build cache |
+| 🤝 Layer 1+2 – Conflict Resolver | `omega-conflict-resolver.yml` | Auto-detects and resolves merge conflicts on every PR |
+| 📚 Layer 2 – Docs Refresh | `omega-docs-refresh.yml` | After compilation succeeds, lints and auto-commits updated `README.md` + `docs/` |
+
+See [docs/CI_CD_GUIDE.md](./docs/CI_CD_GUIDE.md) for detailed workflow documentation.
+
 ### Pipeline Features
 
-- **Multi-Node Testing**: Tests run on Node.js 18 and 20
+- **Single Node Version**: All CI jobs run on Node.js 24 LTS (consistent cache keys, no drift)
+- **Concurrency Control**: Each workflow cancels in-progress runs for the same branch
+- **Next.js Build Cache**: `.next/cache` is preserved across runs for faster webapp builds
 - **Code Quality**: ESLint with zero warnings policy
 - **Type Safety**: Strict TypeScript checking
 - **Test Coverage**: Automated coverage collection with 90% target
@@ -651,6 +666,8 @@ This project includes a comprehensive CI/CD pipeline with automated testing, sec
 - **Preview Deployments**: Automatic Vercel and Railway previews for every PR
 - **Auto-merge**: Automated PR merging when all checks pass
 - **Dual Deployment**: Automatic deployment to both Vercel (webapp) and Railway (backend) on push to main
+- **Auto Conflict Resolution**: OMEGA resolver detects and fixes merge conflicts automatically
+- **Auto Docs Refresh**: Documentation regenerated and committed after every successful compilation
 
 ### Running CI Checks Locally
 
