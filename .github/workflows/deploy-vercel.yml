@@ -15,6 +15,10 @@ on:
           - production
           - preview
 
+concurrency:
+  group: deploy-vercel-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
   deployments: write
