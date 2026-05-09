@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: deploy-railway-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
   deployments: write

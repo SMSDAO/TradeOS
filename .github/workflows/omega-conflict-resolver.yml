@@ -41,20 +41,25 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git fetch origin "$BASE_REF"
 
       - name: Check for merge conflicts
         id: check
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.sha }}
         run: |
-          BASE="origin/${{ github.base_ref }}"
-          HEAD="${{ github.sha }}"
+          BASE="origin/${BASE_REF}"
 
           # Attempt a dry-run merge to detect conflicts
-          git merge-base "$BASE" "$HEAD" > /dev/null 2>&1 || true
+          git merge-base "$BASE" "$HEAD_SHA" > /dev/null 2>&1 || true
 
           if git merge --no-commit --no-ff "$BASE" 2>&1 | grep -q "CONFLICT"; then
             echo "has_conflicts=true" >> "$GITHUB_OUTPUT"
-            echo "⚠️ Merge conflicts detected between ${{ github.head_ref }} and ${{ github.base_ref }}"
+            echo "⚠️ Merge conflicts detected between ${HEAD_REF} and ${BASE_REF}"
           else
             echo "has_conflicts=false" >> "$GITHUB_OUTPUT"
             echo "✅ No merge conflicts detected"
@@ -83,15 +88,20 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch base branch
-        run: git fetch origin ${{ github.base_ref }}
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git fetch origin "$BASE_REF"
 
       - name: Attempt three-way merge (prefer incoming HEAD)
         id: merge
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
-          BASE="origin/${{ github.base_ref }}"
+          BASE="origin/${BASE_REF}"
 
           # Try standard merge first
-          if git merge "$BASE" --no-edit -m "chore: auto-merge ${{ github.base_ref }} into ${{ github.head_ref }} [skip ci]" 2>&1; then
+          if git merge "$BASE" --no-edit -m "chore: auto-merge ${BASE_REF} into ${HEAD_REF} [skip ci]" 2>&1; then
             echo "merge_status=clean" >> "$GITHUB_OUTPUT"
             echo "✅ Clean merge succeeded"
           else
@@ -116,13 +126,15 @@ jobs:
               echo "$REMAINING" | xargs -r git add
             fi
 
-            git commit --no-edit -m "chore: auto-resolved conflicts in ${{ github.head_ref }} [skip ci]" || true
+            git commit --no-edit -m "chore: auto-resolved conflicts in ${HEAD_REF} [skip ci]" || true
             echo "merge_status=resolved" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Push resolved branch
         if: steps.merge.outputs.merge_status != ''
-        run: git push origin HEAD:${{ github.head_ref }}
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: git push origin HEAD:"$HEAD_REF"
 
       - name: Comment on PR
         uses: actions/github-script@v9
