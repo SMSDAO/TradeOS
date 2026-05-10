@@ -41,6 +41,7 @@ run_stage_command() {
       ;;
     test)
       npm test
+      # Run webapp tests when present, but do not mask real failures when they exist.
       npm --prefix webapp run test --if-present -- --ci --coverage
       ;;
     build)

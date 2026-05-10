@@ -34,6 +34,10 @@ function normalizeProvider(value: string | undefined): DeploymentProvider {
   return 'none';
 }
 
+/**
+ * Returns a trimmed env var value, treating blank values as undefined.
+ * This avoids admitting empty origins into CORS allow-lists.
+ */
 function getNonEmptyEnv(name: string): string | undefined {
   const value = process.env[name]?.trim();
   return value || undefined;
