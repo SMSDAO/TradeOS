@@ -16,14 +16,13 @@ function normalizeUrl(url: string): string {
     return trimmed;
   }
 
-  const withoutTrailingSlash = trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
-
   try {
-    const parsed = new URL(withoutTrailingSlash);
+    const parsed = new URL(trimmed);
     parsed.hostname = parsed.hostname.toLowerCase();
-    return parsed.toString().replace(/\/$/, '');
+    const normalized = parsed.toString();
+    return normalized.endsWith('/') ? normalized.slice(0, -1) : normalized;
   } catch {
-    return withoutTrailingSlash;
+    return trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
   }
 }
 
@@ -37,7 +36,7 @@ function normalizeProvider(value: string | undefined): DeploymentProvider {
 
 function getNonEmptyEnv(name: string): string | undefined {
   const value = process.env[name]?.trim();
-  return value ? value : undefined;
+  return value || undefined;
 }
 
 export function getDeploymentConfig(): DeploymentConfig {
