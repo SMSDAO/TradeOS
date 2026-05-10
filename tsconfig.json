@@ -17,6 +17,6 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "include": ["src/**/*", "api/**/*", "scripts/**/*", "db/**/*", "config/deployment.ts"],
+  "include": ["src/**/*", "api/**/*", "scripts/**/*", "db/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/__tests__/**"]
 }

@@ -67,13 +67,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npm --prefix webapp ci --no-audit --no-fund
       - run: npm test
-      - name: Run webapp tests when configured
-        run: |
-          if npm --prefix webapp run | grep -Eq '^[[:space:]]+test[[:space:]]'; then
-            npm --prefix webapp run test -- --ci --coverage
-          else
-            echo "No webapp test script configured; skipping webapp tests."
-          fi
+      - run: npm --prefix webapp run test --if-present -- --ci --coverage
 
   build:
     name: build
