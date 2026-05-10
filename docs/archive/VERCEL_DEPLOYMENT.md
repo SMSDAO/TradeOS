@@ -173,7 +173,7 @@ docker run -d \
 
 ## 🌐 URLs After Deployment
 
-- **Frontend (Vercel)**: `https://gxq.vercel.app/`
+- **Frontend (Vercel)**: `https://TradeOS.app/`
 - **Custom Domain**: `https://gxqstudio.com` (if configured)
 
 ## 📊 Post-Deployment Checklist

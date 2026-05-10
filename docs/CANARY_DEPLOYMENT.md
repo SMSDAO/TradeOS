@@ -74,10 +74,10 @@ Set environment variables:
 
 ```bash
 # Staging URL
-STAGING_URL=https://gxq-staging.vercel.app
+STAGING_URL=https://staging.tradeos.app
 
 # Production URL
-PRODUCTION_URL=https://gxq.vercel.app
+PRODUCTION_URL=https://TradeOS.app
 
 # Optional: Vercel tokens for deployment
 VERCEL_TOKEN=your_vercel_token
@@ -105,8 +105,8 @@ The script will:
 
 ```typescript
 {
-  stagingUrl: 'https://gxq-staging.vercel.app',
-  productionUrl: 'https://gxq.vercel.app',
+  stagingUrl: 'https://staging.tradeos.app',
+  productionUrl: 'https://TradeOS.app',
   canaryPercentage: 10,              // Start with 10% traffic
   testDurationMinutes: 5,            // Monitor for 5 minutes
   rollbackThresholdPercent: 5,       // Rollback if error rate exceeds 5%

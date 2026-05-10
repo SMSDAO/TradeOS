@@ -45,8 +45,8 @@ Audited all workflow files in `.github/workflows/*` and converged to determinist
 - Multi-pipeline overlap producing non-deterministic branch status outcomes.
 
 ### Current controlled risks
-- Preview Vercel deployment can still fail due to external Vercel variability, but is explicitly non-blocking.
-- Production Vercel deploy remains strict and only executes after successful CI on `main`.
+- Preview deployment can still fail due to provider variability, but it is explicitly non-blocking.
+- Production deployment is gated by successful CI on `main` and now gracefully skips when provider infrastructure is not configured.
 
 ## Workflow dependency graph
 - `ci` (PR + push main)
@@ -58,7 +58,7 @@ Audited all workflow files in `.github/workflows/*` and converged to determinist
   - jobs: `audit`, `dependency-review`, `secret-scan`
 - `deploy`
   - `production` depends on `workflow_run(conclusion=success, head_branch=main, workflow=ci)`
-  - `preview` runs on PR and is non-blocking
+  - both `preview` and `production` are optional/non-blocking until deployment provider infrastructure is configured
 - `self-heal`
   - scheduled/manual bounded converge execution
   - no workflow mutation, no commit, no PR merge, no recursive trigger chain

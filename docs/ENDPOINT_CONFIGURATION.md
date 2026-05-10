@@ -329,8 +329,8 @@ NEYNAR_API_KEY=your_neynar_key
 export const productionCorsOptions: CorsOptions = {
   origin: (origin: string) => {
     const allowedDomains = [
-      'https://TradeOS.vercel.app',
-      'https://gxq-studio.vercel.app',
+      'https://TradeOS.app',
+      'https://TradeOS.app',
     ];
     return allowedDomains.some(domain => origin.startsWith(domain));
   },

@@ -3,6 +3,7 @@
  */
 
 import axios from 'axios';
+import { getDeploymentConfig } from '../config/deployment.js';
 import { logger } from '../lib/logger.js';
 
 interface CanaryConfig {
@@ -41,9 +42,10 @@ export class CanaryDeployment {
   private config: CanaryConfig;
 
   constructor(config?: Partial<CanaryConfig>) {
+    const deploymentConfig = getDeploymentConfig();
     this.config = {
-      stagingUrl: process.env.STAGING_URL || 'https://gxq-staging.vercel.app',
-      productionUrl: process.env.PRODUCTION_URL || 'https://gxq.vercel.app',
+      stagingUrl: deploymentConfig.stagingUrl,
+      productionUrl: deploymentConfig.productionUrl,
       canaryPercentage: 10,
       testDurationMinutes: 5,
       rollbackThresholdPercent: 5,

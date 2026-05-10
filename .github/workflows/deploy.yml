@@ -26,11 +26,12 @@ jobs:
       - name: Check preview deploy secrets
         id: preview_secrets
         env:
+          DEPLOYMENT_PROVIDER: ${{ secrets.DEPLOYMENT_PROVIDER }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          if [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+          if [ "$DEPLOYMENT_PROVIDER" = "vercel" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
           else
             echo "enabled=false" >> "$GITHUB_OUTPUT"
@@ -44,7 +45,7 @@ jobs:
           working-directory: ./webapp
       - name: Preview deploy skipped (missing secrets)
         if: steps.preview_secrets.outputs.enabled != 'true'
-        run: echo "Skipping preview deploy because required Vercel secrets are not configured."
+        run: echo "Skipping preview deploy because deployment provider is not configured for optional preview deployment."
 
   production:
     name: production
@@ -55,30 +56,47 @@ jobs:
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
+    continue-on-error: true
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           ref: refs/heads/main
+      - name: Check production deploy secrets
+        id: production_secrets
+        env:
+          DEPLOYMENT_PROVIDER: ${{ secrets.DEPLOYMENT_PROVIDER }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "$DEPLOYMENT_PROVIDER" = "vercel" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: steps.production_secrets.outputs.enabled == 'true'
         with:
           node-version-file: .nvmrc
           cache: npm
           cache-dependency-path: |
             package-lock.json
             webapp/package-lock.json
-      - run: npm ci --no-audit --no-fund
-      - run: npm --prefix webapp ci --no-audit --no-fund
-      - run: npm run build
-      - name: Validate deploy secrets
-        run: |
-          test -n "${{ secrets.VERCEL_TOKEN }}"
-          test -n "${{ secrets.VERCEL_ORG_ID }}"
-          test -n "${{ secrets.VERCEL_PROJECT_ID }}"
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm ci --no-audit --no-fund
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm --prefix webapp ci --no-audit --no-fund
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm run build
       - uses: amondnet/vercel-action@v42
+        if: steps.production_secrets.outputs.enabled == 'true'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: --prod
           working-directory: ./webapp
+      - name: Production deploy skipped (provider unavailable)
+        if: steps.production_secrets.outputs.enabled != 'true'
+        run: echo "Skipping production deploy because deployment provider infrastructure is not configured."
