@@ -72,6 +72,13 @@ Audited all workflow files in `.github/workflows/*` and converged to determinist
 - Added bounded failure handling in `scripts/converge.sh`:
   - failure -> classify -> known fix recipe -> rerun once -> stop.
 
+## Provider-independence verification
+- Local build path is independent from deployment credentials:
+  - `npm install`
+  - `npm run build`
+- Deploy workflow is credential-gated and skips cleanly when provider is not configured (`DEPLOYMENT_PROVIDER != vercel` or missing Vercel secrets).
+- Core required CI checks remain provider-agnostic: `lint`, `typecheck`, `test`, `build`.
+
 ## Migration notes
 1. Required checks should be updated to new check names from `ci` and `security` workflows.
 2. Legacy required checks from removed workflows must be removed in branch protection.

@@ -56,12 +56,11 @@ jobs:
       github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
-    continue-on-error: true
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: refs/heads/main
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Check production deploy secrets
         id: production_secrets
         env:

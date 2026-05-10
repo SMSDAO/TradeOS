@@ -23,7 +23,8 @@ function normalizeProvider(value: string | undefined): DeploymentProvider {
 }
 
 export function getDeploymentConfig(): DeploymentConfig {
-  const productionUrl = normalizeUrl(process.env.PRODUCTION_URL ?? DEFAULT_PRODUCTION_URL);
+  const primaryDomain = normalizeUrl(process.env.DEPLOYMENT_PRIMARY_DOMAIN ?? DEFAULT_PRODUCTION_URL);
+  const productionUrl = normalizeUrl(process.env.PRODUCTION_URL ?? primaryDomain);
   const stagingUrl = normalizeUrl(process.env.STAGING_URL ?? DEFAULT_STAGING_URL);
   const provider = normalizeProvider(process.env.DEPLOYMENT_PROVIDER);
   const previewEnabled = process.env.DEPLOY_PREVIEW_ENABLED === 'true';
