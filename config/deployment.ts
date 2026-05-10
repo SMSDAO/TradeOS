@@ -35,10 +35,15 @@ function normalizeProvider(value: string | undefined): DeploymentProvider {
   return 'none';
 }
 
+function getNonEmptyEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value ? value : undefined;
+}
+
 export function getDeploymentConfig(): DeploymentConfig {
-  const primaryDomain = normalizeUrl(process.env.DEPLOYMENT_PRIMARY_DOMAIN ?? DEFAULT_PRODUCTION_URL);
-  const productionUrl = normalizeUrl(process.env.PRODUCTION_URL ?? primaryDomain);
-  const stagingUrl = normalizeUrl(process.env.STAGING_URL ?? DEFAULT_STAGING_URL);
+  const primaryDomain = normalizeUrl(getNonEmptyEnv('DEPLOYMENT_PRIMARY_DOMAIN') ?? DEFAULT_PRODUCTION_URL);
+  const productionUrl = normalizeUrl(getNonEmptyEnv('PRODUCTION_URL') ?? primaryDomain);
+  const stagingUrl = normalizeUrl(getNonEmptyEnv('STAGING_URL') ?? DEFAULT_STAGING_URL);
   const provider = normalizeProvider(process.env.DEPLOYMENT_PROVIDER);
   const previewEnabled = process.env.DEPLOY_PREVIEW_ENABLED === 'true';
 
