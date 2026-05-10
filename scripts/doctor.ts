@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 interface Finding {
   check: string;
@@ -62,24 +63,28 @@ function scanFiles(root: string, extensions: Set<string>): string[] {
 }
 
 function checkEnvTemplates(repoRoot: string): void {
-  const files = [
-    path.join(repoRoot, '.env.example'),
-    path.join(repoRoot, 'webapp', '.env.example'),
+  const rootEnvPath = path.join(repoRoot, '.env.example');
+  const webappEnvPath = path.join(repoRoot, 'webapp', '.env.example');
+  const requirements: Array<{ filePath: string; required: string[] }> = [
+    {
+      filePath: rootEnvPath,
+      required: ['SOLANA_RPC_URL', 'WALLET_PRIVATE_KEY', 'JWT_SECRET'],
+    },
+    {
+      filePath: webappEnvPath,
+      required: ['NEXT_PUBLIC_RPC_URL', 'NEXT_PUBLIC_BACKEND_URL'],
+    },
   ];
 
-  const requiredByFile: Record<string, string[]> = {
-    [files[0]]: ['SOLANA_RPC_URL', 'WALLET_PRIVATE_KEY', 'JWT_SECRET'],
-    [files[1]]: ['NEXT_PUBLIC_RPC_URL', 'NEXT_PUBLIC_BACKEND_URL'],
-  };
-
-  for (const filePath of files) {
+  for (const requirement of requirements) {
+    const filePath = requirement.filePath;
     if (!fs.existsSync(filePath)) {
       addFinding('env-template', 'error', `Missing template: ${path.relative(repoRoot, filePath)}`, 'Restore the missing .env.example file.');
       continue;
     }
 
     const content = fs.readFileSync(filePath, 'utf8');
-    for (const variable of requiredByFile[filePath]) {
+    for (const variable of requirement.required) {
       const pattern = new RegExp(`^${variable}=`, 'm');
       if (!pattern.test(content)) {
         addFinding('env-template', 'error', `Missing ${variable} in ${path.relative(repoRoot, filePath)}`, `Add ${variable}=... to ${path.relative(repoRoot, filePath)}.`);
@@ -329,13 +334,15 @@ function checkSupportedNodeVersion(repoRoot: string): void {
   }
 
   const nvmrc = fs.readFileSync(nvmrcPath, 'utf8').trim();
-  if (!/^\d+$/.test(nvmrc)) {
+  if (!/^v?\d+(\.\d+(\.\d+)?)?$/.test(nvmrc)) {
     addFinding('node-version', 'error', `.nvmrc is invalid: ${nvmrc}`, 'Set .nvmrc to a major Node version (for example 24).');
   }
 
+  const nvmrcMajorMatch = nvmrc.match(/\d+/);
+  const nvmrcMajor = nvmrcMajorMatch ? nvmrcMajorMatch[0] : '';
   const rootPkg = readJson(path.join(repoRoot, 'package.json')) as { engines?: Record<string, string> };
   const nodeEngine = rootPkg.engines?.node;
-  if (nodeEngine && !nodeEngine.includes(nvmrc)) {
+  if (nodeEngine && nvmrcMajor && !nodeEngine.includes(nvmrcMajor)) {
     addFinding('node-version', 'warning', `Node engine (${nodeEngine}) does not explicitly include .nvmrc (${nvmrc})`, 'Align engines.node with .nvmrc for deterministic toolchain selection.');
   }
 }
@@ -364,7 +371,7 @@ function printResults(): void {
 }
 
 function main(): void {
-  const repoRoot = path.resolve(path.join(path.dirname(new URL(import.meta.url).pathname), '..'));
+  const repoRoot = path.resolve(path.join(path.dirname(fileURLToPath(import.meta.url)), '..'));
 
   checkEnvTemplates(repoRoot);
   checkInvalidImportsAndCycles(repoRoot);

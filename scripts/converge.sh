@@ -3,6 +3,8 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
+CI_MODE=false
+SELF_HEAL_MODE=false
 
 log() {
   printf '[converge] %s\n' "$1"
@@ -19,12 +21,42 @@ die() {
 
 CLASSIFICATION="none"
 
+run_stage_command() {
+  local stage="$1"
+
+  case "$stage" in
+    install)
+      npm ci --no-audit --no-fund
+      ;;
+    webapp-install)
+      npm --prefix webapp ci --no-audit --no-fund
+      ;;
+    lint)
+      npm run lint
+      npm run lint:webapp
+      ;;
+    typecheck)
+      npm run type-check
+      npm run type-check:webapp
+      ;;
+    test)
+      npm test
+      npm run test:webapp
+      ;;
+    build)
+      npm run build
+      ;;
+    *)
+      die "unknown stage command: ${stage}"
+      ;;
+  esac
+}
+
 classify_and_fix_once() {
   local stage="$1"
-  local command="$2"
 
-  log "stage=${stage} run=${command}"
-  if eval "$command"; then
+  log "stage=${stage} run"
+  if run_stage_command "$stage"; then
     return 0
   fi
 
@@ -50,7 +82,7 @@ classify_and_fix_once() {
   esac
 
   log "stage=${stage} rerun=once"
-  if eval "$command"; then
+  if run_stage_command "$stage"; then
     return 0
   fi
 
@@ -101,7 +133,7 @@ validate_env_templates() {
 
 validate_json_file() {
   local file_path="$1"
-  node -e "JSON.parse(require('fs').readFileSync('${file_path}', 'utf8'));"
+  node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'));" "$file_path"
 }
 
 validate_nextjs_config() {
@@ -133,19 +165,35 @@ regenerate_deterministic_artifacts() {
 }
 
 install_dependencies() {
-  classify_and_fix_once "install" "npm ci --no-audit --no-fund"
-  classify_and_fix_once "webapp-install" "npm --prefix webapp ci --no-audit --no-fund"
+  classify_and_fix_once "install"
+  classify_and_fix_once "webapp-install"
 }
 
 run_quality_pipeline() {
-  classify_and_fix_once "lint" "npm run lint && npm run lint:webapp"
-  classify_and_fix_once "typecheck" "npm run type-check && npm run type-check:webapp"
-  classify_and_fix_once "test" "npm test && npm run test:webapp"
-  classify_and_fix_once "build" "npm run build"
+  classify_and_fix_once "lint"
+  classify_and_fix_once "typecheck"
+  classify_and_fix_once "test"
+  classify_and_fix_once "build"
 }
 
 main() {
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --ci)
+        CI_MODE=true
+        ;;
+      --self-heal)
+        SELF_HEAL_MODE=true
+        ;;
+      *)
+        die "unknown argument: $1"
+        ;;
+    esac
+    shift
+  done
+
   log "start deterministic convergence"
+  log "mode ci=${CI_MODE} self_heal=${SELF_HEAL_MODE}"
   verify_structure
   normalize_lockfiles
   restore_generated_configs
