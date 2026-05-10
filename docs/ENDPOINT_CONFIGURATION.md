@@ -330,7 +330,6 @@ export const productionCorsOptions: CorsOptions = {
   origin: (origin: string) => {
     const allowedDomains = [
       'https://TradeOS.app',
-      'https://TradeOS.app',
     ];
     return allowedDomains.some(domain => origin.startsWith(domain));
   },
