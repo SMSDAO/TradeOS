@@ -41,7 +41,7 @@ run_stage_command() {
       ;;
     test)
       npm test
-      npm run test:webapp
+      npm --prefix webapp run test --if-present -- --ci --coverage
       ;;
     build)
       npm run build
@@ -153,10 +153,14 @@ validate_firebase_config() {
 
 validate_vercel_config() {
   log "validate vercel config"
-  [ -f vercel.json ] || die "vercel.json missing"
   [ -f webapp/vercel.json ] || die "webapp/vercel.json missing"
-  validate_json_file vercel.json
   validate_json_file webapp/vercel.json
+
+  if [ -f vercel.json ]; then
+    validate_json_file vercel.json
+  else
+    warn "root vercel.json not present; skipping root vercel config validation"
+  fi
 }
 
 regenerate_deterministic_artifacts() {

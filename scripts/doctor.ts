@@ -211,24 +211,31 @@ function checkFirebaseConfig(repoRoot: string): void {
 }
 
 function checkVercelConfig(repoRoot: string): void {
-  const configs = [path.join(repoRoot, 'vercel.json'), path.join(repoRoot, 'webapp', 'vercel.json')];
+  const webappConfigPath = path.join(repoRoot, 'webapp', 'vercel.json');
+  const rootConfigPath = path.join(repoRoot, 'vercel.json');
 
-  for (const filePath of configs) {
-    if (!fs.existsSync(filePath)) {
-      addFinding('vercel-config', 'error', `Missing ${path.relative(repoRoot, filePath)}`, 'Restore Vercel config.');
-      continue;
-    }
-
+  if (!fs.existsSync(webappConfigPath)) {
+    addFinding('vercel-config', 'error', 'Missing webapp/vercel.json', 'Restore webapp Vercel config.');
+  } else {
     try {
-      const parsed = readJson(filePath) as { framework?: string; buildCommand?: string };
+      const parsed = readJson(webappConfigPath) as { framework?: string; buildCommand?: string };
       if (!parsed.framework) {
-        addFinding('vercel-config', 'warning', `${path.relative(repoRoot, filePath)} missing framework`, 'Set framework (for example: nextjs).');
+        addFinding('vercel-config', 'warning', 'webapp/vercel.json missing framework', 'Set framework (for example: nextjs).');
       }
       if (!parsed.buildCommand) {
-        addFinding('vercel-config', 'warning', `${path.relative(repoRoot, filePath)} missing buildCommand`, 'Set an explicit build command.');
+        addFinding('vercel-config', 'warning', 'webapp/vercel.json missing buildCommand', 'Set an explicit build command.');
       }
     } catch (_error) {
-      addFinding('vercel-config', 'error', `Invalid JSON in ${path.relative(repoRoot, filePath)}`, 'Fix malformed Vercel JSON.');
+      addFinding('vercel-config', 'error', 'Invalid JSON in webapp/vercel.json', 'Fix malformed Vercel JSON.');
+    }
+  }
+
+  if (fs.existsSync(rootConfigPath)) {
+    try {
+      readJson(rootConfigPath);
+      addFinding('vercel-config', 'warning', 'Root vercel.json detected', 'Remove root vercel.json unless explicitly required by your deployment provider.');
+    } catch (_error) {
+      addFinding('vercel-config', 'error', 'Invalid JSON in vercel.json', 'Fix malformed root Vercel JSON or remove the file.');
     }
   }
 }

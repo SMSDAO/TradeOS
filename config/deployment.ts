@@ -7,11 +7,24 @@ export interface DeploymentConfig {
   previewEnabled: boolean;
 }
 
-const DEFAULT_PRODUCTION_URL = 'https://TradeOS.app';
+const DEFAULT_PRODUCTION_URL = 'https://tradeos.app';
 const DEFAULT_STAGING_URL = 'https://staging.tradeos.app';
 
 function normalizeUrl(url: string): string {
-  return url.endsWith('/') ? url.slice(0, -1) : url;
+  const trimmed = url.trim();
+  if (!trimmed) {
+    return trimmed;
+  }
+
+  const withoutTrailingSlash = trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
+
+  try {
+    const parsed = new URL(withoutTrailingSlash);
+    parsed.hostname = parsed.hostname.toLowerCase();
+    return parsed.toString().replace(/\/$/, '');
+  } catch {
+    return withoutTrailingSlash;
+  }
 }
 
 function normalizeProvider(value: string | undefined): DeploymentProvider {
