@@ -120,7 +120,7 @@ ensure_clean_git_state_for_automation() {
   local dirty_files
   dirty_files="$(git --no-pager status --porcelain)"
   if [ -n "$dirty_files" ]; then
-    die "detected workspace drift after ${phase} in automation mode; commit generated changes (for example lockfile updates) before rerunning."$'\n'"${dirty_files}"
+    die "detected workspace drift after ${phase} in automation mode; commit generated changes such as lockfile updates before rerunning."$'\n'"${dirty_files}"
   fi
 }
 
