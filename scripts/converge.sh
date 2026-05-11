@@ -109,6 +109,21 @@ normalize_lockfiles() {
   npm --prefix webapp install --package-lock-only --ignore-scripts --no-audit --no-fund
 }
 
+ensure_clean_git_state_for_automation() {
+  local phase="$1"
+
+  if [ "$CI_MODE" != "true" ] && [ "$SELF_HEAL_MODE" != "true" ]; then
+    return 0
+  fi
+
+  git update-index -q --refresh || true
+  local dirty_files
+  dirty_files="$(git --no-pager status --porcelain)"
+  if [ -n "$dirty_files" ]; then
+    die "detected workspace drift after ${phase} in automation mode; commit generated changes (for example lockfile updates) before rerunning."$'\n'"${dirty_files}"
+  fi
+}
+
 restore_generated_configs() {
   log "restore deterministic generated configs"
   if [ ! -f "webapp/next-env.d.ts" ]; then
@@ -201,6 +216,7 @@ main() {
   log "mode ci=${CI_MODE} self_heal=${SELF_HEAL_MODE}"
   verify_structure
   normalize_lockfiles
+  ensure_clean_git_state_for_automation "lockfile normalization"
   restore_generated_configs
   validate_env_templates
   regenerate_deterministic_artifacts
@@ -209,6 +225,7 @@ main() {
   validate_firebase_config
   validate_vercel_config
   run_quality_pipeline
+  ensure_clean_git_state_for_automation "quality pipeline"
   log "convergence completed successfully"
 }
 
