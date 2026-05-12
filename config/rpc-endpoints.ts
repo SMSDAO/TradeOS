@@ -58,7 +58,7 @@ export const MAINNET_RPC_ENDPOINTS: RpcEndpoint[] = [
     rateLimit: 10,
     tier: 'free',
   },
-].filter(endpoint => endpoint.url); // Remove endpoints without URLs
+].filter((endpoint): endpoint is RpcEndpoint => Boolean(endpoint.url)); // Remove endpoints without URLs
 
 /**
  * Devnet RPC endpoints for testing
@@ -78,7 +78,7 @@ export const DEVNET_RPC_ENDPOINTS: RpcEndpoint[] = [
     rateLimit: 100,
     tier: 'premium',
   },
-].filter(endpoint => endpoint.url);
+].filter((endpoint): endpoint is RpcEndpoint => Boolean(endpoint.url));
 
 /**
  * Get RPC endpoints for the current environment

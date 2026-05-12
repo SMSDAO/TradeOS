@@ -52,7 +52,9 @@
     "env-sync": "bash scripts/env-sync-check.sh",
     "db-migrate": "bash scripts/db-migrate.sh",
     "health": "bash scripts/health-check.sh",
-    "perf": "bash scripts/performance-report.sh"
+    "perf": "bash scripts/performance-report.sh",
+    "converge": "bash scripts/converge.sh",
+    "doctor": "ts-node-esm scripts/doctor.ts"
   },
   "keywords": [
     "solana",
@@ -109,5 +111,6 @@
     "ts-node": "^10.9.1",
     "ts-prune": "^0.10.3",
     "typescript": "^5.3.2"
-  }
+  },
+  "packageManager": "npm@10"
 }

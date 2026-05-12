@@ -158,7 +158,7 @@ railway rollback
 ## Deployment Environments
 
 ### Production (Vercel)
-- **URL:** `https://TradeOS.vercel.app`
+- **URL:** `https://TradeOS.app`
 - **Branch:** `main`
 - **Auto-deploy:** Yes
 - **Rollback:** Automatic on failure

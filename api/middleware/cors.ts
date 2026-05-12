@@ -4,6 +4,7 @@
  */
 
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { getAllowedOrigins } from "../../config/deployment.js";
 
 export interface CorsOptions {
   origin?: string | string[] | ((origin: string) => boolean);
@@ -137,12 +138,7 @@ export function withCors(
  */
 export const productionCorsOptions: CorsOptions = {
   origin: (origin: string) => {
-    const allowedDomains = [
-      "https://reimagined-jupiter.vercel.app",
-      "https://gxq-studio.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:3001",
-    ];
+    const allowedDomains = getAllowedOrigins();
 
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return true;

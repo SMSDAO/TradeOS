@@ -54,8 +54,8 @@ JWT_SECRET=your_jwt_secret
 AUTO_FIX_ENABLED=false
 AUTO_REDEPLOY_ENABLED=false
 METRICS_PORT=9090
-STAGING_URL=https://gxq-staging.vercel.app
-PRODUCTION_URL=https://gxq.vercel.app
+STAGING_URL=https://staging.tradeos.app
+PRODUCTION_URL=https://TradeOS.app
 ```
 
 ### 3. Build and Test
@@ -232,8 +232,8 @@ vercel link
 ```bash
 gh secret set VERCEL_TOKEN --body "YOUR_TOKEN"
 gh secret set VERCEL_PROJECT_ID --body "YOUR_PROJECT_ID"
-gh secret set STAGING_URL --body "https://gxq-staging.vercel.app"
-gh secret set PRODUCTION_URL --body "https://gxq.vercel.app"
+gh secret set STAGING_URL --body "https://staging.tradeos.app"
+gh secret set PRODUCTION_URL --body "https://TradeOS.app"
 ```
 
 3. **Run canary**:

@@ -90,8 +90,7 @@ export default withErrorHandler(async (req, res) => {
 export const productionCorsOptions: CorsOptions = {
   origin: (origin: string) => {
     const allowedDomains = [
-      'https://TradeOS.vercel.app',
-      'https://gxq-studio.vercel.app',
+      'https://TradeOS.app',
       'http://localhost:3000',
     ];
     return allowedDomains.some(domain => origin.startsWith(domain));

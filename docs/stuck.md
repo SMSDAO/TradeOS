@@ -915,7 +915,7 @@ webapp/
    - Add environment variable: `NEXT_PUBLIC_RPC_URL`
    - Click Deploy
 
-3. **Done!** Your app is live at `https://gxq.vercel.app/`
+3. **Done!** Your app is live at `https://TradeOS.app/`
 
 ### Deploy Backend for Automated Trading (Optional)
 
@@ -2218,7 +2218,7 @@ docker run -d \
 
 ## 🌐 URLs After Deployment
 
-- **Frontend (Vercel)**: `https://gxq.vercel.app/`
+- **Frontend (Vercel)**: `https://TradeOS.app/`
 - **Custom Domain**: `https://gxqstudio.com` (if configured)
 
 ## 📊 Post-Deployment Checklist

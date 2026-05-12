@@ -1,0 +1,103 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ["ci"]
+    types: [completed]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  preview:
+    name: preview
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check preview deploy secrets
+        id: preview_secrets
+        env:
+          DEPLOYMENT_PROVIDER: ${{ secrets.DEPLOYMENT_PROVIDER }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "$DEPLOYMENT_PROVIDER" = "vercel" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: amondnet/vercel-action@v42
+        if: steps.preview_secrets.outputs.enabled == 'true'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./webapp
+      - name: Preview deploy skipped (missing secrets)
+        if: steps.preview_secrets.outputs.enabled != 'true'
+        run: echo "Skipping preview deploy because deployment provider is not configured for optional preview deployment."
+
+  production:
+    name: production
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Use the exact CI-passed SHA to avoid deploying a newer commit if main advances.
+      - name: Checkout exact commit that passed CI
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Check production deploy secrets
+        id: production_secrets
+        env:
+          DEPLOYMENT_PROVIDER: ${{ secrets.DEPLOYMENT_PROVIDER }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "$DEPLOYMENT_PROVIDER" = "vercel" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ] && [ -n "$VERCEL_PROJECT_ID" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.production_secrets.outputs.enabled == 'true'
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            webapp/package-lock.json
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm ci --no-audit --no-fund
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm --prefix webapp ci --no-audit --no-fund
+      - if: steps.production_secrets.outputs.enabled == 'true'
+        run: npm run build
+      - uses: amondnet/vercel-action@v42
+        if: steps.production_secrets.outputs.enabled == 'true'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: --prod
+          working-directory: ./webapp
+      - name: Production deploy skipped (provider unavailable)
+        if: steps.production_secrets.outputs.enabled != 'true'
+        run: echo "Skipping production deploy because deployment provider infrastructure is not configured."
